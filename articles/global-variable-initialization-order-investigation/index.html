@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,vs,process monitor,全局变量">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 全局变量初始化顺序探究">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/global-variable-initialization-order-investigation/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起我在上一篇文章——《调试实战 | dll 加载失败之全局变量初始化篇》中，跟大家分享了一个由于全局变量初始化顺序导致的 dll 加载失败的例子。感兴趣的小伙伴儿可以点击阅读。 虽然我们知道了是由于全局变量初始化顺序导致的问题，也给出了解决方案。但是有一点却没有刨根问底——为什么改变文件在工程文件中的顺序就可以改变全局变量初始化顺序？是怎么影响的呢？本篇文章力求解决这个问题。">
 <meta property="og:locale" content="zh-Hans">
@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/gflags-set-debug-link.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/windbg-command-line.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/obj-link-order.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:43.883Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.287Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 全局变量初始化顺序探究">
 <meta name="twitter:description" content="缘起我在上一篇文章——《调试实战 | dll 加载失败之全局变量初始化篇》中，跟大家分享了一个由于全局变量初始化顺序导致的 dll 加载失败的例子。感兴趣的小伙伴儿可以点击阅读。 虽然我们知道了是由于全局变量初始化顺序导致的问题，也给出了解决方案。但是有一点却没有刨根问底——为什么改变文件在工程文件中的顺序就可以改变全局变量初始化顺序？是怎么影响的呢？本篇文章力求解决这个问题。">
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/global-variable-initialization-order-investigation/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -314,7 +314,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/global-variable-initialization-order-investigation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:43+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -538,7 +538,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/" title="调试实战 | 全局变量初始化顺序探究">https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/</a>
+    <a href="https://blog.bianchengnan.tech/articles/global-variable-initialization-order-investigation/" title="调试实战 | 全局变量初始化顺序探究">https://blog.bianchengnan.tech/articles/global-variable-initialization-order-investigation/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

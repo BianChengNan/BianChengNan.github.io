@@ -92,12 +92,12 @@
 <meta name="keywords" content="原,调试,dump,转储">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何判断转储文件是在 32 位系统还是 64 位系统下生成的？">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起曾经在 2022 年分析过一个崩溃转储，文章在这里。在那个案例中，堆空间大小将近 4GB。根据上次的结论，这应该是一个运行在 64 位系统下的 32 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 32 位的还是 64 位的？如果是 32 位进程，怎么判断是运行在 32 位系统上还是运行在 64 位系统上呢？">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://resources.bianchengnan.tech/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/compare-32-64-bit-process.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:43.932Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.300Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何判断转储文件是在 32 位系统还是 64 位系统下生成的？">
 <meta name="twitter:description" content="缘起曾经在 2022 年分析过一个崩溃转储，文章在这里。在那个案例中，堆空间大小将近 4GB。根据上次的结论，这应该是一个运行在 64 位系统下的 32 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 32 位的还是 64 位的？如果是 32 位进程，怎么判断是运行在 32 位系统上还是运行在 64 位系统上呢？">
@@ -131,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -308,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -354,8 +354,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:43+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -528,7 +528,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/" title="如何判断转储文件是在 32 位系统还是 64 位系统下生成的？">https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/</a>
+    <a href="https://blog.bianchengnan.tech/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/" title="如何判断转储文件是在 32 位系统还是 64 位系统下生成的？">https://blog.bianchengnan.tech/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

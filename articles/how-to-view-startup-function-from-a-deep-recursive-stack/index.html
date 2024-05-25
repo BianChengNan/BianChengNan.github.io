@@ -92,7 +92,7 @@
 <meta name="keywords" content="调试,debug,dump,windbg,stack,递归,栈">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 记一次有教益的递归栈查看">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，遇到了一个由于递归导致的卡死问题。这个问题非常有意思，值得总结。 你知道什么情况下无限递归会卡死，而不崩溃吗？你知道递归层数过多时，如何找到导致递归调用的函数吗？你知道如何快速找到关键线程吗？你知道如何附加到一个正在被调试的进程吗？你知道如何在 windbg 中显示指定数量的栈帧吗？ 带着这些疑问，一起来看看这个非常有意思的问题吧。  说明： 文章末尾有这些问题的答案，可以直接跳到末尾查">
 <meta property="og:locale" content="zh-Hans">
@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-command-help.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-stack-total-size-and-current-used-size.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-pe-header.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:43.945Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.304Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的递归栈查看">
 <meta name="twitter:description" content="缘起最近，遇到了一个由于递归导致的卡死问题。这个问题非常有意思，值得总结。 你知道什么情况下无限递归会卡死，而不崩溃吗？你知道递归层数过多时，如何找到导致递归调用的函数吗？你知道如何快速找到关键线程吗？你知道如何附加到一个正在被调试的进程吗？你知道如何在 windbg 中显示指定数量的栈帧吗？ 带着这些疑问，一起来看看这个非常有意思的问题吧。  说明： 文章末尾有这些问题的答案，可以直接跳到末尾查">
@@ -142,7 +142,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -319,7 +319,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -365,8 +365,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:43+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -551,7 +551,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/" title="调试实战 | 记一次有教益的递归栈查看">https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/</a>
+    <a href="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/" title="调试实战 | 记一次有教益的递归栈查看">https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,总结,调试,sysinternal,livekd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="本地内核调试神器 —— livekd 使用总结">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/local-kernel-debug-with-livekd/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="说明：本文很早就发布在我的博客上了，当时总结的有些问题，本次重新整理完善后再次发布。 前言有时候我们非常想知道当前系统内核的一些状态，比如查看当前系统加载了哪些驱动，查看某个进程外 COM 调用卡在哪里了，等等。如果我们可以调试系统内核，或者抓取一个系统转储来做事后调试，该多好啊。我们可以通过如下方法得到系统转储：  双机内核调试（需要另外一台机器来做双机调试） 让系统崩溃（可以使用 sysint">
 <meta property="og:locale" content="zh-Hans">
@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-cant-find-kd.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-fail-to-load-kd.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-fail-to-load-kd-troubleshooting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/E:%5Chexo-blog%5Csource_posts%5Clocal-kernel-debug-with-livekd%5Clivekd-can-not-find-nt-kernel-symbol.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/local-kernel-debug-with-livekd/E:%5Chexo-blog%5Csource_posts%5Clocal-kernel-debug-with-livekd%5Clivekd-can-not-find-nt-kernel-symbol.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-success.png">
 <meta property="og:updated_time" content="2020-04-11T12:44:04.000Z">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/local-kernel-debug-with-livekd/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/local-kernel-debug-with-livekd/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -567,7 +567,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/" title="本地内核调试神器 —— livekd 使用总结">https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/</a>
+    <a href="https://blog.bianchengnan.tech/articles/local-kernel-debug-with-livekd/" title="本地内核调试神器 —— livekd 使用总结">https://blog.bianchengnan.tech/articles/local-kernel-debug-with-livekd/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

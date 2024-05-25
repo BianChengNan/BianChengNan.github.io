@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,总结,调试,vs,debug,ida,gcc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="这个崩溃，有点意思">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/unexpected-crash/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/unexpected-crash/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前几天，在加班赶进度时遇到了一个意想不到的崩溃。由于是新加的代码导致的问题，所以很快就定位到了问题代码。但是，看了好几遍也没看出问题在哪？虽然代码在逻辑上有漏洞——某些情况下没有返回值，但是在我的认知里，应该不会导致崩溃。本文记录了使用 IDA 静态分析反汇编代码定位这个问题的过程。">
 <meta property="og:locale" content="zh-Hans">
@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/view-disassembly-code-of-getparam-in-gcc5.2.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/view-disassembly-code-of-main-in-gcc5.2.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/undefined-behaviour-in-cpp-standard-draft.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:44.363Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.441Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这个崩溃，有点意思">
 <meta name="twitter:description" content="缘起前几天，在加班赶进度时遇到了一个意想不到的崩溃。由于是新加的代码导致的问题，所以很快就定位到了问题代码。但是，看了好几遍也没看出问题在哪？虽然代码在逻辑上有漏洞——某些情况下没有返回值，但是在我的认知里，应该不会导致崩溃。本文记录了使用 IDA 静态分析反汇编代码定位这个问题的过程。">
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/unexpected-crash/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/unexpected-crash/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/unexpected-crash/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/unexpected-crash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:44+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -531,7 +531,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/unexpected-crash/" title="这个崩溃，有点意思">https://bianchengnan.github.io/articles/unexpected-crash/</a>
+    <a href="https://blog.bianchengnan.tech/articles/unexpected-crash/" title="这个崩溃，有点意思">https://blog.bianchengnan.tech/articles/unexpected-crash/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

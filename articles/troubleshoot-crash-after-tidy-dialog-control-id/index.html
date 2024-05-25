@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,pdb,windbg,chkmatch,mfc,">
+  <meta name="keywords" content="原,总结,调试,windbg,pdb,chkmatch,mfc,">
 
 
 
@@ -89,10 +89,10 @@
 
 
 <meta name="description" content="缘起实际项目中，resource.h 文件中的控件太多太乱了，合并代码的时候非常痛苦。为了解决这个问题，需要对 resource.h 中的 ID 进行整理。根据之前整理的成果，很快把控件 ID 按对话框分类整理好了。没想到测试的时候遇到了各种崩溃，废了好大劲儿才解决。究其原因，是对 MFC 资源管理机制认识不够深刻。尝试创建某个模块内的对话框的时候，意外地找到了其它模块中的对话框资源。MFC 到底">
-<meta name="keywords" content="原,总结,调试,pdb,windbg,chkmatch,mfc">
+<meta name="keywords" content="原,总结,调试,windbg,pdb,chkmatch,mfc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 记一次有教益的 MFC 程序崩溃分析">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/troubleshoot-crash-after-tidy-dialog-control-id/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起实际项目中，resource.h 文件中的控件太多太乱了，合并代码的时候非常痛苦。为了解决这个问题，需要对 resource.h 中的 ID 进行整理。根据之前整理的成果，很快把控件 ID 按对话框分类整理好了。没想到测试的时候遇到了各种崩溃，废了好大劲儿才解决。究其原因，是对 MFC 资源管理机制认识不够深刻。尝试创建某个模块内的对话框的时候，意外地找到了其它模块中的对话框资源。MFC 到底">
 <meta property="og:locale" content="zh-Hans">
@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/createwindow-return-0-last-error-1407.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/dialog-custom-control-MFCGridCtrl.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/mfc140u.amd64.pdb.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:44.252Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的 MFC 程序崩溃分析">
 <meta name="twitter:description" content="缘起实际项目中，resource.h 文件中的控件太多太乱了，合并代码的时候非常痛苦。为了解决这个问题，需要对 resource.h 中的 ID 进行整理。根据之前整理的成果，很快把控件 ID 按对话框分类整理好了。没想到测试的时候遇到了各种崩溃，废了好大劲儿才解决。究其原因，是对 MFC 资源管理机制认识不够深刻。尝试创建某个模块内的对话框的时候，意外地找到了其它模块中的对话框资源。MFC 到底">
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/troubleshoot-crash-after-tidy-dialog-control-id/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/troubleshoot-crash-after-tidy-dialog-control-id/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:44+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -585,7 +585,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/troubleshoot-crash-after-tidy-dialog-control-id/" title="调试实战 | 记一次有教益的 MFC 程序崩溃分析">https://bianchengnan.github.io/articles/troubleshoot-crash-after-tidy-dialog-control-id/</a>
+    <a href="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/" title="调试实战 | 记一次有教益的 MFC 程序崩溃分析">https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -610,9 +610,9 @@
           
             <a href="/tags/调试/" rel="tag"><i class="fa fa-tag"></i> 调试</a>
           
-            <a href="/tags/pdb/" rel="tag"><i class="fa fa-tag"></i> pdb</a>
-          
             <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
+          
+            <a href="/tags/pdb/" rel="tag"><i class="fa fa-tag"></i> pdb</a>
           
             <a href="/tags/chkmatch/" rel="tag"><i class="fa fa-tag"></i> chkmatch</a>
           

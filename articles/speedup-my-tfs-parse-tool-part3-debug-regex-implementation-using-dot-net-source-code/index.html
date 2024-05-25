@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,总结,工具,性能优化,dotNET,regex,正则表达式,perfview,part3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="性能优化 | 记一次 .NET 程序的性能优化实战（3）—— 深入 .NET 源码">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言前两篇文章 part1 和 part2 基本上理清了 IsSplitter() 运行缓慢的原因 —— 在函数内部使用了带 Compile 选项的正则表达式。 但是没想到在 IsSplitter() 内部使用不带 Compiled 选项的正则表达式，整个程序运行起来非常快，跟静态函数版本的运行速度不相上下。又有了如下疑问：  为什么使用不带 Compiled 选项实例化的 Regex 速度会这么">
 <meta property="og:locale" content="zh-Hans">
@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-dynamic-FindFirstChar.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-none-dynamic-FindFirstChar.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/runner.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:44.160Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.363Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化 | 记一次 .NET 程序的性能优化实战（3）—— 深入 .NET 源码">
 <meta name="twitter:description" content="前言前两篇文章 part1 和 part2 基本上理清了 IsSplitter() 运行缓慢的原因 —— 在函数内部使用了带 Compile 选项的正则表达式。 但是没想到在 IsSplitter() 内部使用不带 Compiled 选项的正则表达式，整个程序运行起来非常快，跟静态函数版本的运行速度不相上下。又有了如下疑问：  为什么使用不带 Compiled 选项实例化的 Regex 速度会这么">
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:44+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -621,7 +621,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/" title="性能优化 | 记一次 .NET 程序的性能优化实战（3）—— 深入 .NET 源码">https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/</a>
+    <a href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/" title="性能优化 | 记一次 .NET 程序的性能优化实战（3）—— 深入 .NET 源码">https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,总结,工具,调试,排错,hex,rc,冲突,git,multiple rc,pe,cff explorer,beyond compare">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | 记一次曲折的多资源文件拆分折腾过程（1）">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近这些天，我一有时间就捣鼓 .rc 。用 git 管理过 .rc 文件的小伙伴儿应该都知道，.rc 文件会被 git 默认当作二进制文件来管理。每次合并代码的时候，只要涉及到 .rc 文件的变更，很大概率会报冲突，而且工具不能很好的解决，只能手动解决。为了解决这个问题，我想到了两个方案：  让 git 把 .rc 文件当成普通文件来管理。 把一个大的 .rc 文件拆成多个小的 .rc 文件，">
 <meta property="og:locale" content="zh-Hans">
@@ -112,7 +112,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/startup-fail.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/debug-startup-fail.gif">
 <meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/view-pe-resource-segment.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:44.399Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.450Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 记一次曲折的多资源文件拆分折腾过程（1）">
 <meta name="twitter:description" content="缘起最近这些天，我一有时间就捣鼓 .rc 。用 git 管理过 .rc 文件的小伙伴儿应该都知道，.rc 文件会被 git 默认当作二进制文件来管理。每次合并代码的时候，只要涉及到 .rc 文件的变更，很大概率会报冲突，而且工具不能很好的解决，只能手动解决。为了解决这个问题，我想到了两个方案：  让 git 把 .rc 文件当成普通文件来管理。 把一个大的 .rc 文件拆成多个小的 .rc 文件，">
@@ -146,7 +146,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -323,7 +323,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -369,8 +369,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:44+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -578,7 +578,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/" title="排错实战 | 记一次曲折的多资源文件拆分折腾过程（1）">https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/</a>
+    <a href="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/" title="排错实战 | 记一次曲折的多资源文件拆分折腾过程（1）">https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

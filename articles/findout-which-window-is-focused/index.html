@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,总结,调试,vs,排错,process monitor,spyxx,UIA,MSAA,uispy,inspect">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | 记一次有教益的焦点窗口查找过程">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/findout-which-window-is-focused/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/findout-which-window-is-focused/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一阵子，同事遇到了一个诡异的 bug，新版本发出来后之前运行好好的功能不好使了。原来的逻辑是：点击板上某个埋件的时候，会弹出四个定位编辑框，其中的一个编辑框需要获得焦点，方便用户直接修改，按 tab 会切换到下一个编辑框。但是新程序的行为发生了变化——点击埋件的时候，四个编辑框没有一个获得焦点。本文记录了使用 spyxx 和 accevent.exe 定位此问题的过程。">
 <meta property="og:locale" content="zh-Hans">
@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/findout-which-window-is-focused/accevent-watch-focused-window.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/findout-which-window-is-focused/view-top-window-by-spyxx.gif">
 <meta property="og:image" content="http://resources.bianchengnan.tech/findout-which-window-is-focused/find-window-by-spyxx.gif">
-<meta property="og:updated_time" content="2024-05-18T08:56:43.836Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 记一次有教益的焦点窗口查找过程">
 <meta name="twitter:description" content="缘起前一阵子，同事遇到了一个诡异的 bug，新版本发出来后之前运行好好的功能不好使了。原来的逻辑是：点击板上某个埋件的时候，会弹出四个定位编辑框，其中的一个编辑框需要获得焦点，方便用户直接修改，按 tab 会切换到下一个编辑框。但是新程序的行为发生了变化——点击埋件的时候，四个编辑框没有一个获得焦点。本文记录了使用 spyxx 和 accevent.exe 定位此问题的过程。">
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/findout-which-window-is-focused/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/findout-which-window-is-focused/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -314,7 +314,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/findout-which-window-is-focused/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/findout-which-window-is-focused/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:43+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -515,7 +515,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/findout-which-window-is-focused/" title="排错实战 | 记一次有教益的焦点窗口查找过程">https://bianchengnan.github.io/articles/findout-which-window-is-focused/</a>
+    <a href="https://blog.bianchengnan.tech/articles/findout-which-window-is-focused/" title="排错实战 | 记一次有教益的焦点窗口查找过程">https://blog.bianchengnan.tech/articles/findout-which-window-is-focused/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

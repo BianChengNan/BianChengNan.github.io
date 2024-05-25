@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,调试,dump,转储,vs2022,part2">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 记一次有教益的 vs2022 内存分配失败崩溃分析（续）">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part2/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/crazy-vs2022-allocate-memory-failed-part2/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言前一阵子遇到了 vs2022 卡死的问题，在上一篇文章中重点分析了崩溃的原因 —— 当 vs2022 尝试分配 923MB 的内存时，物理内存+页文件大小不足以满足这次分配请求，于是抛出异常。 本篇文章将重点挖掘一下 vs2022 在崩溃之前已经分配的内容。  说明： 本文很早就写了草稿，一直没时间整理发布，Finally~">
 <meta property="og:locale" content="zh-Hans">
@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part2/verify-reference-count-object.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part2/view_normal_shared_ptr.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part2/make_shared_relation.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:43.696Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的 vs2022 内存分配失败崩溃分析（续）">
 <meta name="twitter:description" content="前言前一阵子遇到了 vs2022 卡死的问题，在上一篇文章中重点分析了崩溃的原因 —— 当 vs2022 尝试分配 923MB 的内存时，物理内存+页文件大小不足以满足这次分配请求，于是抛出异常。 本篇文章将重点挖掘一下 vs2022 在崩溃之前已经分配的内容。  说明： 本文很早就写了草稿，一直没时间整理发布，Finally~">
@@ -139,7 +139,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part2/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/crazy-vs2022-allocate-memory-failed-part2/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part2/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/crazy-vs2022-allocate-memory-failed-part2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -362,8 +362,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:43+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -545,7 +545,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part2/" title="调试实战 | 记一次有教益的 vs2022 内存分配失败崩溃分析（续）">https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part2/</a>
+    <a href="https://blog.bianchengnan.tech/articles/crazy-vs2022-allocate-memory-failed-part2/" title="调试实战 | 记一次有教益的 vs2022 内存分配失败崩溃分析（续）">https://blog.bianchengnan.tech/articles/crazy-vs2022-allocate-memory-failed-part2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

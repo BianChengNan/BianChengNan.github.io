@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,dump,IDA,windbg,转储,hang,事后分析,逆向,">
+  <meta name="keywords" content="原,总结,调试,dump,windbg,转储,IDA,hang,事后分析,逆向,">
 
 
 
@@ -89,10 +89,10 @@
 
 
 <meta name="description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
-<meta name="keywords" content="原,总结,调试,dump,IDA,windbg,转储,hang,事后分析,逆向">
+<meta name="keywords" content="原,总结,调试,dump,windbg,转储,IDA,hang,事后分析,逆向">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
 <meta property="og:locale" content="zh-Hans">
@@ -115,7 +115,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/search-rpcmsg-object-in-windbg.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-queue-manger-in-windbg.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/matched-search-result.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:44.004Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.317Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">
 <meta name="twitter:description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
@@ -149,7 +149,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -326,7 +326,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:44+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -584,7 +584,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/" title="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/</a>
+    <a href="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/" title="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -611,11 +611,11 @@
           
             <a href="/tags/dump/" rel="tag"><i class="fa fa-tag"></i> dump</a>
           
-            <a href="/tags/IDA/" rel="tag"><i class="fa fa-tag"></i> IDA</a>
-          
             <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
           
             <a href="/tags/转储/" rel="tag"><i class="fa fa-tag"></i> 转储</a>
+          
+            <a href="/tags/IDA/" rel="tag"><i class="fa fa-tag"></i> IDA</a>
           
             <a href="/tags/hang/" rel="tag"><i class="fa fa-tag"></i> hang</a>
           

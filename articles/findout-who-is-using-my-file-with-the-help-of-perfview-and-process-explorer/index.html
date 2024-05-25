@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,总结,调试,process explorer,c#,dotnet,perfview">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 谁在偷偷占用我的文件？原来是我自己">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起之前基于 .net 官方提供的 FileSystemWatcher 写了一个文件变化监听工具，具体参考这篇文章 。主要解决了以下三个问题：  事件触发时，文件可能还不能被访问。 如果监听选项设置的过多，有可能会多次触发文件变化事件。 监听过滤器不够灵活，我没找到同时监听多种特定文件类型的方法（比如，同时只监听 .docx 和 .bmp 文件）。  为了解决问题1，我在调用用户注册的回调函数前，">
 <meta property="og:locale" content="zh-Hans">
@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/call-stack.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/go-to-source.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:43.849Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.270Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 谁在偷偷占用我的文件？原来是我自己">
 <meta name="twitter:description" content="缘起之前基于 .net 官方提供的 FileSystemWatcher 写了一个文件变化监听工具，具体参考这篇文章 。主要解决了以下三个问题：  事件触发时，文件可能还不能被访问。 如果监听选项设置的过多，有可能会多次触发文件变化事件。 监听过滤器不够灵活，我没找到同时监听多种特定文件类型的方法（比如，同时只监听 .docx 和 .bmp 文件）。  为了解决问题1，我在调用用户注册的回调函数前，">
@@ -142,7 +142,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -319,7 +319,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -365,8 +365,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:43+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -606,7 +606,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/" title="调试实战 | 谁在偷偷占用我的文件？原来是我自己">https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/</a>
+    <a href="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/" title="调试实战 | 谁在偷偷占用我的文件？原来是我自己">https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

@@ -92,7 +92,7 @@
 <meta name="keywords" content="原,总结,调试,windbg,转储,stack,vmmap">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何确定线程栈的基址？">
-<meta property="og:url" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/index.html">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 《栈大小可以怎么改？》、《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》、《栈又溢出了》、《有趣的异常》。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 P">
 <meta property="og:locale" content="zh-Hans">
@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-description.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-key-flow.png">
 <meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-stack-base-and-stack-size.png">
-<meta property="og:updated_time" content="2024-05-18T08:56:43.903Z">
+<meta property="og:updated_time" content="2024-05-25T02:19:01.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何确定线程栈的基址？">
 <meta name="twitter:description" content="缘起很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 《栈大小可以怎么改？》、《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》、《栈又溢出了》、《有趣的异常》。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 P">
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -314,7 +314,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-18T16:56:43+08:00">
-                2024-05-18
+              <time title="更新于" itemprop="dateModified" datetime="2024-05-25T10:19:01+08:00">
+                2024-05-25
               </time>
             
           </span>
@@ -540,7 +540,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/" title="如何确定线程栈的基址？">https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/</a>
+    <a href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/" title="如何确定线程栈的基址？">https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
