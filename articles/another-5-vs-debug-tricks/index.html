@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言我在上一篇文章《5 个非常实用的 vs 调试技巧》 中分享了 5 个我认为非常值得了解的 vs 调试技巧，本周继续分享 5 个很基础但同样实用的调试技巧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/conditional-breakpoint.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/memoryaccess-breakpoint.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/exception.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/manual-modify-variable.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/drag-to-specific-line.gif">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.273Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-5-vs-debug-tricks/conditional-breakpoint.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-5-vs-debug-tricks/memoryaccess-breakpoint.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-5-vs-debug-tricks/exception.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-5-vs-debug-tricks/manual-modify-variable.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-5-vs-debug-tricks/drag-to-specific-line.gif">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.360Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="继续分享 5 个实用的 vs 调试技巧">
 <meta name="twitter:description" content="前言我在上一篇文章《5 个非常实用的 vs 调试技巧》 中分享了 5 个我认为非常值得了解的 vs 调试技巧，本周继续分享 5 个很基础但同样实用的调试技巧。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/conditional-breakpoint.gif">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/another-5-vs-debug-tricks/conditional-breakpoint.gif">
 
 
 
@@ -358,8 +358,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -450,17 +450,17 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我在上一篇文章<a href="https://bianchengnan.gitee.io/articles/five-basic-but-useful-debug-tricks/" target="_blank" rel="noopener">《5 个非常实用的 vs 调试技巧》</a> 中分享了 <code>5</code> 个我认为非常值得了解的 <code>vs</code> 调试技巧，本周继续分享 <code>5</code> 个很基础但同样实用的调试技巧。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我在上一篇文章<a href="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/" target="_blank" rel="noopener">《5 个非常实用的 vs 调试技巧》</a> 中分享了 <code>5</code> 个我认为非常值得了解的 <code>vs</code> 调试技巧，本周继续分享 <code>5</code> 个很基础但同样实用的调试技巧。</p>
 <a id="more"></a>
 
 
 
 <h2 id="1-条件断点"><a href="#1-条件断点" class="headerlink" title="1. 条件断点"></a>1. 条件断点</h2><p><strong>作用简介：</strong></p>
 <p>顾名思义，带条件的断点。满足条件才中断。条件断点非常非常有用，使用得当，可以极大缩短我们调试问题的时间。比如，有一个大循环，只在第 <code>1024</code> 次循环的时候有问题，我们如果单步（在 <code>vs</code> 中可以按 <code>F10</code>），恐怕手得按残了。又比如，我们想在特定条件下中断。这时候条件断点就是我们的救星。</p>
-<p><img src="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/conditional-breakpoint.gif" alt="conditional-breakpoint"></p>
+<p><img src="/articles/another-5-vs-debug-tricks/conditional-breakpoint.gif" alt="conditional-breakpoint"></p>
 <h2 id="2-内存断点"><a href="#2-内存断点" class="headerlink" title="2. 内存断点"></a>2. 内存断点</h2><p><strong>作用简介：</strong></p>
 <p>顾名思义，针对内存设置的断点。对于调试逻辑复（hun）杂（luan）的程序，非常非常有用。比如，有一个全局变量的值，在代码中有 <code>N</code> 个地方会改动它，在调试程序的时候，不知道这个全局变量在哪里被改变了，如果能在改动的那一刻中断下来该有多好啊！这可是内存断点的专长！</p>
-<p><img src="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/memoryaccess-breakpoint.gif" alt="memoryaccess-breakpoint"></p>
+<p><img src="/articles/another-5-vs-debug-tricks/memoryaccess-breakpoint.gif" alt="memoryaccess-breakpoint"></p>
 <p><strong>打开方式：</strong></p>
 <p>调试的时候，通过 <code>调试 -&gt; 窗口 -&gt; 断点</code> 即可打开断点窗口。在 <code>vs2013</code> 中对应的快捷键是 <code>ctrl + alt + b</code> 。打开后可以 通过 <code>新建 -&gt; 新建数据访问断点（D）...</code> 创建一个数据访问断点。</p>
 <p><strong>注意：</strong></p>
@@ -477,7 +477,7 @@
 <p>比如，在下面的示例代码中。我在 <code>ExceptionDemo()</code> 中加上了 <code>try {} catch {}</code>  来捕获一些异常。在 <code>FunctionE()</code> 中的某一行设置好断点，如果一切正常是可以断下来的。但是在 <code>FunctionD()</code> 中有可能抛出异常，如果根据设置，<code>vs</code> 不处理这个异常，该异常会被 <code>ExceptionDemo()</code> 处理，还没运行到设置断点的地方就被异常改变了执行流程。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;exception&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> application_quit = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">int</span> g_runningLoop = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionA</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionB</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionC</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionD</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionE</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ExceptionDemo</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (!application_quit)</span><br><span class="line">        &#123;</span><br><span class="line">            FunctionA();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (<span class="built_in">std</span>::exception)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionA</span><span class="params">()</span> </span>&#123; FunctionB(); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionB</span><span class="params">()</span> </span>&#123; FunctionC(); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionC</span><span class="params">()</span> </span>&#123; FunctionD(); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionD</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (++g_runningLoop &gt; <span class="number">6</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="built_in">std</span>::exception(<span class="string">"too many loops!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    FunctionE();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FunctionE</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (g_runningLoop &gt; <span class="number">10</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        application_quit = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/exception.gif" alt="exception"></p>
+<p><img src="/articles/another-5-vs-debug-tricks/exception.gif" alt="exception"></p>
 <p><code>p.s.</code> 虽然在代码中增加 <code>try {} catch {}</code> 有助于提高程序的健壮性，但有时候可能不利于我们发现问题，有些问题可能就被“默默”吞掉了。</p>
 <p><strong>打开方式：</strong></p>
 <p>调试的时候，通过 <code>调试 -&gt; 异常(X)...</code> 即可打开异常设置对话框。在 <code>vs2013</code> 中对应的快捷键是 <code>Ctrl + Alt + E</code>。</p>
@@ -486,11 +486,11 @@
 <p>假设我们正在调试如下代码，跟踪到了 <code>if (bRich)</code> 这一行，期待的 <code>bRich</code> 的值是 <code>true</code>，而实际值是 <code>false</code>。我们可以手动修改 <code>bRich</code> 的值为 <code>true</code> 来强行进入 <code>if</code> 分支，而不是 <code>else</code> 分支。（BTW，改完就真的有钱了么？）</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HaveIMakeEnoughMoney</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ManualModifyValueDemo</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> bRich = HaveIMakeEnoughMoney();</span><br><span class="line">    <span class="keyword">if</span> (bRich)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Finally, I'm rich!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Oops, I'm still poor!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/manual-modify-variable.gif" alt="manual-modify-variable"></p>
+<p><img src="/articles/another-5-vs-debug-tricks/manual-modify-variable.gif" alt="manual-modify-variable"></p>
 <p><em>小贴士：不仅可以通过悬浮窗口改变变量的值，我们还可以通过<code>监视窗口</code>，<code>内存窗口</code>等其它方式改变变量的值。</em></p>
 <h2 id="5-拖动到指定位置执行"><a href="#5-拖动到指定位置执行" class="headerlink" title="5. 拖动到指定位置执行"></a>5. 拖动到指定位置执行</h2><p><strong>作用简介：</strong></p>
 <p>相信，大家都有过手滑的情况，本来想的是单步步入（在 <code>vs</code> 中按 <code>F11</code>）特定函数，没想到却按成了 <code>F10</code>，华丽丽的错过了想调试的函数，这时候我们可以拖回来。又或者如上面的代码，当执行到第<code>24</code>行的时候，发现 <code>totalMoney</code> 的值不是我们想要的，我们想重新回到前面跟踪一下<code>totalMoney</code> 的值是怎么来的，而我们又不想重新走一遍整个流程（因为可能很慢）。这时候我们可以手动拖动黄色小箭头到第 <code>22</code> 行。请看下图：</p>
-<p><img src="http://resources.bianchengnan.tech/another-5-vs-debug-tricks/drag-to-specific-line.gif" alt="drag-to-specific-line"></p>
+<p><img src="/articles/another-5-vs-debug-tricks/drag-to-specific-line.gif" alt="drag-to-specific-line"></p>
 <p><strong>注意：</strong></p>
 <p>拖动功能是通过设置 <code>eip（rip）</code> 的值来实现的，拖动需谨慎，有些情况下可能导致程序崩溃！</p>
 <h2 id="测试工程下载地址"><a href="#测试工程下载地址" class="headerlink" title="测试工程下载地址"></a>测试工程下载地址</h2><p>百度云盘 链接: <a href="https://pan.baidu.com/s/1MSjUNPF-JHoY1t3l1xXFeg" target="_blank" rel="noopener">https://pan.baidu.com/s/1MSjUNPF-JHoY1t3l1xXFeg</a> 提取码: jew2</p>
@@ -879,6 +879,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -967,7 +973,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

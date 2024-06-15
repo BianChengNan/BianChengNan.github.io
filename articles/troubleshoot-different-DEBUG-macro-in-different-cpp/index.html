@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言这是 N 年前遇到的一个问题了。最近跟 DEBUG 宏对着干上了，正好翻到这篇总结 —— 记录了使用 pragma message 排查 同一个工程不同 CPP 中 DEBUG 宏的值不同的过程。现对之前的总结做了更新整理，分享给各位小伙伴儿。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/pragma-message-msdn.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/intellisense-tip-debug-macro.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/build-output-compare.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/project-defined-macros.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/tinyxml-define-debug-macro.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.150Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/pragma-message-msdn.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/intellisense-tip-debug-macro.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/build-output-compare.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/project-defined-macros.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/tinyxml-define-debug-macro.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.500Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 使用 pragma message 查找多变的 DEBUG 宏">
 <meta name="twitter:description" content="前言这是 N 年前遇到的一个问题了。最近跟 DEBUG 宏对着干上了，正好翻到这篇总结 —— 记录了使用 pragma message 排查 同一个工程不同 CPP 中 DEBUG 宏的值不同的过程。现对之前的总结做了更新整理，分享给各位小伙伴儿。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/pragma-message-msdn.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/pragma-message-msdn.png">
 
 
 
@@ -358,8 +358,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -457,21 +457,21 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pragma_directives_message1.cpp</span></span><br><span class="line"><span class="comment">// compile with: /LD</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> _M_IX86 &gt;= 500</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message(<span class="meta-string">"_M_IX86 &gt;= 500"</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message( <span class="meta-string">"Compiling "</span> __FILE__ )</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message( <span class="meta-string">"Last modified on "</span> __TIMESTAMP__ )</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// with line number</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STRING2(x) #x</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STRING(x) STRING2(x)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message (__FILE__ <span class="meta-string">"["</span> STRING(__LINE__) <span class="meta-string">"]: test"</span>)</span></span><br></pre></td></tr></table></figure>
 
 <p>下图是微软官方介绍 <code>#pragma message</code> 的文档截图，方便各位小伙伴儿阅读。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/pragma-message-msdn.png" alt="pragma-message-msdn"></p>
+<p><img src="/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/pragma-message-msdn.png" alt="pragma-message-msdn"></p>
 <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>在 <code>test1.cpp</code> 里 <code>DEBUG</code> 宏是定义了的，在 <code>test2.cpp</code> 里 <code>DEBUG</code> 宏并没有被定义。你有可能会好奇我是怎么知道的？我分别在 <code>test1.cpp</code> 和 <code>test2.cpp</code> 里加了如下代码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message (<span class="meta-string">"--------&gt; DEBUG defined in file : "</span> __FILE__)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message (<span class="meta-string">"--------&gt; DEBUG NOT defined in file : "</span> __FILE__)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
 <p>在 <code>test1.cpp</code> 和 <code>test2.cpp</code> 中，智能提示如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/intellisense-tip-debug-macro.png" alt="intellisense-tip-debug-macro"></p>
+<p><img src="/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/intellisense-tip-debug-macro.png" alt="intellisense-tip-debug-macro"></p>
 <p>编译输出如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/build-output-compare.png" alt="build-output-compare"></p>
+<p><img src="/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/build-output-compare.png" alt="build-output-compare"></p>
 <p>从智能提示和编译输出信息都可以明显的看出，在 <code>test1.cpp</code> 里 <code>DEBUG</code> 宏是定义了的，在 <code>test2.cpp</code> 里 <code>DEBUG</code> 宏并没有被定义。好奇怪的现象。</p>
 <h2 id="查看工程配置"><a href="#查看工程配置" class="headerlink" title="查看工程配置"></a>查看工程配置</h2><p>难道 <code>DEBUG</code> 宏不是根据工程配置来的吗？为此，特地查看了工程预定义宏。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/project-defined-macros.png" alt="project-defined-macros"></p>
+<p><img src="/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/project-defined-macros.png" alt="project-defined-macros"></p>
 <p>从上图可知，只定义了 <code>_DEBUG</code>，并没有定义 <code>DEBUG</code>。之前一直以为定义了 <code>_DEBUG</code> 就同时定义了 <code>DEBUG</code>。</p>
 <p>看来 <code>DEBUG</code> 和 <code>_DEBUG</code> 不一样！虽然知道了在工程中没有定义 <code>DEBUG</code>  宏，但是为什么在两个 <code>cpp</code> 里的表现不一样呢？</p>
 <h2 id="继续调查"><a href="#继续调查" class="headerlink" title="继续调查"></a>继续调查</h2><p>继续使用伟大的 <code>#pragma message</code> 来排查，最后发现 <code>test.cpp</code> 包含了 <code>tinyxml</code> 库中的头文件 <code>tinyxml.h</code>，在此头文件中有如下语句。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-different-DEBUG-macro-in-different-cpp/tinyxml-define-debug-macro.png" alt="tinyxml-define-debug-macro"></p>
+<p><img src="/articles/troubleshoot-different-DEBUG-macro-in-different-cpp/tinyxml-define-debug-macro.png" alt="tinyxml-define-debug-macro"></p>
 <p>至此，真相大白！！！</p>
 <h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>如果你也想动手实战，可以使用下面的示例工程。</p>
 <p>百度云 链接: <a href="https://pan.baidu.com/s/1_7RKFf-jrSdjdBZihnPl1Q" target="_blank" rel="noopener">https://pan.baidu.com/s/1_7RKFf-jrSdjdBZihnPl1Q</a> 提取码: eu8f</p>
@@ -930,6 +930,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1018,7 +1024,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

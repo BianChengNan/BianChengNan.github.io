@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言一般，我们会使用任务管理器查看系统中有哪些进程正在运行，强制杀掉某个进程。可是系统自带的任务管理器功能有限，process explorer是一个功能更强大的工具。它可以让我们查看更多更详细的信息（ 比如查看某个进程的父进程，进程加载了哪些dll，打开了哪些文件，线程的cpu使用情况，线程的调用栈，哪些文件被哪些进程占用了，等等 …… ）。有没有办法让process explorer替换系统自">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/replace-task-manager.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/image-file-excution-options-taskmgr.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/replace-taskmanager-screen-record.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/cancel-filter-process-explorer.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/replace-task-manager-with-process-explorer/replace-task-manager.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/replace-task-manager-with-process-explorer/image-file-excution-options-taskmgr.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/replace-task-manager-with-process-explorer/replace-taskmanager-screen-record.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/replace-task-manager-with-process-explorer/cancel-filter-process-explorer.jpg">
 <meta property="og:updated_time" content="2019-09-14T04:11:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 使用process explorer替换任务管理器">
 <meta name="twitter:description" content="前言一般，我们会使用任务管理器查看系统中有哪些进程正在运行，强制杀掉某个进程。可是系统自带的任务管理器功能有限，process explorer是一个功能更强大的工具。它可以让我们查看更多更详细的信息（ 比如查看某个进程的父进程，进程加载了哪些dll，打开了哪些文件，线程的cpu使用情况，线程的调用栈，哪些文件被哪些进程占用了，等等 …… ）。有没有办法让process explorer替换系统自">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/replace-task-manager.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/replace-task-manager-with-process-explorer/replace-task-manager.png">
 
 
 
@@ -455,19 +455,19 @@
 
 
 <h2 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h2><p>这个功能，<code>process explorer</code>的作者<code>Mark Russinovich</code>已经帮我们想到了。<code>process explorer</code>提供了一个很酷的功能——替换任务管理器(<code>taskmgr.exe</code>)，这样当我们运行任务管理器的时候，就会自动打开功能更强大的<code>process explorer</code>了。</p>
-<p><img src="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/replace-task-manager.png" alt="replace task manager"></p>
+<p><img src="/articles/replace-task-manager-with-process-explorer/replace-task-manager.png" alt="replace task manager"></p>
 <div class="note info"><p><strong>说明：</strong>此操作需要以<strong>管理员权限</strong>运行<code>process explorer</code>。</p></div> 
 
 
 
 <p>这么厉害的操作，是怎么实现的呢？</p>
 <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>原来<code>windows</code>中有个注册表项<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options</code>。如果<code>程序A</code>在<code>Image File Execution Options</code>下有对应的注册表项, 当我们启动<code>程序A</code>的时候，系统会启动<code>Debugger</code>子项中的值对应的程序，并把<code>程序A</code>的路径当作参数传递过去。</p>
-<p>以<code>taskmgr.exe</code>为例，设置如下图：<br><img src="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/image-file-excution-options-taskmgr.png" alt="image file excution options taskmgr"></p>
+<p>以<code>taskmgr.exe</code>为例，设置如下图：<br><img src="/articles/replace-task-manager-with-process-explorer/image-file-excution-options-taskmgr.png" alt="image file excution options taskmgr"></p>
 <p>当<code>taskmgr.exe</code>启动的时候，系统检测到<code>taskmgr.exe</code>在<code>Image File Execution Options</code>下有对应的设置项，系统会启动<code>Debugger</code>子项中的值对应的程序<code>C:\My\tools\sysinternals\procexp.exe</code>，并把<code>taskmgr.exe</code>的路径（我机器上是<code>C:\WINDOWS\SYSTEM32\TASKMGR.EXE</code>）当作参数传递给<code>procexp.exe</code>。</p>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p><code>process explorer</code>到底是不是通过这种方法实现的呢？让我们用<code>process monitor</code>来观察一下整个过程吧。具体步骤我就省略了，请参考下面的动图。</p>
-<p><img src="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/replace-taskmanager-screen-record.gif" alt="replace-taskmanager-screen-record"></p>
+<p><img src="/articles/replace-task-manager-with-process-explorer/replace-taskmanager-screen-record.gif" alt="replace-taskmanager-screen-record"></p>
 <div class="note warning"><p><strong>注意:</strong>  <code>process monitor</code>默认会过滤掉<code>process explorer</code>相关的事件，如果想看到相关事件，需要手动取消过滤。自己验证的时候，一定不要忘了这一点。为了引起大家的重视，我特地把相关设置截图贴到下方！</p>
-<p><img src="http://resources.bianchengnan.tech/replace-task-manager-with-process-explorer/cancel-filter-process-explorer.jpg" alt="cancel-filter-process-explorer"></p></div> 
+<p><img src="/articles/replace-task-manager-with-process-explorer/cancel-filter-process-explorer.jpg" alt="cancel-filter-process-explorer"></p></div> 
 
 
 
@@ -946,6 +946,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1034,7 +1040,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

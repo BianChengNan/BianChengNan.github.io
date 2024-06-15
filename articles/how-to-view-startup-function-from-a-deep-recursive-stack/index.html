@@ -96,23 +96,23 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，遇到了一个由于递归导致的卡死问题。这个问题非常有意思，值得总结。 你知道什么情况下无限递归会卡死，而不崩溃吗？你知道递归层数过多时，如何找到导致递归调用的函数吗？你知道如何快速找到关键线程吗？你知道如何附加到一个正在被调试的进程吗？你知道如何在 windbg 中显示指定数量的栈帧吗？ 带着这些疑问，一起来看看这个非常有意思的问题吧。  说明： 文章末尾有这些问题的答案，可以直接跳到末尾查">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/high-cpu.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-thread-stack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-noninvasive-attach.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-switch-thread-error.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-runaway.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/switch-to-0n12544-successfully.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-output-default.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k50000-error.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-full-callstack-in-windbg.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-command-help.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-stack-total-size-and-current-used-size.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-pe-header.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.794Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/high-cpu.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-thread-stack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-noninvasive-attach.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-switch-thread-error.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-runaway.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/switch-to-0n12544-successfully.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-output-default.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k50000-error.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-full-callstack-in-windbg.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-command-help.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-stack-total-size-and-current-used-size.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-pe-header.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.436Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的递归栈查看">
 <meta name="twitter:description" content="缘起最近，遇到了一个由于递归导致的卡死问题。这个问题非常有意思，值得总结。 你知道什么情况下无限递归会卡死，而不崩溃吗？你知道递归层数过多时，如何找到导致递归调用的函数吗？你知道如何快速找到关键线程吗？你知道如何附加到一个正在被调试的进程吗？你知道如何在 windbg 中显示指定数量的栈帧吗？ 带着这些疑问，一起来看看这个非常有意思的问题吧。  说明： 文章末尾有这些问题的答案，可以直接跳到末尾查">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/high-cpu.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack/high-cpu.png">
 
 
 
@@ -365,8 +365,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -468,47 +468,47 @@
 
 
 <h2 id="初遇错误"><a href="#初遇错误" class="headerlink" title="初遇错误"></a>初遇错误</h2><p>程序在执行某个功能时，迟迟不能完成，通过任务管理器可以发现 <code>CPU</code> 使用率比较高（<code>12.47%</code>），大概耗尽了一个核心（机器是八核的，每个核心占 <code>12.5%</code>）。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/high-cpu.png" alt="high-cpu"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/high-cpu.png" alt="high-cpu"></p>
 <p>心中暗喜，大概率是遇到了死循环，应该很好解决。赶紧用 <code>vs</code> 附加上去看看。</p>
 <h2 id="了解错误"><a href="#了解错误" class="headerlink" title="了解错误"></a>了解错误</h2><p>附加到被调试进程后，手动暂停，然后通过<strong>并行堆栈</strong>找到可疑线程。</p>
 <blockquote>
 <p><strong>温馨提示：</strong> 可以通过 <code>调试 -&gt; 窗口 -&gt; 并行堆栈</code> 打开<strong>并行堆栈</strong>视图，也可以使用快捷键 <code>Ctrl+Shift+D, S</code> 打开 。</p>
 </blockquote>
 <p>一般情况下调用栈最长的线程就是可疑线程。即使不是，也可以在<strong>并行堆栈</strong>视图中快速切换线程。相比于手动一个个切换线程，并行堆栈简直是太方便了！</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-thread-stack.png" alt="view-thread-stack"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-thread-stack.png" alt="view-thread-stack"></p>
 <p>通过并行堆栈视图，可以观察到当前线程的调用栈非常深，已经超出了 <code>vs</code> 所支持的最大栈帧数。仔细观察调用栈，可以发现 <code>00007ffc9dcb3cb5</code> 这个地址会<strong>重复</strong>出现，说明这很可能是一个递归问题。</p>
 <p>然而，只知道这是一个递归问题还不够，我们需要找到引发递归调用的函数。如果能看到完整的调用栈，那么就可以找到罪魁祸首了。由于 <code>vs</code> 不能显示更多的调用栈帧，我们可以请老朋友 <code>windbg</code> 出马。</p>
 <h2 id="请出-windbg"><a href="#请出-windbg" class="headerlink" title="请出 windbg"></a>请出 windbg</h2><p>启动 <code>windbg</code>，以 <code>Noninvasive</code> 模式附加到被调试进程（由于该进程正在被 <code>vs</code> 调试，如果不以 <code>Noninvasive</code> 模式附加，<code>windbg</code> 无法成功附加）。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-noninvasive-attach.png" alt="windbg-noninvasive-attach"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-noninvasive-attach.png" alt="windbg-noninvasive-attach"></p>
 <p>附加成功后，通过 <code>~~[12544]s</code> 切换到目标线程，没想到报错了。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-switch-thread-error.png" alt="windbg-switch-thread-error"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-switch-thread-error.png" alt="windbg-switch-thread-error"></p>
 <p>没关系，直接切不过去，还有其它方法可以找到目标线程。可以简单粗暴的使用 <code>~* k</code> 命令显示所有线程的调用栈，然后根据调用栈判断哪个线程是目标线程，也可以通过 <code>!runaway</code> 查看所有线程的运行时间，根据运行时间长短快速找出目标线程。</p>
 <h2 id="runaway"><a href="#runaway" class="headerlink" title="!runaway"></a>!runaway</h2><p>在 <code>windbg</code> 中输入 <code>!runaway</code> 可以查看所有线程的运行时间。一般，<code>CPU</code> 占用率越高的线程，运行时间也越长。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-runaway.png" alt="windbg-runaway"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-runaway.png" alt="windbg-runaway"></p>
 <p>可以发现 <code>0</code> 号线程运行时间最长，然后是 <code>32</code> 号线程。先切换到 <code>0</code> 号线程，执行 <code>k</code> 命令查看调用栈，发现是主线程（一般情况下 <code>0</code> 号线程都是主线程），不是我们关心的线程。再执行 <code>~32s</code> 切换到运行时间排名第二的线程，然后执行 <code>k</code> 命令查看调用栈，发现与在 <code>vs</code> 中看到的调用栈吻合，<code>32</code> 号线程是目标线程了。</p>
 <blockquote>
 <p>*<em>说明： *</em> 当时比较着急，忘了 <code>windbg</code> 中默认使用十六进制。如果执行 <code>~~[0n12544]s</code> 即可正常切换过去了。<code>0n</code> 表示使用十进制。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/switch-to-0n12544-successfully.png" alt="switch-to-0n12544-successfully"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/switch-to-0n12544-successfully.png" alt="switch-to-0n12544-successfully"></p>
 </blockquote>
 <p>找到对应的线程后，接下来的任务是查看完整调用栈。</p>
 <h2 id="查看完整调用栈"><a href="#查看完整调用栈" class="headerlink" title="查看完整调用栈"></a>查看完整调用栈</h2><p>默认情况下，<code>windbg</code> 的 <code>k</code> 命令最多只显示 <code>256</code> 个调用栈帧，最大的栈帧号是 <code>ff</code>，从 <code>0</code> 开始计数。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-output-default.png" alt="windbg-k-output-default"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-output-default.png" alt="windbg-k-output-default"></p>
 <p>我们可以在 <code>windbg</code> 中执行 <code>kN</code>来指定要显示的栈帧数，如果 <code>N</code> 足够大，那么应该可以显示出完整的调用栈。</p>
 <p>先尝试输入 <code>k200</code>，发现看不到头，再试试 <code>k2000</code>，依然看不到头，<code>k5000</code> 依然看不到头（这调用栈不是一般的深啊~）。 直接输入 <code>k50000</code>，这次应该够了吧？没想到报错了。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k50000-error.png" alt="windbg-k50000-error"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k50000-error.png" alt="windbg-k50000-error"></p>
 <p>根据提示可知，可以输入的最大值是 <code>0xffff</code>。在 <code>windbg</code> 中输入 <code>k0xffff</code>，耐心等待一会儿就可以看到完整的调用栈了。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-full-callstack-in-windbg.png" alt="view-full-callstack-in-windbg"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-full-callstack-in-windbg.png" alt="view-full-callstack-in-windbg"></p>
 <blockquote>
-<p><strong>说明：</strong> 不要输入 <code>kffff</code>，因为会被解释为  <code>kf fff</code>，第一个 <code>f</code> 会被解释为选项，用来显示两个栈帧的间距。<img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-command-help.png" alt="windbg-k-command-help"></p>
+<p><strong>说明：</strong> 不要输入 <code>kffff</code>，因为会被解释为  <code>kf fff</code>，第一个 <code>f</code> 会被解释为选项，用来显示两个栈帧的间距。<img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/windbg-k-command-help.png" alt="windbg-k-command-help"></p>
 </blockquote>
 <h2 id="调用栈深的异常"><a href="#调用栈深的异常" class="headerlink" title="调用栈深的异常"></a>调用栈深的异常</h2><p>调用栈深的有点异常，总共有 <code>0x9032 + 1</code> 个栈帧（即 <code>36915</code> 个）。这样深的调用栈却未发生栈溢出，实属不可思议。要知道，线程栈预留空间默认只有 <code>1MB</code>。</p>
-<p>在 <code>windbg</code> 中查看当前线程栈信息，重点查看线程栈总大小和当前已使用大小（具体查看方法可以参考<a href="https://bianchengnan.gitee.io/articles/how-to-check-thread-stack-base/" target="_blank" rel="noopener">这篇文章</a>）。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-stack-total-size-and-current-used-size.png" alt="view-stack-total-size-and-current-used-size"></p>
+<p>在 <code>windbg</code> 中查看当前线程栈信息，重点查看线程栈总大小和当前已使用大小（具体查看方法可以参考<a href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/" target="_blank" rel="noopener">这篇文章</a>）。</p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-stack-total-size-and-current-used-size.png" alt="view-stack-total-size-and-current-used-size"></p>
 <p>可以发现，线程栈预留空间大约是 <code>1.757 GB</code>，当前已使用大小大约是 <code>64.07 MB</code>。</p>
 <p>说实话，我还是头一次遇到这么<strong>巨大</strong>的栈空间，难怪调用栈如此深却没有发生栈溢出。</p>
 <p>但是等一下，线程栈怎么会这么大？默认不是只有 <code>1MB</code> 吗？是在创建线程的时候指定了<strong>线程栈预留空间</strong>大小？还是 <code>64</code> 位程序编译时使用的<strong>线程栈预留空间</strong>的默认值发生了变化，或者被手动修改了？又或者是有人调整了 <code>PE</code> 文件头中的 <code>SizeOfStackReserve</code> 值？</p>
 <p>不论是修改编译参数，还是手动修改 <code>PE</code> 头，这些操作最终都会体现在 <code>PE</code> 文件上。先使用 <code>CFF Explorer</code> 查看 <code>PE</code> 文件头。</p>
-<h2 id="查看-PE-头"><a href="#查看-PE-头" class="headerlink" title="查看 PE 头"></a>查看 PE 头</h2><p>果然，<code>PE</code> 文件头中的 <code>SizeOfStackReserve</code> 变成了 <code>0x0000000070800000</code> ，与上面在 <code>windbg</code> 中看到的线程栈总大小是一致的。<br><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack/view-pe-header.png" alt="view-pe-header"></p>
+<h2 id="查看-PE-头"><a href="#查看-PE-头" class="headerlink" title="查看 PE 头"></a>查看 PE 头</h2><p>果然，<code>PE</code> 文件头中的 <code>SizeOfStackReserve</code> 变成了 <code>0x0000000070800000</code> ，与上面在 <code>windbg</code> 中看到的线程栈总大小是一致的。<br><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack/view-pe-header.png" alt="view-pe-header"></p>
 <p>为了验证是不是 <code>64</code> 位程序默认编译参数导致的，我特意建了一个简单的控制台程序，查看了工程设置参数，发现与 <code>32</code> 位程序一样，<strong>线程栈预留空间</strong>默认大小是 <code>1MB</code>。</p>
 <p>一般不会有人修改生成的 <code>PE</code> 文件，回想到总是遇到栈溢出问题，猜测极有可能是某位同事修改了工程设置。不过栈空间修改的这么大，确实有待商榷。</p>
 <p>至此，基本可以结案了。</p>
@@ -1061,6 +1061,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1149,7 +1155,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

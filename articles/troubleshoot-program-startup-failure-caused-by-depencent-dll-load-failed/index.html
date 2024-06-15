@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一阵子，更新完依赖库后，启动程序报错了。这已经不是第一次报错了。so…… let&amp;#39;s dig in!">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/entry-not-found-error.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/hang-dependency-walker.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/turn-on-show-loader-snaps-by-gflags-gui.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/locating-export-error.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/search-PK_POINT_create-in-result-file.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/dependency-result.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.190Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/entry-not-found-error.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/hang-dependency-walker.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/turn-on-show-loader-snaps-by-gflags-gui.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/locating-export-error.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/search-PK_POINT_create-in-result-file.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/dependency-result.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.507Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 使用 windbg gflags dumpbin 排查应用程序启动错误">
 <meta name="twitter:description" content="缘起前一阵子，更新完依赖库后，启动程序报错了。这已经不是第一次报错了。so…… let&amp;#39;s dig in!">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/entry-not-found-error.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/entry-not-found-error.png">
 
 
 
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -457,11 +457,11 @@
 
 
 <h2 id="初遇错误"><a href="#初遇错误" class="headerlink" title="初遇错误"></a>初遇错误</h2><p>更新完依赖库，编译通过后，高高兴兴的在 <code>vs</code> 中使用 <code>ctrl + F5</code>，没想到却遇到了下面的错误提示框。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/entry-not-found-error.png" alt="entry-not-found-error"></p>
+<p><img src="/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/entry-not-found-error.png" alt="entry-not-found-error"></p>
 <p>好吧，几个小时的努力又白费了。应该是新更新的依赖库出问题了，但是需要找出问题出在哪，才好让客户更新依赖库。</p>
 <p>从错误提示来看，直观感觉好像是 <code>PBBimCore.dll</code> 缺少了 <code>PK_POINT_create</code> ，真的是吗？</p>
 <h2 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h2><p>遇到这种问题的第一反映是使用 <code>Dependency walker</code> 查一下是哪个依赖库出问题了。奈何，<code>Dependency Walker</code> 在我机器上运行特别慢，等了好久都没反映。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/hang-dependency-walker.png" alt="hang-dependency-walker"></p>
+<p><img src="/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/hang-dependency-walker.png" alt="hang-dependency-walker"></p>
 <p>不能就这么傻等下去，上调试器吧。</p>
 <p>在使用调试器之前，需要开启 <code>Show loader snaps</code>，开启后可以把程序启动的整个过程详细的记录下来。可以通过 <code>gflags</code> 开启。</p>
 <h2 id="gflags"><a href="#gflags" class="headerlink" title="gflags"></a>gflags</h2><p>以管理员权限启动 <code>cmd</code>，执行 <code>gflags.exe /i your_image_name.exe +sls</code> 即可。</p>
@@ -474,7 +474,7 @@
 <li>需要保证能找到 <code>gflags.exe</code>，可以切换到  <code>gflags.exe</code> 所在的目录，或者把 <code>gflags.exe</code> 所在的目录加到 <code>PATH</code> 环境变量中。</li>
 </ol>
 <p>也可以通过 <code>GUI</code> 版本的 <code>gflags</code> 开启此选项。输入对应的程序名后，勾选 <code>Show loader snaps</code>，确定即可。如下图：</p>
-<p> <img src="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/turn-on-show-loader-snaps-by-gflags-gui.png" alt="turn-on-show-loader-snaps-by-gflags-gui"></p>
+<p> <img src="/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/turn-on-show-loader-snaps-by-gflags-gui.png" alt="turn-on-show-loader-snaps-by-gflags-gui"></p>
 <p>使用 <code>GUI</code> 版本需要注意以下几点：</p>
 <ol>
 <li>针对单个进程的设置在 <code>Image File</code> 选项卡。</li>
@@ -487,15 +487,15 @@
 <p>比如，windbg.exe -logo d:\start.log，可以把操作记录输出到 d:\start.log 中。</p>
 </blockquote>
 <p>使用 <code>windbg</code> 打开目标程序，按 <code>g</code> 或者 <code>F5</code> 使程序继续运行起来。把输出内容复制粘贴到记事本中（如果已经开启日志则不需要此步）。然后搜索 <code>ERROR</code> 或者 <code>DgnAddInG.dll</code> 。很快就找到了如下的错误提示：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/locating-export-error.png" alt="locating-export-error"></p>
+<p><img src="/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/locating-export-error.png" alt="locating-export-error"></p>
 <p>看完英文提示后，才恍然大悟，原来是 <code>DgnAddInG.dll</code> 依赖一个名为 <code>PK_POINT_create</code> 的外部符号，而不是 <code>DgnAddInG.dll</code> 会提供一个名为 <code>PK_POINT_create</code> 的符号。</p>
 <p>通过 <code>dumpbin</code> 查看 <code>DgnAddInG.dll</code> 的导入表，命令如下：</p>
 <p><code>&quot;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\dumpbin.exe&quot; /imports DgnAddInG.dll &gt; d:\imports.log</code></p>
 <p>在输出结果中搜索 <code>PK_POINT_create</code>，很快就搜到了。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/search-PK_POINT_create-in-result-file.png" alt="search-PK_POINT_create-in-result-file"></p>
+<p><img src="/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/search-PK_POINT_create-in-result-file.png" alt="search-PK_POINT_create-in-result-file"></p>
 <p>经过确认，我本地的 <code>Pskernel.dll</code> 确实缺少这个导出符号。</p>
 <h2 id="慢半拍的-Dependency-Walker"><a href="#慢半拍的-Dependency-Walker" class="headerlink" title="慢半拍的 Dependency Walker"></a>慢半拍的 Dependency Walker</h2><p>等我操作调查完后，<code>Dependency Walker</code> 的结果终于出来了，请看下图：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/dependency-result.png" alt="dependency-result"></p>
+<p><img src="/articles/troubleshoot-program-startup-failure-caused-by-depencent-dll-load-failed/dependency-result.png" alt="dependency-result"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p>无法定位程序输入点 <code>xxx</code> 于动态链接库 <code>yyy</code> 上，一般是 <code>yyy</code> 依赖其它模块的 <code>xxx</code> 函数，而不是 <code>yyy</code> 没提供 <code>xxx</code> 这个函数。</p>
 </li>
@@ -1055,6 +1055,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1143,7 +1149,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

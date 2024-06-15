@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言前几天，同事在 .net 程序中，遇到一个很 “诡异” 的问题：明明两个值是相等的，可偏偏却不相等，这是怎么回事呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/search-ildasm-result.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/view-ildasm.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/reference-type-equality-msdn.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/stackoverflow.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.302Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-dotnet-equal-compare/search-ildasm-result.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-dotnet-equal-compare/view-ildasm.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-dotnet-equal-compare/reference-type-equality-msdn.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-dotnet-equal-compare/stackoverflow.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.522Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="dotnet 中的判等">
 <meta name="twitter:description" content="前言前几天，同事在 .net 程序中，遇到一个很 “诡异” 的问题：明明两个值是相等的，可偏偏却不相等，这是怎么回事呢？">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/search-ildasm-result.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/unexpected-dotnet-equal-compare/search-ildasm-result.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -493,12 +493,12 @@
 <p>明明存在相等项（<code>data1== 50, data2 == 51</code>），但是 <code>Any</code> 却返回了 <code>false</code>。是不是很诡异？你能一眼看出上面程序的问题吗？</p>
 <p>单纯从 <code>vs</code>  中看源码，通过调试查看，都看不出任何问题。怎么办？一般从源码看不出问题，就需要从更底层来看，对于 <code>C++</code> 编写的原生程序来说就是查看汇编代码，对于 <code>C#</code> 编写的程序，优先查看 <code>IL（Intermediate Language）</code> 代码。微软提供了查看 <code>IL</code> 代码的工具—— <code>ildasm</code>。</p>
 <h2 id="ildasm"><a href="#ildasm" class="headerlink" title="ildasm"></a>ildasm</h2><p>可以使用 <code>everything</code> 在磁盘上搜索 <code>ildasm</code> 的位置。</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/search-ildasm-result.png" alt="search-ildasm-result"></p>
+<p><img src="/articles/unexpected-dotnet-equal-compare/search-ildasm-result.png" alt="search-ildasm-result"></p>
 <p>在 <code>ildasm</code> 界面中，通过 <code>file -&gt; open</code> 打开需要查看的程序，然后找到需要查看的方法，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/view-ildasm.png" alt="view-ildasm"></p>
+<p><img src="/articles/unexpected-dotnet-equal-compare/view-ildasm.png" alt="view-ildasm"></p>
 <p>好家伙，直接调用了 <code>ceq</code>，看到这段 <code>IL</code> 代码，我恍然大明白，原来是比较了两个变量的地址！难怪即使两个类的成员一模一样，但是总返回 <code>false</code> 了！</p>
 <p>赶紧谷歌一下 <code>.net operator== msdn</code>，发现了官方说明，链接如下：<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/equality-operators。读完发现自己读书太少了！下图截取自上面的官方文档。" target="_blank" rel="noopener">https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/equality-operators。读完发现自己读书太少了！下图截取自上面的官方文档。</a></p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/reference-type-equality-msdn.png" alt="reference-type-equality-msdn"></p>
+<p><img src="/articles/unexpected-dotnet-equal-compare/reference-type-equality-msdn.png" alt="reference-type-equality-msdn"></p>
 <p>原来，<code>==</code> 对于引用类型来说（<code>class</code>），是比较两个变量是否引用同一个对象，而不是比较两个变量的成员是否相等。</p>
 <h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p>知道问题的本质原因，修改起来就很简单了。只需要按成员比较两个 <code>CClassTest</code> 实例的成员是否相等即可。</p>
 <p>关键函数修改如下：</p>
@@ -509,7 +509,7 @@
 
 <p>你能看出上面代码的问题吗？</p>
 <p>对，上面的写法会导致 <code>stackoverflow</code>！</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-dotnet-equal-compare/stackoverflow.png" alt="stackoverflow"></p>
+<p><img src="/articles/unexpected-dotnet-equal-compare/stackoverflow.png" alt="stackoverflow"></p>
 <p>那正确的写法是什么样的呢？</p>
 <p>正确的写法如下：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="keyword">operator</span> ==(CClassTest lhs, CClassTest rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> ((<span class="keyword">object</span>)lhs == <span class="literal">null</span> &amp;&amp; (<span class="keyword">object</span>)rhs == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ((<span class="keyword">object</span>)lhs != <span class="literal">null</span> &amp;&amp; (<span class="keyword">object</span>)rhs != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> lhs.data1 == rhs.data1 &amp;&amp; lhs.data2 == rhs.data2;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1062,6 +1062,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1150,7 +1156,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

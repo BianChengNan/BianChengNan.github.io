@@ -96,20 +96,20 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上一篇文章——《修复被破坏的 vs 工程设置》中，我分享了修复被破坏的 vs 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/vs-project-include-path.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/search-result-of-WindowsSDK_IncludePath.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/modify-IncludePath-value-in-toolset.props.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/inspect-modified-include-path-in-vs.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/search-WindowsSDK_IncludePath-in-file.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/clear-WindowsSDK_IncludePath-in-Windows.props.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/modified_include_path_value_in_vs.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/set-incluepath-environment-variable.gif">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.669Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/vs-project-include-path.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/search-result-of-WindowsSDK_IncludePath.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/modify-IncludePath-value-in-toolset.props.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/inspect-modified-include-path-in-vs.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/search-WindowsSDK_IncludePath-in-file.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/clear-WindowsSDK_IncludePath-in-Windows.props.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/modified_include_path_value_in_vs.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/set-incluepath-environment-variable.gif">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.419Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 修复被破坏的 vs 工程设置（续）">
 <meta name="twitter:description" content="缘起在上一篇文章——《修复被破坏的 vs 工程设置》中，我分享了修复被破坏的 vs 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
 
 
 
@@ -362,8 +362,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -454,35 +454,35 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上一篇文章——<a href="https://bianchengnan.gitee.io/articles/fix-corruptted-vs-project-include-settings/" target="_blank" rel="noopener">《修复被破坏的 vs 工程设置》</a>中，我分享了修复被破坏的 <code>vs</code> 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上一篇文章——<a href="https://bianchengnan.github.io/articles/fix-corruptted-vs-project-include-settings/" target="_blank" rel="noopener">《修复被破坏的 vs 工程设置》</a>中，我分享了修复被破坏的 <code>vs</code> 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。</p>
 <a id="more"></a>
 
 <h2 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a>查看文件</h2><p>打开 <code>Microsoft.Cpp.Win32.user.props</code> 一看，里面并没有任何有用的内容！如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png" alt="Microsoft.Cpp.Win32.user.props"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png" alt="Microsoft.Cpp.Win32.user.props"></p>
 <p>看来，默认的 <code>包含目录</code> 和 <code>库目录</code> 的值不是从这里来的！虽然可以在这里添加自定义的值。对比看一下 <code>vs</code> 工程设置中的 <code>包含目录</code> 和 <code>库目录</code> 的值，如下图： </p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/vs-project-include-path.png" alt="vs-project-include-path"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/vs-project-include-path.png" alt="vs-project-include-path"></p>
 <p>显然，<code>包含目录</code> 和 <code>库目录</code> 的值不为空。接下来的任务是调查到这两个值是从哪里来的（只看<code>包含目录</code>的值就可以了，<code>库目录</code>的值可以用类似的方法查）。应该根据什么线索来调查呢？</p>
 <h2 id="还是搜索"><a href="#还是搜索" class="headerlink" title="还是搜索"></a>还是搜索</h2><p><code>包含目录</code>的值应该保存在某个地方（配置文件或者注册表），不能凭空出来这么一个东东。还是优先在本地硬盘搜索，继续使用 <code>File Locator</code>，搜索 <code>WindowsSDK_IncludePath</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/search-result-of-WindowsSDK_IncludePath.png" alt="search-result-of-WindowsSDK_IncludePath"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/search-result-of-WindowsSDK_IncludePath.png" alt="search-result-of-WindowsSDK_IncludePath"></p>
 <p>有很多条记录。因为我使用的是 <code>vs2013</code>，对应的版本是 <code>v120</code>，从搜索结果中的文件路径可以猜测，<code>ARM</code> 是编译 <code>ARM</code> 平台程序用的，<code>Win32</code> 是编译 <code>32</code> 位程序用的，<code>x64</code> 是编译 <code>64</code> 位程序用的。所以，我严重怀疑上图中高亮的这条记录。修改这个文件的内容（需要管理员权限），如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/modify-IncludePath-value-in-toolset.props.png" alt="modify-IncludePath-value-in-toolset.props"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/modify-IncludePath-value-in-toolset.props.png" alt="modify-IncludePath-value-in-toolset.props"></p>
 <p>在 <code>vs</code> 中验证一下，打开之前的工程，查看对应的工程属性，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/inspect-modified-include-path-in-vs.png" alt="inspect-modified-include-path-in-vs"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/inspect-modified-include-path-in-vs.png" alt="inspect-modified-include-path-in-vs"></p>
 <p>果然已经变成了修改后的值，说明猜对了！至此，我们已经知道<code>包含目录</code>的值是从 <code>Toolset.props</code> 中获取的，是由 <code>$(VC_IncludePath)</code> 和 <code>$(WindowsSDK_IncludePath)</code> 组成的，那这两个宏的值是从哪里来的呢？我以追查 <code>WindowsSDK_IncludePath</code> 的值为例展开。</p>
 <h2 id="WindowsSDK-IncludePath"><a href="#WindowsSDK-IncludePath" class="headerlink" title="WindowsSDK_IncludePath"></a>WindowsSDK_IncludePath</h2><p>继续使用 <code>File Locator</code> 继续搜索，搜索结果如下图： </p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/search-WindowsSDK_IncludePath-in-file.png" alt="search-WindowsSDK_IncludePath-in-file"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/search-WindowsSDK_IncludePath-in-file.png" alt="search-WindowsSDK_IncludePath-in-file"></p>
 <p>看了一圈，只有 <code>C:\Program Files (x86)\Windows Kits\8.1\DesignTime\CommonConfiguration\Neutral\Windows.props</code> 文件比较可能是定义 <code>WindowsSDK_IncludePath</code> 的地方。其它几个文件都是在使用。</p>
 <p>修改 <code>Windows.props</code> 中的 <code>WindowsSDK_IncludePath</code> 为空（需要管理员权限），如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/clear-WindowsSDK_IncludePath-in-Windows.props.png" alt="clear-WindowsSDK_IncludePath-in-Windows.props"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/clear-WindowsSDK_IncludePath-in-Windows.props.png" alt="clear-WindowsSDK_IncludePath-in-Windows.props"></p>
 <p>再次使用 <code>vs</code> 打开工程文件，查看包含路径的值，果然是我们修改后的值。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/modified_include_path_value_in_vs.png" alt="modified_include_path_value_in_vs"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/modified_include_path_value_in_vs.png" alt="modified_include_path_value_in_vs"></p>
 <h2 id="More"><a href="#More" class="headerlink" title="More"></a>More</h2><p>如果你足够细心，会发现在确定 <code>IncludePath</code> 的值的时候，只有当 <code>IncludePath</code> 是空的时候，才会使用配置文件中对应的值。我把 <code>Toolset.props</code> 中的关键语句粘贴如下：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IncludePath</span> <span class="attr">Condition</span>=<span class="string">"'$(IncludePath)' == ''"</span>&gt;</span>$(VC_IncludePath);$(WindowsSDK_IncludePath);<span class="tag">&lt;/<span class="name">IncludePath</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><code>Condition=&quot;&#39;$(IncludePath)&#39; == &#39;&#39;&quot;</code> 表示，当 <code>$(IncludePath)</code> 的值是空才取后面的值。如果 <code>IncludePath</code> 不为空，就不会取后面的值了。</p>
 <p><code>IncludePath</code> 可能会在哪里被赋值呢？我们可以自己设置 <code>IncludePath</code> 的值吗？答案是肯定的。</p>
 <p>如果有一个名为<code>IncludePath</code> 的环境变量，结果会是什么样的呢？请看下面的视频：</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings-continue/set-incluepath-environment-variable.gif" alt="set-incluepath-environment-variable"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings-continue/set-incluepath-environment-variable.gif" alt="set-incluepath-environment-variable"></p>
 <p>看来，确实可以通过环境变量来设置 <code>vs</code> 中的宏。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><code>.props</code> 文件中可以设置一些预定义的值，在 <code>.vcxproj</code> 文件中 <code>import</code> 对应的 <code>.props</code> 文件即可使用。</li>
@@ -942,6 +942,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1030,7 +1036,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

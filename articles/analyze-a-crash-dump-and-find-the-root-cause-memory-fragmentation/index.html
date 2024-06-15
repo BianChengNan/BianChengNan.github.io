@@ -96,22 +96,22 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言其实，这篇文章早在 2021 年就完成了初稿，后面一直没来得及完善（各种加班各种忙），所以一直没来得及整理发布。而且，我从这个案例里学到的东西太多了，很多内容并没有体现在本篇文章中，后续有机会一定会再写文章分享。话不多说，一起来看正文吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/append-string-call-stack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/heap-s.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-free-heap-entry-in-segment.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/same-address-showup-twice.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-heap-help.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-all-free-heap-entry.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-flags-and-virtualmemorythreshold.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-0x12345678.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-summary.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-largest-free-region-in-process.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.263Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/append-string-call-stack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/heap-s.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-free-heap-entry-in-segment.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/same-address-showup-twice.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-heap-help.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-all-free-heap-entry.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-flags-and-virtualmemorythreshold.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-0x12345678.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-summary.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-largest-free-region-in-process.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.359Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的内存碎片转储文件分析">
 <meta name="twitter:description" content="前言其实，这篇文章早在 2021 年就完成了初稿，后面一直没来得及完善（各种加班各种忙），所以一直没来得及整理发布。而且，我从这个案例里学到的东西太多了，很多内容并没有体现在本篇文章中，后续有机会一定会再写文章分享。话不多说，一起来看正文吧。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
 
 
 
@@ -364,8 +364,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -519,13 +519,13 @@
 <p>可以使用 <code>.cxr 0xf77ef58</code> 切换上下文，使用 <code>.exr 0xf77ef08</code> 查看异常信息。</p>
 <ol start="4">
 <li><p><strong>调用栈</strong></p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png" alt="windbg-analyze-v-callstack"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png" alt="windbg-analyze-v-callstack"></p>
 <p><strong>注意：</strong>上图中红色部分，表示正在处理 <code>std::_Xbad_alloc</code> 异常。黄色部分是一个警告，意思是说下面的调用栈可能不准确。</p>
 </li>
 </ol>
 <p>看样子，极有可能是内存分配的问题了。当时想着一定要找个时间分析一下。过了两三天，终于有了一点儿时间（今年加班是真的多），折腾完调试环境（主要是加载调试符号，从微软服务器下载符号有时候需要梯子），就可以开始分析了。</p>
 <h2 id="初次分析"><a href="#初次分析" class="headerlink" title="初次分析"></a>初次分析</h2><p>加载好符号后，根据 <code>!analyze -v</code> 的结果，先执行 <code>.cxr 0xf77ef58</code>，切换上下文，然后执行 <code>kp</code> 查看调用栈（<code>p</code> 表示显示参数，应该是 <code>parameter</code> 的缩写）。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/append-string-call-stack.png" alt="append-string-call-stack"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/append-string-call-stack.png" alt="append-string-call-stack"></p>
 <p>从整个调用栈来看，是在拼接两个字符串时，需要分配  <code>0x8e52d</code> 字节的空间，但是失败了，抛出了 <code>std::_Xbad_alloc</code> 异常。</p>
 <blockquote>
 <p><strong>说明：</strong> 看到 <code>std::_Xbad_alloc</code> 时，脑子里自然而然地想到了两种可能：</p>
@@ -536,7 +536,7 @@
 </blockquote>
 <p>之前遇到的 <code>std::_Xbad_alloc</code> 异常都是尝试分配的内存超级大（非常典型的是在反序列化 <code>vector</code>, <code>string</code> 的时候，由于内存错位导致尝试分配超大内存），但是本次的分配请求看上去相对合理。</p>
 <p>既然是跟内存分配相关的问题（而且是标准库中涉及到的内存分配），很可能跟堆有关，可以查看堆相关的信息。在 <code>windbg</code> 中执行 <code>!heap -s</code> 命令，查看堆概要信息。</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/heap-s.png" alt="heap-s"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/heap-s.png" alt="heap-s"></p>
 <p>看到上图中的输出结果，我很（草）快（率）得（凑）出了一个结论。</p>
 <h2 id="草率了"><a href="#草率了" class="headerlink" title="草率了"></a>草率了</h2><p>我犯的第一个超级愚蠢的错误是：一看 <code>Free</code> 这一列显示的值是 <code>334147</code>。而 <code>0x8e52d</code> 的十进制值是 <code>582957</code>（可以在 <code>windbg</code> 中通过 <code>.formats 0x8e52d</code> 方便的显示出来），就跟朋友说是堆空间不足导致的，建议从内存泄漏这个角度排查一下。做出这个结论的依据是：<code>Free</code> 一列给出的值比要分配的值”小”。</p>
 <h2 id="为什么草率了呢？"><a href="#为什么草率了呢？" class="headerlink" title="为什么草率了呢？"></a>为什么草率了呢？</h2><p>首先，我忽略了 <code>Free</code> 的单位，在 <code>Free</code> 的下方明显的写着 <code>(k)</code>，说明这一列是按 <code>KB</code> 计算的 。</p>
@@ -547,7 +547,7 @@
 <p>接下来，从输出信息中查找空闲堆块。</p>
 <p>我不会告诉你，最开始找空闲堆块的时候我是傻傻的到每一个 <code>Segment</code> 里面找里面包含的 <code>free</code> 堆块（<code>flags</code> 是 <code>100</code>）。</p>
 <p>下图是 <code>Sement27</code> 中的部分 <code>Free</code> 堆块截图：</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-free-heap-entry-in-segment.png" alt="view-free-heap-entry-in-segment"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-free-heap-entry-in-segment.png" alt="view-free-heap-entry-in-segment"></p>
 <p>由于实在是太多了，找到一半的时候真的是找（累）不（成）动（狗）了！于是停下来开始思考：</p>
 <ul>
 <li><p><code>windbg</code> 难道没有直接查找空闲堆块的命令吗？</p>
@@ -564,10 +564,10 @@
 <p><video src="F:\hexo-blog\source\_posts\analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation\filter-free-entry-and-find-the-largest.mp4"></video></p>
 <p>最后发现最大空闲堆块的大小是 <code>0x7f000</code>，比 <code>0x8e52d</code> 要小。</p>
 <h2 id="意外发现"><a href="#意外发现" class="headerlink" title="意外发现"></a>意外发现</h2><p>在查找过程中偶然发现了一个有意思的现象，同一个地址会出现两次，比如 <code>03c8da98</code> 这个地址：</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/same-address-showup-twice.png" alt="same-address-showup-twice"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/same-address-showup-twice.png" alt="same-address-showup-twice"></p>
 <p>仔细一看，所有的空闲堆块会被单独整理出来，放到 <code>FreeList</code> 下。赶紧通过 <code>.hh !heap</code> 查看帮助手册，关键部分截图如下：</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-heap-help.png" alt="view-heap-help">原来可以通过 <code>!heap -f heap_address</code>  直接显示所有的空闲堆块。于是在 <code>windbg</code> 中输入 <code>!heap -f 00a80000</code> 验证一下，果然可以列出所有空闲堆块。</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-all-free-heap-entry.png" alt="view-all-free-heap-entry"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-heap-help.png" alt="view-heap-help">原来可以通过 <code>!heap -f heap_address</code>  直接显示所有的空闲堆块。于是在 <code>windbg</code> 中输入 <code>!heap -f 00a80000</code> 验证一下，果然可以列出所有空闲堆块。</p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-all-free-heap-entry.png" alt="view-all-free-heap-entry"></p>
 <p>而且，空闲块是按大小排序的，找到最后一个空闲块，就找到了最大的空闲块（大小是 <code>0x7f000</code>），比上面的方法简单太多了。</p>
 <h2 id="又草率了"><a href="#又草率了" class="headerlink" title="又草率了"></a>又草率了</h2><p>查找完所有空闲堆块后发现，没有一个空闲堆块的大小比 <code>0x8e52d</code> 还要大。于是，赶紧跟朋友说上次分析的结果应该没错，但是判断依据不对。告诉朋友可以在 <code>windbg</code> 中执行<code>!heap -a a80000</code> ，然后查找 <code>FreeList</code> 对应的记录，就可以确定没有一块空闲堆块满足本次的分配请求了。</p>
 <p>跟朋友说完之后长出了一口气，心想这次肯定稳了，应该没问题了。</p>
@@ -588,23 +588,23 @@
 </li>
 </ol>
 <p>在 <code>windbg</code> 中输入如下命令 <code>dt _HEAP -y Flags VirtualMemoryThreshold a80000</code> 即可查看这两个关键的信息，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-flags-and-virtualmemorythreshold.png" alt="view-flags-and-virtualmemorythreshold"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-flags-and-virtualmemorythreshold.png" alt="view-flags-and-virtualmemorythreshold"></p>
 <p>可以确认堆是可增长的，而且阈值是 <code>0xfe00 * 8 = 0x7f000</code>。本次请求大小（ <code>0x8e52d</code> ）超出了阈值，会直接通过 <code>ZwAllocVirtualMemory</code> 进行分配。</p>
 <blockquote>
 <p><strong>说明：</strong> 空闲列表中的最大空闲块的尺寸也是 <code>0x7f000</code>。前面做了这么多无用功，真是浪费时间。</p>
 </blockquote>
 <p>既然请求大小超出了阈值，接下来的任务是找到整个内存空间中最大空闲区域，看看其是否能满足本次分配请求（应该是不满足，要不然也不会抛出异常了）。</p>
 <h2 id="查找空闲区域"><a href="#查找空闲区域" class="headerlink" title="查找空闲区域"></a>查找空闲区域</h2><p>相信，很多小伙伴儿都知道使用 <code>!address</code> 查看地址信息。我经常在排查内存访问异常的时候，通过该命令查看某个地址的详细信息。比如，下图是通过 <code>!address 0x12345678</code> 查看到的关于地址 <code>0x12345678</code> 的相关信息：</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-0x12345678.png" alt="address-0x12345678"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-0x12345678.png" alt="address-0x12345678"></p>
 <p>另外一个非常有用的命令是  <code>!address -summary</code>， 可以查看地址空间概要信息。</p>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-summary.png" alt="address-summary"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-summary.png" alt="address-summary"></p>
 <p>通过查看 <code>Usage Summary</code> 的数据可以发现，在整个内存空间中，堆空间大小是 <code>3.930GB</code>，占比 <code>98.25%</code>。通过查看 <code>State Summary</code> 的数据可知，保留（ <code>MEM_RESERVE</code> ）大小是 <code>3.105GB</code>，提交（<code>MEM_COMMIT</code>）大小是 <code>910.848MB</code>。通过查看 <code>Largest Region by Usage</code> 可以发现，最大的空闲内存大小是 <code>0x1c000</code>，要比本次申请的大小 <code>0x8e52d</code> 小很多。</p>
 <h2 id="内存严重碎片化"><a href="#内存严重碎片化" class="headerlink" title="内存严重碎片化"></a>内存严重碎片化</h2><p>说实话，刚开始我是有点不敢相信 <code>!address -summary</code> 给出的结果：最大的空闲空间居然只有区区的 <code>112KB</code>！</p>
 <p>继续使用 <code>!address -f:Free -o:csv</code> 命令打印出所有的空闲内存。整理后的结果如下图所示：</p>
 <blockquote>
 <p><code>-o:csv</code> 表示以逗号分隔的 <code>csv</code> 格式输出，这样可以把结果直接粘贴到 <code>csv</code> 文件中。</p>
 </blockquote>
-<p><img src="http://resources.bianchengnan.tech/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-largest-free-region-in-process.png" alt="view-largest-free-region-in-process"></p>
+<p><img src="/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-largest-free-region-in-process.png" alt="view-largest-free-region-in-process"></p>
 <p>可以看出，跟 <code>!address -summary</code> 给出的结论是一致的。最大空闲区域的大小是 <code>0n114688</code>（十六进制对应的数值是 <code>0x1c000</code>）。空闲内存的总大小是 <code>0n5791744</code>，只有区区的 <code>5656KB</code>（也就是 <code>5.23MB</code>）。碎片化真的是太严重了。</p>
 <p>再回过头仔细看 <code>!heap -s</code> 的输出结果。其中有如下提示：</p>
 <p><code>Virtual address fragmentation  77 % (1713 uncommited ranges)</code> </p>
@@ -1171,6 +1171,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1259,7 +1265,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

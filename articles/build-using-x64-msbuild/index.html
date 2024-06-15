@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近在编译项目的时候总是报虚拟内存不足（项目中使用了大量的模板）。一般情况下，vs会使用32位的编译工具进行编译，用64位的编译工具应该能解决类似的问题。本以为是一件挺简单的事，但是没想到遇到不少坑，本文记录了折腾的过程，希望对有类似需求的小伙伴有所帮助。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/build-using-x64-msbuild/Use-64-bit-hosted-developer-command-prompt.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/build-using-x64-msbuild/check-cl-link-bit.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/build-using-x64-msbuild/build-with-PreferredToolArchitecture-x64.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/build-using-x64-msbuild/choose-build-tool-architecture.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/build-using-x64-msbuild/Bv-option.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/build-using-x64-msbuild/build-with-Bv.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/build-using-x64-msbuild/Use-64-bit-hosted-developer-command-prompt.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/build-using-x64-msbuild/check-cl-link-bit.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/build-using-x64-msbuild/build-with-PreferredToolArchitecture-x64.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/build-using-x64-msbuild/choose-build-tool-architecture.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/build-using-x64-msbuild/Bv-option.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/build-using-x64-msbuild/build-with-Bv.png">
 <meta property="og:updated_time" content="2019-10-11T04:29:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[原]使用64位的编译工具进行编译">
 <meta name="twitter:description" content="缘起最近在编译项目的时候总是报虚拟内存不足（项目中使用了大量的模板）。一般情况下，vs会使用32位的编译工具进行编译，用64位的编译工具应该能解决类似的问题。本以为是一件挺简单的事，但是没想到遇到不少坑，本文记录了折腾的过程，希望对有类似需求的小伙伴有所帮助。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/build-using-x64-msbuild/Use-64-bit-hosted-developer-command-prompt.gif">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/build-using-x64-msbuild/Use-64-bit-hosted-developer-command-prompt.gif">
 
 
 
@@ -473,11 +473,11 @@
 <h2 id="尝试2：使用msbuild"><a href="#尝试2：使用msbuild" class="headerlink" title="尝试2：使用msbuild"></a>尝试2：使用<code>msbuild</code></h2><p>我们知道其实<code>vs</code>是调用<code>msbuild</code>进行编译链接的（<code>msbuild</code>会调用<code>CL.exe</code>进行编译，调用<code>link.exe</code>进行链接）。我们可以直接使用<code>msbuild</code>进行生成。</p>
 <h3 id="帮助文档"><a href="#帮助文档" class="headerlink" title="帮助文档"></a>帮助文档</h3><p>可以通过<code>msbuild -h</code>或者<a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference?view=vs-2019" target="_blank" rel="noopener">MSBuild command-line reference</a>来查看<code>msbuild</code>的命令行参数。但是，貌似没有哪个参数是告诉我们如何使用<code>64</code>位的编译工具进行编译的。继续搜</p>
 <h3 id="官网指南1"><a href="#官网指南1" class="headerlink" title="官网指南1"></a>官网指南1</h3><p>在微软官方找到一篇参考文档 <a href="https://docs.microsoft.com/en-us/cpp/build/how-to-enable-a-64-bit-visual-cpp-toolset-on-the-command-line?redirectedfrom=MSDN&view=vs-2019" target="_blank" rel="noopener">How to: Enable a 64-Bit, x64 hosted MSVC toolset on the command line</a>，根据文档中的的描述，尝试过程如下：</p>
-<p><img src="http://resources.bianchengnan.tech/build-using-x64-msbuild/Use-64-bit-hosted-developer-command-prompt.gif" alt="Use-64-bit-hosted-developer-command-prompt"></p>
+<p><img src="/articles/build-using-x64-msbuild/Use-64-bit-hosted-developer-command-prompt.gif" alt="Use-64-bit-hosted-developer-command-prompt"></p>
 <p>我们发现，编译时使用的是<code>CL.exe</code>，链接时使用的是<code>link.exe</code>。这两个文件都是子目录<code>\bin\HostX86\x64</code>下的。我们看下这两个程序是<code>32</code>位的还是<code>64</code>位的。</p>
-<p><img src="http://resources.bianchengnan.tech/build-using-x64-msbuild/check-cl-link-bit.png" alt="check-cl-link-bit"></p>
+<p><img src="/articles/build-using-x64-msbuild/check-cl-link-bit.png" alt="check-cl-link-bit"></p>
 <p>我们发现这个子目录下的<code>CL.exe</code>和<code>link.exe</code>都是<code>32</code>位的。什么情况？为什么按官方文档进行操作，结果还是使用的<code>32</code>位的 :code_sweat:。暂时先不追究了<a href="关于此问题，我确实使用`dnSpy`进行了逆向调试，有时间会把整个过程整理出来。">^调查说明</a>。继续搜</p>
-<h3 id="曹景游关于MSBuild的博客"><a href="#曹景游关于MSBuild的博客" class="headerlink" title="曹景游关于MSBuild的博客"></a><a href="https://caojingyou.github.io/2017/12/21/MSBuild%20(Visual%20C++)/" target="_blank" rel="noopener">曹景游关于MSBuild的博客</a></h3><p>找到了<a href="https://caojingyou.github.io/2017/12/21/MSBuild%20(Visual%20C++)/" target="_blank" rel="noopener">曹景游关于MSBuild的博客</a>，根据其中的 <code>msbuild /p:PreferredToolArchitecture=x64</code> 成功调用了<code>64</code>位的<code>CL.exe</code>和<code>link.exe</code>。<br><img src="http://resources.bianchengnan.tech/build-using-x64-msbuild/build-with-PreferredToolArchitecture-x64.png" alt="build-with-PreferredToolArchitecture-x64"></p>
+<h3 id="曹景游关于MSBuild的博客"><a href="#曹景游关于MSBuild的博客" class="headerlink" title="曹景游关于MSBuild的博客"></a><a href="https://caojingyou.github.io/2017/12/21/MSBuild%20(Visual%20C++)/" target="_blank" rel="noopener">曹景游关于MSBuild的博客</a></h3><p>找到了<a href="https://caojingyou.github.io/2017/12/21/MSBuild%20(Visual%20C++)/" target="_blank" rel="noopener">曹景游关于MSBuild的博客</a>，根据其中的 <code>msbuild /p:PreferredToolArchitecture=x64</code> 成功调用了<code>64</code>位的<code>CL.exe</code>和<code>link.exe</code>。<br><img src="/articles/build-using-x64-msbuild/build-with-PreferredToolArchitecture-x64.png" alt="build-with-PreferredToolArchitecture-x64"></p>
 <p><code>PreferredToolArchitecture</code>是什么？</p>
 <h3 id="官方参考文档"><a href="#官方参考文档" class="headerlink" title="官方参考文档"></a>官方参考文档</h3><p><a href="https://caojingyou.github.io/2017/12/21/MSBuild%20(Visual%20C++)/" target="_blank" rel="noopener">曹景游关于MSBuild的博客</a>中有一个<a href="https://docs.microsoft.com/zh-cn/cpp/build/reference/msbuild-visual-cpp-overview?redirectedfrom=MSDN&view=vs-2019" target="_blank" rel="noopener">微软的官方链接（中文版）</a>，介绍了一些<code>msbuild</code>的内部选项，其中有关于关键字<code>PreferredToolArchitecture</code>的介绍。我切换到了英文版并摘录了关于<code>PreferredToolArchitecture</code>的介绍。如下：</p>
 <blockquote>
@@ -489,9 +489,9 @@
 <div class="note info"><p>提示：可以把<code>URL</code>中关于语言的部分改成其它语言的标识即可切换到对应的语言下。中文对应着<code>zh-cn</code>，英文对应着<code>en-us</code>。</p></div> 
 
 <h2 id="其它相关资料"><a href="#其它相关资料" class="headerlink" title="其它相关资料"></a>其它相关资料</h2><p>根据关键字<code>PreferredToolArchitecture</code>在<code>stackoverflow</code>上搜到了这篇帖子<a href="https://stackoverflow.com/questions/19820718/how-to-make-visual-studio-use-the-native-amd64-toolchain" target="_blank" rel="noopener">how-to-make-visual-studio-use-the-native-amd64-toolchain</a>。里面提到了<code>vs2019(V16.1)</code>已经支持设置编译工具了。从另外一个回复中得知，可以使用<code>/Bv</code>来查看编译使用的工具的全路径。</p>
-<h3 id="vs2019中的Preferred-Build-Tool-Architecture设置选项"><a href="#vs2019中的Preferred-Build-Tool-Architecture设置选项" class="headerlink" title="vs2019中的Preferred Build Tool Architecture设置选项"></a><code>vs2019</code>中的<code>Preferred Build Tool Architecture</code>设置选项</h3><p>在工程文件上右键<code>Property</code>，<code>Configuration Properties -&gt; Advanced -&gt; Preferred Build Tool Architecture</code>，设置为<code>64-bit(x64)</code>即可使用64位的编译工具进行编译。如下图。<br><img src="http://resources.bianchengnan.tech/build-using-x64-msbuild/choose-build-tool-architecture.png" alt="choose-build-tool-architecture"></p>
-<h3 id="Bv设置选项"><a href="#Bv设置选项" class="headerlink" title="/Bv设置选项"></a><code>/Bv</code>设置选项</h3><p>在工程文件上右键 <code>Properties</code>，<code>Configuration Properties -&gt; C/C++ -&gt; Command Line</code>，添加<code>/Bv</code>选项。如下图。<br><img src="http://resources.bianchengnan.tech/build-using-x64-msbuild/Bv-option.png" alt="Bv-option"></p>
-<h3 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h3><p><img src="http://resources.bianchengnan.tech/build-using-x64-msbuild/build-with-Bv.png" alt="build-with-Bv"></p>
+<h3 id="vs2019中的Preferred-Build-Tool-Architecture设置选项"><a href="#vs2019中的Preferred-Build-Tool-Architecture设置选项" class="headerlink" title="vs2019中的Preferred Build Tool Architecture设置选项"></a><code>vs2019</code>中的<code>Preferred Build Tool Architecture</code>设置选项</h3><p>在工程文件上右键<code>Property</code>，<code>Configuration Properties -&gt; Advanced -&gt; Preferred Build Tool Architecture</code>，设置为<code>64-bit(x64)</code>即可使用64位的编译工具进行编译。如下图。<br><img src="/articles/build-using-x64-msbuild/choose-build-tool-architecture.png" alt="choose-build-tool-architecture"></p>
+<h3 id="Bv设置选项"><a href="#Bv设置选项" class="headerlink" title="/Bv设置选项"></a><code>/Bv</code>设置选项</h3><p>在工程文件上右键 <code>Properties</code>，<code>Configuration Properties -&gt; C/C++ -&gt; Command Line</code>，添加<code>/Bv</code>选项。如下图。<br><img src="/articles/build-using-x64-msbuild/Bv-option.png" alt="Bv-option"></p>
+<h3 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h3><p><img src="/articles/build-using-x64-msbuild/build-with-Bv.png" alt="build-with-Bv"></p>
 <p>可以看到使用<code>PreferredToolArchitecture</code>后，确实使用了<code>64</code>位的编译工具。</p>
 <h2 id="其它尝试"><a href="#其它尝试" class="headerlink" title="其它尝试"></a>其它尝试</h2><ul>
 <li>把<code>bin\Hostx86</code>，用<code>bin\Hostx64</code>的内容替换之，简单粗暴有效。:tada::tada::tada:</li>
@@ -871,6 +871,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -959,7 +965,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

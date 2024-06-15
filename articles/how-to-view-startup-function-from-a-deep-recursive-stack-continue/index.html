@@ -96,24 +96,24 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上篇文章中介绍了在 windbg 中如何查看非常深的调用栈 —— 使用 kN 命令指定栈帧数。kN 虽好，但最多只能查看 0xffff 个栈帧。如果栈帧数量比 0xffff 还多，该如何查看呢？本文将介绍几种查看方法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-failed-after-kframes-set-to-0x7fffffff.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-memory-usage-kframe-0x10000000.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps-manual-reconstruct-callstack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-callstack-in-vs.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-command-help.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/output-of-wrong-stackptr-k-command.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-start-at-specific-address.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-ebp-by-dps.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0x009ef908-0x100.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-rsp-by-dps.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0000002a337ffbd0-0x100.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.781Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-failed-after-kframes-set-to-0x7fffffff.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-memory-usage-kframe-0x10000000.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps-manual-reconstruct-callstack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-callstack-in-vs.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-command-help.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/output-of-wrong-stackptr-k-command.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-start-at-specific-address.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-ebp-by-dps.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0x009ef908-0x100.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-rsp-by-dps.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0000002a337ffbd0-0x100.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.434Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的递归栈查看（续）">
 <meta name="twitter:description" content="缘起在上篇文章中介绍了在 windbg 中如何查看非常深的调用栈 —— 使用 kN 命令指定栈帧数。kN 虽好，但最多只能查看 0xffff 个栈帧。如果栈帧数量比 0xffff 还多，该如何查看呢？本文将介绍几种查看方法。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
 
 
 
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -458,7 +458,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上篇<a href="https://bianchengnan.gitee.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/" target="_blank" rel="noopener">文章</a>中介绍了在 <code>windbg</code> 中如何查看非常深的调用栈 —— 使用 <code>kN</code> 命令指定栈帧数。<code>kN</code> 虽好，但最多只能查看 <code>0xffff</code> 个栈帧。如果栈帧数量比 <code>0xffff</code> 还多，该如何查看呢？本文将介绍几种查看方法。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上篇<a href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/" target="_blank" rel="noopener">文章</a>中介绍了在 <code>windbg</code> 中如何查看非常深的调用栈 —— 使用 <code>kN</code> 命令指定栈帧数。<code>kN</code> 虽好，但最多只能查看 <code>0xffff</code> 个栈帧。如果栈帧数量比 <code>0xffff</code> 还多，该如何查看呢？本文将介绍几种查看方法。</p>
 <a id="more"></a>
 
 
@@ -491,11 +491,11 @@
 <p>接下来依次介绍每种查看方法。</p>
 <h2 id="方法1：使用-kframes-设置默认显示的栈帧数量"><a href="#方法1：使用-kframes-设置默认显示的栈帧数量" class="headerlink" title="方法1：使用 .kframes 设置默认显示的栈帧数量"></a>方法1：使用 <code>.kframes</code> 设置默认显示的栈帧数量</h2><p>在 <code>windbg</code> 的帮助文档中发现可以通过 <code>.kframes</code> 命令来设置 <code>k</code> 命令默认显示的栈帧数量。但是也不是可以显示无限多个栈帧。</p>
 <p>那么通过 <code>.kframes</code> 可以设置的最大栈帧数是多少呢？通过几次尝试，我发现 <code>.kframes</code> 可以接受的最大值是 <code>32</code> 位的带符号整数的最大值，也就是 <code>0x7fffffff</code>（对应的十进制是 <code>2147483647</code>）。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png" alt="try-to-find-max-kframes-number"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png" alt="try-to-find-max-kframes-number"></p>
 <p> 但是，如果通过 <code>.kframes</code> 命令把栈帧数设置为 <code>0x7fffffff</code> 后，再执行 <code>k</code> 命令，发现 <code>windbg</code> 会直接提示内存分配失败。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-failed-after-kframes-set-to-0x7fffffff.png" alt="windbg-k-failed-after-kframes-set-to-0x7fffffff"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-failed-after-kframes-set-to-0x7fffffff.png" alt="windbg-k-failed-after-kframes-set-to-0x7fffffff"></p>
 <p>尝试把栈帧数设置为 <code>0x1000000</code>，再执行 <code>k</code> 命令，发现 <code>windbg</code> 的内存占用非常高，高峰期大概消耗了 <code>20GB</code> 的物理内存（下图中的 <code>Working Set</code> 列），经过将近两分钟的努力，最终还是以内存分配失败告终~</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-memory-usage-kframe-0x10000000.png" alt="windbg-memory-usage-kframe-0x10000000"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-memory-usage-kframe-0x10000000.png" alt="windbg-memory-usage-kframe-0x10000000"></p>
 <p>又试了几个更小的值，发现在我的机器上（<code>24GB</code> 物理内存）设置为 <code>0x1000000</code> 时可以输出结果，但是因为数据量太大了，等了半个多小时也没执行完~</p>
 <p>虽然这次 <code>.kframes</code> 没能成功，但这绝对是一个非常值得了解的命令，可以处理绝大多数情况下的线程栈查看问题。</p>
 <p><strong>优点：</strong> </p>
@@ -520,11 +520,11 @@
 </ol>
 <p><strong>实战：</strong></p>
 <p>通过 <code>!teb</code> 命令获取栈顶位置（<code>0000002a33800000</code>）然后减去 <code>64KB</code> （<code>0x10000</code>，也可以换成其它值，一般情况下 <code>64KB</code> 足够了）得到地址 <code>0000002a337f0000</code>，然后执行 <code>dps 0000002a337f0000 0000002a33800000</code>。或者可以直接直接输入 <code>dps 0000002a33800000-0x10000 0000002a33800000</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps.png" alt="windbg-dps"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps.png" alt="windbg-dps"></p>
 <p>根据 <code>dps</code> 的结果可知，已经包含了关键的递归函数 —— <code>TestDeepRecursive!Recursive</code>，可以根据此次 <code>dps</code> 的输出结果手动识别调用栈。拉到输出结果的最下方，可以看到输出结果如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps-manual-reconstruct-callstack.png" alt="windbg-dps-manual-reconstruct-callstack"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps-manual-reconstruct-callstack.png" alt="windbg-dps-manual-reconstruct-callstack"></p>
 <p>从上图可以看到 <code>main</code> 函数，<code>CallRecursive</code> 函数，<code>Recursive</code> 函数。而且与 <code>vs</code> 中的调用栈完美匹配。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-callstack-in-vs.png" alt="view-callstack-in-vs"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-callstack-in-vs.png" alt="view-callstack-in-vs"></p>
 <blockquote>
 <p><strong>说明：</strong> 输出结果中<strong>极有可能</strong>包含很多无关的信息（比如上图中的黄色高亮部分），需要仔细甄别。</p>
 </blockquote>
@@ -543,21 +543,21 @@
 <h2 id="方法3：使用-k-命令的时候指定-StackPtr"><a href="#方法3：使用-k-命令的时候指定-StackPtr" class="headerlink" title="方法3：使用 k 命令的时候指定 StackPtr"></a>方法3：使用 <code>k</code> 命令的时候指定 <code>StackPtr</code></h2><p>前两种方法都有各自的优缺点，可以在前两种方法的基础上使用本方法——使用 <code>k</code> 命令的时候指定正确的 <code>StackPtr</code>，<code>windbg</code> 会自动帮我们识别调用栈。</p>
 <p>使用本方法时需要传递一个<strong>正确</strong>的 <code>StackPtr</code>（调试 <code>x64</code> 程序时需要传递 <code>rsp</code>，调试 <code>x86</code> 程序时需要传递 <code>ebp</code>，也叫 <code>BasePtr</code> ），也可以同时指定要显示的栈帧数量。</p>
 <p>关于 <code>k</code> 命令的帮助文档可以参考下图（截取自 <code>windbg</code> 帮助文档）：</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-command-help.png" alt="windbg-k-command-help"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-command-help.png" alt="windbg-k-command-help"></p>
 <p>如果传递的 <code>StackPtr</code> 不对，那么输出结果很可能是错误的。比如，我使用一个错误的值执行 <code>k=0x0000002a337ff938</code> 输出结果如下：</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/output-of-wrong-stackptr-k-command.png" alt="output-of-wrong-stackptr-k-command"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/output-of-wrong-stackptr-k-command.png" alt="output-of-wrong-stackptr-k-command"></p>
 <p>所以，传递一个正确的 <code>StackPtr</code> 是必须的。那么，该如何获取一个正确的 <code>StackPtr</code> 呢？有两个方法：</p>
 <ol>
-<li><p>执行 <code>k</code> 命令的时候，最左侧那一列就是 <code>rsp</code>（<code>x86</code> 程序对应着 <code>ebp</code>）。可以这样处理：先通过 <code>.kframes</code> 设置一个相对合理的值，然后执行 <code>k</code> 命令，等命令执行完，取最后一条输出结果的 <code>rsp</code> 的值，假设是 <code>00000029c3004040</code>，然后执行 <code>k=00000029c3004040 3</code>，就可以继续显示后续的三条调用栈了。重复此过程即可。<br><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-start-at-specific-address.png" alt="windbg-k-start-at-specific-address"><br>实际使用的时候，可以尽量每次多显示一些栈帧，如果调用栈非常深，需要重复的次数会很多，但总比不能查看强！</p>
+<li><p>执行 <code>k</code> 命令的时候，最左侧那一列就是 <code>rsp</code>（<code>x86</code> 程序对应着 <code>ebp</code>）。可以这样处理：先通过 <code>.kframes</code> 设置一个相对合理的值，然后执行 <code>k</code> 命令，等命令执行完，取最后一条输出结果的 <code>rsp</code> 的值，假设是 <code>00000029c3004040</code>，然后执行 <code>k=00000029c3004040 3</code>，就可以继续显示后续的三条调用栈了。重复此过程即可。<br><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-start-at-specific-address.png" alt="windbg-k-start-at-specific-address"><br>实际使用的时候，可以尽量每次多显示一些栈帧，如果调用栈非常深，需要重复的次数会很多，但总比不能查看强！</p>
 </li>
 <li><p>在 <code>dps</code> 的输出结果中 <strong>“猜”</strong> 一个 <code>ebp</code> 或者 <code>rsp</code> 的值。说是猜，其实是有规律的。</p>
-<p>2.1 对于 <code>x86</code> 的程序，<code>ebp</code> 保存了调用者的 <code>ebp</code>，<code>ebp+4</code> 的位置保存了返回地址。<br><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-ebp-by-dps.png" alt="view-ebp-by-dps"></p>
+<p>2.1 对于 <code>x86</code> 的程序，<code>ebp</code> 保存了调用者的 <code>ebp</code>，<code>ebp+4</code> 的位置保存了返回地址。<br><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-ebp-by-dps.png" alt="view-ebp-by-dps"></p>
 <p>根据上图可以猜测，一个合法的 <code>ebp</code> 的值是 <code>0x009ef908</code>。</p>
-<p>在 <code>windbg</code> 中输入 <code>k=0x09ef908 0x100</code>，可以得到下图完美的调用栈：<img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0x009ef908-0x100.png" alt="k-0x009ef908-0x100"></p>
+<p>在 <code>windbg</code> 中输入 <code>k=0x09ef908 0x100</code>，可以得到下图完美的调用栈：<img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0x009ef908-0x100.png" alt="k-0x009ef908-0x100"></p>
 <p>2.2 对于 <code>x64</code> 的程序，<code>rsp-8</code> 的位置保存了返回地址。可以根据有意义的符号名称对应的最左侧地址值 <code>+8</code> 得到 <code>rsp</code> 的值。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-rsp-by-dps.png" alt="view-rsp-by-dps"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-rsp-by-dps.png" alt="view-rsp-by-dps"></p>
 <p>根据上图可知，一个合法的 <code>rsp</code> 的值是 <code>0x0000002a337ffbd0</code>。在 <code>windbg</code> 中输入 <code>k=0x0000002a337ffbd0 0x100</code>，可以得到下图完美的调用栈：</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0000002a337ffbd0-0x100.png" alt="k-0000002a337ffbd0-0x100"></p>
+<p><img src="/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0000002a337ffbd0-0x100.png" alt="k-0000002a337ffbd0-0x100"></p>
 </li>
 </ol>
 <p><strong>优点：</strong></p>
@@ -677,8 +677,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/articles/2024-startup/" rel="prev" title="2024 开工喽">
-                2024 开工喽 <i class="fa fa-chevron-right"></i>
+              <a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" rel="prev" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
+                debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1121,6 +1121,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1209,7 +1215,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

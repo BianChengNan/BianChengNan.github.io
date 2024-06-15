@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在上一篇文章中介绍了如何在 64 位进程的转储文件中查找异常上下文的方法 —— KiUserExceptionDispatcher() 函数对应栈帧的 Child-SP 的值保存了异常发生时的线程上下文。 本文将介绍如何在 32 位进程及 wow64 进程的转储文件中查找异常上下文的方法，并且会先介绍几个跟异常分发相关的函数和结构体。如果忘记了结论，可以根据函数参数手动逆向查找验证。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-32.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-wow64.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-wow64.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.582Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-32.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-wow64.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-wow64.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何快速从 32 位转储文件中找到异常发生时的线程上下文">
 <meta name="twitter:description" content="前言在上一篇文章中介绍了如何在 64 位进程的转储文件中查找异常上下文的方法 —— KiUserExceptionDispatcher() 函数对应栈帧的 Child-SP 的值保存了异常发生时的线程上下文。 本文将介绍如何在 32 位进程及 wow64 进程的转储文件中查找异常上下文的方法，并且会先介绍几个跟异常分发相关的函数和结构体。如果忘记了结论，可以根据函数参数手动逆向查找验证。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -449,7 +449,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇<a href="https://bianchengnan.gitee.io/articles/find-the-right-exception-context-in-x64-dump/" target="_blank" rel="noopener">文章</a>中介绍了如何在 <code>64</code> 位进程的转储文件中查找异常上下文的方法 —— <code>KiUserExceptionDispatcher()</code> 函数对应栈帧的 <code>Child-SP</code> 的值保存了异常发生时的线程上下文。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇<a href="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump/" target="_blank" rel="noopener">文章</a>中介绍了如何在 <code>64</code> 位进程的转储文件中查找异常上下文的方法 —— <code>KiUserExceptionDispatcher()</code> 函数对应栈帧的 <code>Child-SP</code> 的值保存了异常发生时的线程上下文。</p>
 <p>本文将介绍如何在 <code>32</code> 位进程及 <code>wow64</code> 进程的转储文件中查找异常上下文的方法，并且会先介绍几个跟异常分发相关的函数和结构体。如果忘记了结论，可以根据函数参数手动逆向查找验证。</p>
 <a id="more"></a>
 
@@ -491,16 +491,16 @@
 <p>下面通过几个实例介绍如何在 <code>32</code> 位进程及 <code>wow64</code> 进程的转储文件中查找异常上下文。</p>
 <h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>基本上 <code>32</code> 位进程和 <code>wow64</code> 进程查找方法一样，不再单独分析，这里介绍几种典型情况。</p>
 <h3 id="案例1"><a href="#案例1" class="headerlink" title="案例1"></a>案例1</h3><p>下图是某个 <code>32</code> 位进程转储文件发生异常时的调用栈。</p>
-<p><img src="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png" alt="view-exception-callstack-32"></p>
+<p><img src="/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png" alt="view-exception-callstack-32"></p>
 <p>从上图中可知，<code>RtlDispatchException()</code> 对应的 <code>ebp</code> 是 <code>0x0014f8e8</code>，<code>UnhandledExceptionFilter()</code> 对应的 <code>ebp</code> 是 <code>0x0014f7d0</code>。从<code>RtlDispatchException()</code>  入手。</p>
 <p>通过 <code>dd 0014f8e8</code> 命令可以得知  <code>EXCEPTION_RECORD</code> 的地址是 <code>0x0014f900</code>（<code>ebp+8</code> 处的值），<code>CONTEXT</code> 的地址是 <code>0x0014f91c</code> （<code>ebp+c</code> 处的值）。</p>
 <p>再通过 <code>dt _EXCEPTION_RECORD 0014f900</code> 和 <code>dt _CONTEXT 0014f91c</code> 查看对应结构体的具体内容，可以发现是匹配的，如下图。</p>
-<p> <img src="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-32.png" alt="verify-exception-info-32"></p>
+<p> <img src="/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-32.png" alt="verify-exception-info-32"></p>
 <h3 id="案例2"><a href="#案例2" class="headerlink" title="案例2"></a>案例2</h3><p>下图是某个 <code>wow64</code> 位进程转储文件发生异常时的调用栈。</p>
-<p><img src="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-wow64.png" alt="view-exception-callstack-wow64"></p>
+<p><img src="/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-wow64.png" alt="view-exception-callstack-wow64"></p>
 <p>调用栈中只能看到 <code>UnhandledExceptionFilter()</code> ，对应的 <code>ebp</code> 是 <code>0x0097f474</code>。<code>ebp+8</code> 位置的值（<code>0x0097f4a4</code>）存储了 </p>
 <p><code>_EXCEPTION_POINTERS*</code> 的值（<code>0x0097f4a4</code>）。使用 <code>dd 0097f4a4 L4</code> 查看 <code>_EXCEPTION_RECORD</code> 的地址（<code>0x0097f5e0</code>）和 <code>_CONTEXT</code> 的地址（<code>0x0097f630</code>）。然后再验证，发现是匹配的。郑国过程如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-wow64.png" alt="verify-exception-info-wow64"></p>
+<p><img src="/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-wow64.png" alt="verify-exception-info-wow64"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p><code>32</code> 位进程中的函数参数可以通过 <code>ebp</code> 进行定位。我觉得这是 <code>32</code> 位进程调试时相对于 <code>64</code> 位进程最友好的地方了，不用费劲到栈上找参数了。</p>
 </li>
@@ -1047,6 +1047,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1135,7 +1141,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

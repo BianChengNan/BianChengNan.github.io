@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前几天，修复 bug 后，本地测试通过，提交代码到 tfs，关闭 bug。但是客户拿到程序后，效果依然不对。来来回回检查了好几遍，逻辑是正确的，本地验证通过了，代码也确实上传到 tfs 了，但是程序到客户手里，效果确实不对。如果是你，该如何调（shuai）查（guo）呢？  说明：本文只是分享一种排查问题的思路。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/search-chinese-string-from-pe-file/search-unicode-string.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/search-chinese-string-from-pe-file/search-specific-string.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.965Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-chinese-string-from-pe-file/search-unicode-string.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-chinese-string-from-pe-file/search-specific-string.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.464Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 代码丢了？用搜索找出真相">
 <meta name="twitter:description" content="缘起前几天，修复 bug 后，本地测试通过，提交代码到 tfs，关闭 bug。但是客户拿到程序后，效果依然不对。来来回回检查了好几遍，逻辑是正确的，本地验证通过了，代码也确实上传到 tfs 了，但是程序到客户手里，效果确实不对。如果是你，该如何调（shuai）查（guo）呢？  说明：本文只是分享一种排查问题的思路。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/search-chinese-string-from-pe-file/search-unicode-string.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/search-chinese-string-from-pe-file/search-unicode-string.png">
 
 
 
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -464,7 +464,7 @@
 <p>因为整个修复逻辑很简单，不太可能出错，难不成还真有可能是第一种情况？该如何排查呢？</p>
 <p>代码里的字符串一定会以某种格式保存在最终生成的程序文件里。如果客户拿到的程序里没有这个字符串，说明客户拿到的程序并没有包含最新的修复。</p>
 <h2 id="该怎么搜？"><a href="#该怎么搜？" class="headerlink" title="该怎么搜？"></a>该怎么搜？</h2><p>因为关键代码在 <code>dll</code> 文件中，不能直接使用 <code>windbg</code> 打开。否则就可以直接在 <code>windbg</code> 中使用 <code>s -u 0x0 L?0xffffffffffffffff &quot;地下室外墙&quot;</code> 搜索。没关系，还有十六进制编辑神器—— <code>Hex Editor Neo</code>。按 <code>ctrl + f</code> 调出搜索框，选择 <code>UNICODE String</code> 并输入要搜索的内容， 即可搜索。</p>
-<p><img src="http://resources.bianchengnan.tech/search-chinese-string-from-pe-file/search-unicode-string.png" alt="search-unicode-string"></p>
+<p><img src="/articles/search-chinese-string-from-pe-file/search-unicode-string.png" alt="search-unicode-string"></p>
 <blockquote>
 <p>说明：</p>
 <ol>
@@ -477,7 +477,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">L"test地下室外墙test1test2test3!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在生成的程序中，分别尝试以各种编码类型搜索关键字 <code>test1test2test3</code> ，这样就可以找到目标字符串在最终程序中的字节码了。</p>
-<p><img src="http://resources.bianchengnan.tech/search-chinese-string-from-pe-file/search-specific-string.png" alt="search-specific-string"></p>
+<p><img src="/articles/search-chinese-string-from-pe-file/search-specific-string.png" alt="search-specific-string"></p>
 <p>有了这个字节码，就可以大概猜出来是什么编码了，或者既然已经拿到对应的字节码，可以直接根据字节码搜索。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>善用搜索工具，也许会有意想不到的效果。</p>
 
@@ -1020,6 +1020,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1108,7 +1114,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

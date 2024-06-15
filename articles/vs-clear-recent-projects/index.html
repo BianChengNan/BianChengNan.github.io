@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,vs2019,vs,vs2017,how-to,process monitor,sysinternals,注册表,脚本,visual studio,">
+  <meta name="keywords" content="原,vs2019,vs,how-to,vs2017,process monitor,sysinternals,注册表,脚本,visual studio,">
 
 
 
@@ -89,24 +89,24 @@
 
 
 <meta name="description" content="缘起vs有一个功能 —— 在起始页会显示最近打开的工程列表，方便用户快速打开之前打开过的工程文件。但是打开的工程文件多了，想要找到自己需要的工程文件也不是那么容易的，要是能把之前打开的记录都清理干净该有多好啊。本文记录了我在查找vs2019相关设置存储位置的调查过程 。对于vs2017以前的版本，对应的设置是保存在注册表中的，从vs2017开始，不再保存在注册表，而是存储在本地配置文件中。到底存储">
-<meta name="keywords" content="原,vs2019,vs,vs2017,how-to,process monitor,sysinternals,注册表,脚本,visual studio">
+<meta name="keywords" content="原,vs2019,vs,how-to,vs2017,process monitor,sysinternals,注册表,脚本,visual studio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | VS清空最近打开的工程记录">
 <meta property="og:url" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起vs有一个功能 —— 在起始页会显示最近打开的工程列表，方便用户快速打开之前打开过的工程文件。但是打开的工程文件多了，想要找到自己需要的工程文件也不是那么容易的，要是能把之前打开的记录都清理干净该有多好啊。本文记录了我在查找vs2019相关设置存储位置的调查过程 。对于vs2017以前的版本，对应的设置是保存在注册表中的，从vs2017开始，不再保存在注册表，而是存储在本地配置文件中。到底存储">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/vs-clear-recent-projects/most-likely-registry-key.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/vs-clear-recent-projects/find-in-registry.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/vs-clear-recent-projects/fileLocator-search-result.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/vs-clear-recent-projects/tiny-clear-tool.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/vs-clear-recent-projects/vs-history.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/vs-clear-recent-projects/msdn-forum-vs-registry-a.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/most-likely-registry-key.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/find-in-registry.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/fileLocator-search-result.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/tiny-clear-tool.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/vs-history.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/msdn-forum-vs-registry-a.png">
 <meta property="og:updated_time" content="2019-11-24T04:20:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | VS清空最近打开的工程记录">
 <meta name="twitter:description" content="缘起vs有一个功能 —— 在起始页会显示最近打开的工程列表，方便用户快速打开之前打开过的工程文件。但是打开的工程文件多了，想要找到自己需要的工程文件也不是那么容易的，要是能把之前打开的记录都清理干净该有多好啊。本文记录了我在查找vs2019相关设置存储位置的调查过程 。对于vs2017以前的版本，对应的设置是保存在注册表中的，从vs2017开始，不再保存在注册表，而是存储在本地配置文件中。到底存储">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/vs-clear-recent-projects/most-likely-registry-key.jpg">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/vs-clear-recent-projects/most-likely-registry-key.jpg">
 
 
 
@@ -476,7 +476,7 @@
 <li><p>停止捕获。</p>
 </li>
 <li><p>查找<code>vs2019</code>访问过的注册表项记录，根据<code>Result</code>那列是<code>SUCCESS</code>进行过滤，找了一圈没发现可疑项，有几类事件非常像，但是不能进一步得到更有效的信息。</p>
-<p><img src="http://resources.bianchengnan.tech/vs-clear-recent-projects/most-likely-registry-key.jpg" alt="most-likely-registry-key"></p>
+<p><img src="/articles/vs-clear-recent-projects/most-likely-registry-key.jpg" alt="most-likely-registry-key"></p>
 <p>上图黄色高亮部分<code>\REGISTERY\A\</code>对应的注册表项很奇怪，不能直接跳转过去（一般在<code>Path</code>列中的记录都可以通过右键菜单的<code>Jump To...</code>跳转过去），而且在注册表中搜索不到此键。关于<code>\REGISTERY\A\</code>的相关资料，会在文末给出。</p>
 </li>
 </ol>
@@ -485,10 +485,10 @@
 </ol>
 <p>看来这次不能通过<code>process monitor</code>直接找到答案了（其实，<code>process monitor</code>已经捕获了相关的事件，只不过我没能通过已知信息找到它）。我们还有什么办法呢？<code>vs</code>应该不至于对这么简单的配置项进行加密存储，我们还可以在整个电脑中搜索与<code>VsClearRecentProjects.sln</code>相关的内容。</p>
 <h3 id="在注册表中搜索"><a href="#在注册表中搜索" class="headerlink" title="在注册表中搜索"></a>在注册表中搜索</h3><p>首先，在注册表中搜索<code>VsClearRecentProjects.sln</code>，结果如下：</p>
-<p><img src="http://resources.bianchengnan.tech/vs-clear-recent-projects/find-in-registry.jpg" alt="find-in-registry"></p>
+<p><img src="/articles/vs-clear-recent-projects/find-in-registry.jpg" alt="find-in-registry"></p>
 <p>从搜索结果来看，没有一项是跟<code>vs</code>有关的，看来从注册表中我们没能得到什么有价值的线索。</p>
 <h3 id="继续在磁盘文件中搜索"><a href="#继续在磁盘文件中搜索" class="headerlink" title="继续在磁盘文件中搜索"></a>继续在磁盘文件中搜索</h3><p>我们可以通过<code>FileLocator</code>对磁盘文件内容进行搜索，结果如下：</p>
-<p><img src="http://resources.bianchengnan.tech/vs-clear-recent-projects/fileLocator-search-result.jpg" alt="fileLocator-search-result"></p>
+<p><img src="/articles/vs-clear-recent-projects/fileLocator-search-result.jpg" alt="fileLocator-search-result"></p>
 <p>Wow，搜到不少相关结果。对每一项进行检查后发现<code>ApplicationPrivateSettings.xml</code>最有可能。</p>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>关闭<code>vs2019</code>，删除<code>ApplicationPrivateSettings.xml</code>，重新启动<code>vs2019</code>，不再显示最近打开的工程列表。搞定！</p>
 <div class="note info"><p><strong>说明</strong>：对于<code>vs2017</code>及以后版本，相关配置存储在配置文件中，大家可以在自己机器上搜索该文件，删除即可。</p></div>
@@ -504,9 +504,9 @@
 <figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line">:: vs2005</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">8</span>.<span class="number">0</span>\FileMRUList /va /f</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">8</span>.<span class="number">0</span>\ProjectMRUList /va /f</span><br><span class="line"></span><br><span class="line">:: vs2008</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">9</span>.<span class="number">0</span>\FileMRUList /va /f</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">9</span>.<span class="number">0</span>\ProjectMRUList /va /f</span><br><span class="line"></span><br><span class="line">:: vs2010</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">10</span>.<span class="number">0</span>\FileMRUList /va /f</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">10</span>.<span class="number">0</span>\ProjectMRUList /va /f</span><br><span class="line"></span><br><span class="line">:: vs2012</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">11</span>.<span class="number">0</span>\FileMRUList /va /f</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">11</span>.<span class="number">0</span>\ProjectMRUList /va /f</span><br><span class="line"></span><br><span class="line">:: vs2013</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">12</span>.<span class="number">0</span>\FileMRUList /va /f</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">12</span>.<span class="number">0</span>\ProjectMRUList /va /f</span><br><span class="line"></span><br><span class="line">:: vs2015</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">14</span>.<span class="number">0</span>\FileMRUList /va /f</span><br><span class="line">@REGDelete HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<span class="number">14</span>.<span class="number">0</span>\ProjectMRUList /va /f</span><br><span class="line"></span><br><span class="line">:: vs2019 (需要变成你自己电脑上的路径)</span><br><span class="line">@<span class="built_in">del</span> C:\Users\BCN\AppData\Local\Microsoft\VisualStudio\<span class="number">16</span>.<span class="number">0</span>_20f56984\ApplicationPrivateSettings.xml</span><br></pre></td></tr></table></figure>
 
 <h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p>如果你不想手动查找<code>ApplicationPrivateSettings.xml</code>的路径，可以使用我写的超级简单的<code>winform</code>程序。<code>github</code>地址 <a href="https://github.com/BianChengNan/VsClearRecentProjects" target="_blank" rel="noopener">https://github.com/BianChengNan/VsClearRecentProjects</a> ，欢迎<code>fork</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/vs-clear-recent-projects/tiny-clear-tool.jpg" alt="tiny-clear-tool"></p>
+<p><img src="/articles/vs-clear-recent-projects/tiny-clear-tool.jpg" alt="tiny-clear-tool"></p>
 <p>最后，贴出一份<code>vs名称</code>与<code>内部版本号</code>的对应关系，以后可能用的到。</p>
-<p><img src="http://resources.bianchengnan.tech/vs-clear-recent-projects/vs-history.png" alt="vs-history"></p>
+<p><img src="/articles/vs-clear-recent-projects/vs-history.png" alt="vs-history"></p>
 <h2 id="关于-REGISTRY-A"><a href="#关于-REGISTRY-A" class="headerlink" title="关于\REGISTRY\A"></a>关于<code>\REGISTRY\A</code></h2><p><code>StackExchange</code>上的帖子 <a href="https://superuser.com/questions/689788/what-does-the-path-registry-a-in-sysinternals-procmon-log-mean" target="_blank" rel="noopener">What does the path ‘\REGISTRY\A\…’ in Sysinternals Procmon log mean?</a></p>
 <p>中的回答对此做了<strong>很有帮助</strong>的介绍，摘录如下：</p>
 <blockquote>
@@ -517,7 +517,7 @@
 <p>提问者最后的回答更加明确，引用了<a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f636ee47-1eb7-45ed-ae2a-674cbabb8b2c/clear-mru-list-in-visual-studio-2017?forum=visualstudiogeneral" target="_blank" rel="noopener"><code>MSDN Forum</code>上的问答</a>。为了方便大家，也摘录如下：</p>
 <blockquote>
 <p>Hi,</p>
-<p>The increase the isolation and resilience of VS 2017, it uses now a private registry hive. Internally VS uses a redirection and while for VS extensions (which are dlls) this is transparent, for external processes (that are exes), this causes them not to work.To change values in the private registry hive by hand, you can use regedit.exe to load a private hive. You need to select the HKEY_USERS node, and click the File &gt; Load Hive… menu. You select the privateregistry.bin file, give a name to the hive (I entered “VS2017PrivateRegistry”) and now you can see the 15.0<id>_Config key populated as usual (note: use File &gt; Unload Hive when done):<br><img src="http://resources.bianchengnan.tech/vs-clear-recent-projects/msdn-forum-vs-registry-a.png" alt="from msdn forum"><br>To change values in the private registry hive programmatically you need either to build an extension for VS or if you want to use an external exe you need to use the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724886(v=vs.85).aspx" target="_blank" rel="noopener">RegLoadAppKey</a> function or avoid using the registry directly and use the <a href="https://msdn.microsoft.com/en-us/library/microsoft.visualstudio.settings.externalsettingsmanager.aspx" target="_blank" rel="noopener">External Settings Manager</a>. See the section “Change: Reduce registry impact” in <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/breaking-changes-2017" target="_blank" rel="noopener">Breaking Changes in Visual Studio 2017 extensibility</a>.</id></p>
+<p>The increase the isolation and resilience of VS 2017, it uses now a private registry hive. Internally VS uses a redirection and while for VS extensions (which are dlls) this is transparent, for external processes (that are exes), this causes them not to work.To change values in the private registry hive by hand, you can use regedit.exe to load a private hive. You need to select the HKEY_USERS node, and click the File &gt; Load Hive… menu. You select the privateregistry.bin file, give a name to the hive (I entered “VS2017PrivateRegistry”) and now you can see the 15.0<id>_Config key populated as usual (note: use File &gt; Unload Hive when done):<br><img src="/articles/vs-clear-recent-projects/msdn-forum-vs-registry-a.png" alt="from msdn forum"><br>To change values in the private registry hive programmatically you need either to build an extension for VS or if you want to use an external exe you need to use the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms724886(v=vs.85).aspx" target="_blank" rel="noopener">RegLoadAppKey</a> function or avoid using the registry directly and use the <a href="https://msdn.microsoft.com/en-us/library/microsoft.visualstudio.settings.externalsettingsmanager.aspx" target="_blank" rel="noopener">External Settings Manager</a>. See the section “Change: Reduce registry impact” in <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/breaking-changes-2017" target="_blank" rel="noopener">Breaking Changes in Visual Studio 2017 extensibility</a>.</id></p>
 </blockquote>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><code>FileLocator</code>可以<strong>快速</strong>搜索文件内容，<code>everything</code>可以根据文件名进行<strong>快速</strong>搜索。</li>
@@ -582,9 +582,9 @@
           
             <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
           
-            <a href="/tags/vs2017/" rel="tag"><i class="fa fa-tag"></i> vs2017</a>
-          
             <a href="/tags/how-to/" rel="tag"><i class="fa fa-tag"></i> how-to</a>
+          
+            <a href="/tags/vs2017/" rel="tag"><i class="fa fa-tag"></i> vs2017</a>
           
             <a href="/tags/process-monitor/" rel="tag"><i class="fa fa-tag"></i> process monitor</a>
           
@@ -989,6 +989,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1077,7 +1083,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

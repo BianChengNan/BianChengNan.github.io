@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一阵子，朋友开发的 QT 程序遇到了一个崩溃问题，抓了 dump 。我跟着一起分析的。最后发现是由于内存分配失败导致的。 一起来练习一下排查思路吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/analyze-v.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-callstack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-meaningful-callstack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-frame-03.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/search-free-region-larger-than-0n302630400.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/address-summary.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-pe-header-with-dh.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/set-large-address-aware-in-vs.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.423Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/analyze-v.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-callstack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-meaningful-callstack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-frame-03.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/search-free-region-larger-than-0n302630400.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/address-summary.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-pe-header-with-dh.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/set-large-address-aware-in-vs.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.382Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 调试一个由内存分配失败导致的崩溃">
 <meta name="twitter:description" content="缘起前一阵子，朋友开发的 QT 程序遇到了一个崩溃问题，抓了 dump 。我跟着一起分析的。最后发现是由于内存分配失败导致的。 一起来练习一下排查思路吧。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/analyze-v.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/analyze-v.png">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -461,23 +461,23 @@
 <p><strong>说明：</strong> 本文很早就写好了草稿，一直没整理成文，Finally~</p>
 </blockquote>
 <h2 id="万能的-analyze-v"><a href="#万能的-analyze-v" class="headerlink" title="万能的 !analyze -v"></a>万能的 !analyze -v</h2><p>拿到转储文件，第一件事就是点击 <code>!analyze -v</code> 超链接，让 <code>windbg</code> 帮忙自动分析。</p>
-<p><img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/analyze-v.png" alt="analyze-v"></p>
+<p><img src="/articles/debug-another-memory-allocation-failed-crash/analyze-v.png" alt="analyze-v"></p>
 <p>从输出结果中的 <code>Qt5Core!qBadAlloc+0x1a</code> 可以猜测是内存分配失败导致的问题。</p>
 <h2 id="分配了多大内存？"><a href="#分配了多大内存？" class="headerlink" title="分配了多大内存？"></a>分配了多大内存？</h2><p>加载好符号文件，输入 <code>k</code> 命令查看调用栈。</p>
-<p><img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-callstack.png" alt="view-callstack"></p>
+<p><img src="/articles/debug-another-memory-allocation-failed-crash/view-callstack.png" alt="view-callstack"></p>
 <p>显示的调用栈，需要使用 <code>!analyze -v</code> 分析结果中的 <code>.cxr 0x59cba8</code> 切换上下文，然后再执行 <code>k</code> 命令即可查看到有意义的调用栈了。</p>
-<p><img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-meaningful-callstack.png" alt="view-meaningful-callstack"></p>
+<p><img src="/articles/debug-another-memory-allocation-failed-crash/view-meaningful-callstack.png" alt="view-meaningful-callstack"></p>
 <p>查看栈帧 <code>03</code> 对应的代码，可以发现是在通过 <code>file-&gt;readAll()</code> 读取整个文件的内容。</p>
-<p><img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-frame-03.png" alt="view-frame-03"></p>
+<p><img src="/articles/debug-another-memory-allocation-failed-crash/view-frame-03.png" alt="view-frame-03"></p>
 <p>根据代码逻辑及函数局部变量的值，可以确定要读取的文件大小大概是 <code>288.6MB</code>。</p>
-<h2 id="空闲空间够大吗？"><a href="#空闲空间够大吗？" class="headerlink" title="空闲空间够大吗？"></a>空闲空间够大吗？</h2><p>相比于之前分析空闲内存空间是否足够的办法（感兴趣的小伙伴儿可以点击 <a href="https://bianchengnan.gitee.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">这里</a> 查看），我们可以使用更高级的命令进行查找。命令如下：</p>
+<h2 id="空闲空间够大吗？"><a href="#空闲空间够大吗？" class="headerlink" title="空闲空间够大吗？"></a>空闲空间够大吗？</h2><p>相比于之前分析空闲内存空间是否足够的办法（感兴趣的小伙伴儿可以点击 <a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">这里</a> 查看），我们可以使用更高级的命令进行查找。命令如下：</p>
 <p><code>!address -f:Free -c:&quot;.if ( %3 &gt;= 0n302630400) {.echo %1 %2 %3}&quot;</code></p>
 <p>执行后可以发现，输出结果是空，如果减小 <code>0n302630400</code> 为 <code>0n102630400</code>，可以发现有两条记录。说明命令是有效的，而且进程中已经没有一块空闲地址空间可以满足本次分配请求。</p>
-<p><img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/search-free-region-larger-than-0n302630400.png" alt="search-free-region-larger-than-0n302630400"></p>
+<p><img src="/articles/debug-another-memory-allocation-failed-crash/search-free-region-larger-than-0n302630400.png" alt="search-free-region-larger-than-0n302630400"></p>
 <h2 id="更进一步"><a href="#更进一步" class="headerlink" title="更进一步"></a>更进一步</h2><p>如果使用 <code>!address -summary</code> 查看地址空间情况，可以发现空闲空间大小是 <code>1.025GB</code>，占整个内存空间的 <code>51.24%</code>。说明当前程序是一个 <code>32</code> 位的程序。</p>
-<p><img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/address-summary.png" alt="address-summary"></p>
+<p><img src="/articles/debug-another-memory-allocation-failed-crash/address-summary.png" alt="address-summary"></p>
 <p>使用 <code>!dh client</code> 查看 <code>client</code> 模块的 <code>PE</code> 文件头信息，可以发现确实是 32 位程序，而且没有开启 <code>Large Address Aware</code> 标志。</p>
-<p><img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/view-pe-header-with-dh.png" alt="view-pe-header-with-dh"></p>
+<p><img src="/articles/debug-another-memory-allocation-failed-crash/view-pe-header-with-dh.png" alt="view-pe-header-with-dh"></p>
 <h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol>
 <li><p>不要一次性读取全部文件到内存中</p>
 <p>这样修改后，可以处理非常大的文件。但是需要修改代码逻辑，相对复杂。</p>
@@ -486,7 +486,7 @@
 <p>非常简单，只需要重新编译即可。</p>
 </li>
 <li><p>设置 <code>Large Address Aware</code> 标志</p>
-<p>用户内存空间可以达到 <code>3GB</code>，可以在一定程度上避免内存分配失败的问题。<img src="http://resources.bianchengnan.tech/debug-another-memory-allocation-failed-crash/set-large-address-aware-in-vs.png" alt="set-large-address-aware-in-vs"></p>
+<p>用户内存空间可以达到 <code>3GB</code>，可以在一定程度上避免内存分配失败的问题。<img src="/articles/debug-another-memory-allocation-failed-crash/set-large-address-aware-in-vs.png" alt="set-large-address-aware-in-vs"></p>
 </li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本次排查相对顺利，解决也比较简单，虽然简单，还是有一些收获的。</p>
@@ -1035,6 +1035,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1123,7 +1129,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

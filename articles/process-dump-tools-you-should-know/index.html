@@ -96,21 +96,21 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言今天，向大家介绍几种可以抓取应用程序转储文件的工具及基本使用方法。更详细的用法，请参考每个工具对应的帮助文档。如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/taskmanager-dump.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/how-to-open-temp-folder.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/process-explorer-dump.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/vs-dump-screen-record.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/windbg-dump-screen-record.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/windbg-dump-m-option-help-msdn.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/procdump-help.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/procdump-example.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/mp-option-explain.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/procdump-demos.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/taskmanager-dump.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/how-to-open-temp-folder.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/process-explorer-dump.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/vs-dump-screen-record.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/windbg-dump-screen-record.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/windbg-dump-m-option-help-msdn.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/procdump-help.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/procdump-example.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/mp-option-explain.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/procdump-demos.gif">
 <meta property="og:updated_time" content="2020-01-01T13:43:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你需要知道的 N 种抓取 dump 的工具">
 <meta name="twitter:description" content="前言今天，向大家介绍几种可以抓取应用程序转储文件的工具及基本使用方法。更详细的用法，请参考每个工具对应的帮助文档。如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/taskmanager-dump.jpg">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/process-dump-tools-you-should-know/taskmanager-dump.jpg">
 
 
 
@@ -455,7 +455,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天，向大家介绍几种可以抓取应用程序转储文件的工具及基本使用方法。更详细的用法，请参考每个工具对应的帮助文档。如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.gitee.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天，向大家介绍几种可以抓取应用程序转储文件的工具及基本使用方法。更详细的用法，请参考每个工具对应的帮助文档。如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
 <a id="more"></a>
 
 
@@ -464,15 +464,15 @@
 <ol>
 <li><p>任务管理器</p>
 <p>任务管理器是唾手可得的抓取转储文件的工具。按住 <code>Ctrl + Shift + Esc</code> 即可打开。打开任务管理器后，在需要转储的进程上<code>右键</code> -&gt; <code>创建转储文件(C)</code>，即可自动保存转储文件到 <code>%tmp%</code> 目录下。</p>
-<p><img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/taskmanager-dump.jpg" alt="使用 taskmanager 抓取 dump 截图"></p>
+<p><img src="/articles/process-dump-tools-you-should-know/taskmanager-dump.jpg" alt="使用 taskmanager 抓取 dump 截图"></p>
 </li>
 </ol>
 <p>   <strong>提示：</strong> 创建成功后，会弹出对话框提示转储文件保存的位置。一般保存在系统临时目录下。在文件管理器地址栏输入 <code>%temp%</code> 即可快速打开临时目录，对 <code>%appdata%</code> 等其它目录同样有效。</p>
-<p>   <img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/how-to-open-temp-folder.gif" alt="how-to-open-temp-folder"></p>
+<p>   <img src="/articles/process-dump-tools-you-should-know/how-to-open-temp-folder.gif" alt="how-to-open-temp-folder"></p>
 <ol start="2">
 <li><p>process explorer</p>
-<p><code>process explorer</code> 比系统自带的资源管理器更强大，之前写过一篇文章介绍怎么<a href="https://bianchengnan.gitee.io/articles/replace-task-manager-with-process-explorer/" target="_blank" rel="noopener">使用 process explorer 替换系统自带的资源管理器</a>的文章。感兴趣的小伙伴儿可以看一看。打开 <code>process explorer</code>，在需要转储的进程上，<code>右键</code> -&gt; <code>Create Dump</code> -&gt; <code>Create Full Dump...</code> 就可以保存转储文件了。（ <code>Create Minidump...</code> 抓取的信息少，但抓取的转储文件小，适合网络传输，请根据自己的需要选择）</p>
-<p><img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/process-explorer-dump.jpg" alt="使用 process explorer 抓取 dump 截图"></p>
+<p><code>process explorer</code> 比系统自带的资源管理器更强大，之前写过一篇文章介绍怎么<a href="https://bianchengnan.github.io/articles/replace-task-manager-with-process-explorer/" target="_blank" rel="noopener">使用 process explorer 替换系统自带的资源管理器</a>的文章。感兴趣的小伙伴儿可以看一看。打开 <code>process explorer</code>，在需要转储的进程上，<code>右键</code> -&gt; <code>Create Dump</code> -&gt; <code>Create Full Dump...</code> 就可以保存转储文件了。（ <code>Create Minidump...</code> 抓取的信息少，但抓取的转储文件小，适合网络传输，请根据自己的需要选择）</p>
+<p><img src="/articles/process-dump-tools-you-should-know/process-explorer-dump.jpg" alt="使用 process explorer 抓取 dump 截图"></p>
 </li>
 </ol>
 <ol start="3">
@@ -480,7 +480,7 @@
 <p><code>visual studio</code> 简称 <code>vs</code>，大家应该对 <code>vs</code> 应该非常熟悉了，我就不多介绍了。打开 <code>vs</code>，附加到需要转储的进程上，点击 <code>Break All</code> 按钮（或者按快捷键 <code>Ctrl + Alt + Break</code>）暂停目标进程。然后点击 <code>Debug</code> -&gt; <code>Save Dump As...</code> 就可以保存转储文件了。如果不暂停目标进程，<code>Save Dump As...</code> 按钮是置灰的。</p>
 </li>
 </ol>
-<p><img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/vs-dump-screen-record.gif" alt="使用 vs 抓取 dump 录屏"></p>
+<p><img src="/articles/process-dump-tools-you-should-know/vs-dump-screen-record.gif" alt="使用 vs 抓取 dump 录屏"></p>
 <div class="note info"><p><strong>提示：</strong> 可以使用 <code>Ctrl + Alt + P</code> 快速打开 <code>Attach to Process</code> 界面，选择要附加的进程。</p></div>
 
 
@@ -488,10 +488,10 @@
 <ol start="4">
 <li><p>windbg</p>
 <p><code>windbg</code> 是 <code>windows</code>系统上非常强大的调试器，基本上我只用 <code>windbg</code> 分析转储文件。能分析转储文件，当然能保存转储文件了。打开 <code>windbg</code>，附加到需要转储的进程上，执行 <code>.dump [Options] path/to/save/dump.dmp</code></p>
-<p><img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/windbg-dump-screen-record.gif" alt="使用 windbg 抓取 dump 录屏"></p>
+<p><img src="/articles/process-dump-tools-you-should-know/windbg-dump-screen-record.gif" alt="使用 windbg 抓取 dump 录屏"></p>
 </li>
 </ol>
-<p>   可以使用 <code>.hh .dump</code> 查看 <code>.dump</code> 命令的帮助文档。其中的 <code>/m[MiniOptions]</code> 会直接影响生成的转储文件的内容和尺寸。我们有必要了解每个选项的意义。因为我实在是太懒了，就贴一张 <code>MSDN</code> 上的截图吧。<br>   <img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/windbg-dump-m-option-help-msdn.png" alt=".dump命令帮助 截自MSDN"></p>
+<p>   可以使用 <code>.hh .dump</code> 查看 <code>.dump</code> 命令的帮助文档。其中的 <code>/m[MiniOptions]</code> 会直接影响生成的转储文件的内容和尺寸。我们有必要了解每个选项的意义。因为我实在是太懒了，就贴一张 <code>MSDN</code> 上的截图吧。<br>   <img src="/articles/process-dump-tools-you-should-know/windbg-dump-m-option-help-msdn.png" alt=".dump命令帮助 截自MSDN"></p>
   <div class="note info"><p><strong>注意：</strong> </p>
 <p>最好用 <code>32</code> 位的 <code>windbg</code> 附加到 <code>32</code> 位进程中，<code>64</code>位的 <code>windbg</code> 附加到 <code>64</code> 位进程中。如果用 <code>64</code> 位的 <code>windbg</code> 附加到 <code>32</code> 位进程后，直接执行<code>.dump</code> 命令生成的转储文件会 “有问题”。</p></div>
 
@@ -504,10 +504,10 @@
 </ol>
 <ul>
 <li><p>直接运行 <code>procdump</code>查看用法。</p>
-<p> <img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/procdump-help.png" alt="procdump 帮助"></p>
+<p> <img src="/articles/process-dump-tools-you-should-know/procdump-help.png" alt="procdump 帮助"></p>
 </li>
 <li><p>运行 <code>procdump -? -e</code> 查看使用范例。</p>
-<p><img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/procdump-example.png" alt="procdump 用例"></p>
+<p><img src="/articles/process-dump-tools-you-should-know/procdump-example.png" alt="procdump 用例"></p>
 </li>
 </ul>
 <ul>
@@ -560,7 +560,7 @@
 <ul>
 <li><p><code>-mp</code> 选项</p>
 <p>使用该选项可以大大的降低转储文件的大小。强烈建议启用此选项。具体工作原理，请参考《Windows Sysinternals 实战指南》。</p>
-<p><img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/mp-option-explain.jpg" alt="-mp选项介绍 截自英文版"></p>
+<p><img src="/articles/process-dump-tools-you-should-know/mp-option-explain.jpg" alt="-mp选项介绍 截自英文版"></p>
 </li>
 <li><p>安装 <code>procdump</code> 为事后调试器（<code>postmortem debugger</code>），或者叫 <code>JIT</code> 调试器 （<code>Just In Time Debugger</code>）。</p>
 <p>以管理员权限运行 <code>procdump -i</code> 可以注册 <code>procdump</code> 为事后调试器。注册的时候可以指定转储文件保存的路径，及转储选项。例如，<code>procdump -mp -i e:\dumps\</code>。</p>
@@ -578,7 +578,7 @@
 
 
 
-<p>  这里是一份使用 <code>procdump</code> 的录屏，展示了上面介绍的几种用法，感兴趣的小伙伴可以看看。<br>  <img src="http://resources.bianchengnan.tech/process-dump-tools-you-should-know/procdump-demos.gif" alt="procdump 使用范例"></p>
+<p>  这里是一份使用 <code>procdump</code> 的录屏，展示了上面介绍的几种用法，感兴趣的小伙伴可以看看。<br>  <img src="/articles/process-dump-tools-you-should-know/procdump-demos.gif" alt="procdump 使用范例"></p>
 <ol start="6">
 <li><p>其它工具</p>
 <p>讲道理，只要是调试器就应该提供保存转储文件的功能。比如， <code>cdb</code>,  <code>ntsd</code>，令我感到意外的是 <code>x64dbg</code> 和 <code>ollydbg</code>  居然没有保存转储文件的功能？不过，这不影响这两个调试器的伟大！如果你自己写调试器的话，请一定要加上保存转储文件的功能。除了上文种提到的各种工具和调试器外，还有很多其它工具也可以保存转储文件。比如，<code>DebugDia</code>，<code>AdPlus</code> ，<code>gflags</code> 等。如果对哪个工具感兴趣，请自行研究。</p>
@@ -1012,6 +1012,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1100,7 +1106,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

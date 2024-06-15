@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT, blog, dev, c++, bianchengnan, bcn, gitee, 博客, github">
+  <meta name="keywords" content="原,">
 
 
 
@@ -88,17 +88,23 @@
 
 
 
-<meta name="description" content="Coding is hard, you can make it easy!">
-<meta name="keywords" content="blog,博客,dev,BianchengNan,bcn">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BianChengNan&#39;s Blog">
-<meta property="og:url" content="https://blog.bianchengnan.tech/archives/2025/03/index.html">
+<meta name="description" content="缘起在上篇文章中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考《调试实战 | dll 加载失败之全局变量初始化篇》 和 《调试实战 | 全局变量初始化顺序探究》。 但是代码里还有一处非常隐蔽的 bug，今天继续介绍一下这个问题及对应的解决方法。">
+<meta name="keywords" content="原">
+<meta property="og:type" content="article">
+<meta property="og:title" content="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
+<meta property="og:url" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
-<meta property="og:description" content="Coding is hard, you can make it easy!">
+<meta property="og:description" content="缘起在上篇文章中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考《调试实战 | dll 加载失败之全局变量初始化篇》 和 《调试实战 | 全局变量初始化顺序探究》。 但是代码里还有一处非常隐蔽的 bug，今天继续介绍一下这个问题及对应的解决方法。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Caddress-00007ffbdd9812e4.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cview-s_init_callbacks.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Ccompare-callstacks-after-reload-dll3-symbol.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.379Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BianChengNan&#39;s Blog">
-<meta name="twitter:description" content="Coding is hard, you can make it easy!">
+<meta name="twitter:title" content="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
+<meta name="twitter:description" content="缘起在上篇文章中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考《调试实战 | dll 加载失败之全局变量初始化篇》 和 《调试实战 | 全局变量初始化顺序探究》。 但是代码里还有一处非常隐蔽的 bug，今天继续介绍一下这个问题及对应的解决方法。">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png">
 
 
 
@@ -128,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/archives/2025/03/">
+  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -136,7 +142,7 @@
 
 
 
-  <title>归档 | BianChengNan's Blog</title>
+  <title>debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency | BianChengNan's Blog</title>
   
 
 
@@ -155,7 +161,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -291,71 +297,315 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-         
-          
-        很好! 目前共计 126 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h2 class="archive-year" id="archive-year-2025">2025</h2>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/">
 
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/articles/top-most-announcement/" itemprop="url">
-              
-                <span itemprop="name">置顶声明</span>
-              
-            </a>
-        
-      </h3>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2025-03-01T09:29:14+08:00" content="2025-03-01">
-          03-01
-        </time>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-01-06T16:39:23+08:00">
+                2024-01-06
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/原/" itemprop="url" rel="index">
+                    <span itemprop="name">原</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 热度：
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>℃
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在<a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1" target="_blank" rel="noopener">上篇文章</a>中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" target="_blank" rel="noopener">《调试实战 | dll 加载失败之全局变量初始化篇》</a> 和 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/" target="_blank" rel="noopener">《调试实战 | 全局变量初始化顺序探究》</a>。</p>
+<p>但是代码里还有一处非常隐蔽的 <code>bug</code>，今天继续介绍一下这个问题及对应的解决方法。</p>
+<a id="more"></a>
+
+
+
+<h2 id="示例程序"><a href="#示例程序" class="headerlink" title="示例程序"></a>示例程序</h2><p>在上篇文章初始版本的代码基础上，修改 <code>LoadDlls</code> 工程中的 <code>main()</code> 函数代码，使其加载 <code>dll1.dll</code> 和 <code>dll2.dll</code>（上篇文章中只加载了 <code>dll1.dll</code>）。修改后的关键代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[+] load plugin start."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* plugins[] = &#123; <span class="string">"dll1.dll"</span>, <span class="string">"dll2.dll"</span>, <span class="comment">/*"dll3.dll",*/</span> <span class="literal">nullptr</span> &#125;; <span class="comment">//&lt;---- 只修改了这里</span></span><br><span class="line">    <span class="keyword">auto</span> loaded_module_map = LoadPlugins(plugins);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[+] load plugin done, press any key to init plugins."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line"></span><br><span class="line">    InitPlugins(loaded_module_map);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="直接运行崩溃了"><a href="#直接运行崩溃了" class="headerlink" title="直接运行崩溃了"></a>直接运行崩溃了</h2><p>运行完 <code>LoadPlugins()</code> 后，点击任意按键继续运行，会继续执行 <code>InitPlugins()</code>，程序会在此函数中崩溃。因为我设置 <code>procdump</code> 为 <code>JIT</code> 调试器（具体设置方法可以参考<a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">这篇文章</a>），程序崩溃后会自动保存崩溃转储文件。</p>
+<p>用 <code>windbg</code> 打开转储文件，无脑点击 <code>!analyze -v</code>，让 <code>windbg</code> 帮我们自动分析，分析结果如下图：</p>
+<p><img src="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png" alt="exception-when-excute-from-unloaded-dll3"></p>
+<p>从上图中的<strong>调用栈</strong>基本可以确定在执行 <code>dll3.dll</code> 中的代码时发生了异常。</p>
+<p>而且这次的异常不是因为<strong>读/写</strong>非法地址导致的，而是执行到非法地址导致的（注意红色高亮部分的提示 <code>Attempt to execute non-executable address 00007ffbdd9812e4</code>）。</p>
+<p>可以猜测 <code>00007ffbdd9812e4</code> 是属于 <code>dll3.dll</code> 的（可以通过 <code>!address 00007ffbdd9812e4</code> 验证），而且当执行到 <code>00007ffbdd9812e4</code> 的时候，<code>dll3.dll</code> 已经被卸载了（注意底部红色高亮部分的 <code>Unloaded</code> 关键字）。</p>
+<p>使用 <code>!address 00007ffbdd9812e4</code> 查看该地址的信息，如下图：</p>
+<p><img src="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Caddress-00007ffbdd9812e4.png" alt="address-00007ffbdd9812e4"></p>
+<p>从上图可知，<code>00007ffbdd9812e4</code> 确实是属于 <code>dll3.dll</code> 的，但是 <code>dll3.dll</code> 已经被卸载了。<code>00007ffbdd9812e4</code> 所在的页面是 <code>MEM_FREE</code> 的，而且是 <code>PAGE_NOACCESS</code> 的。</p>
+<p>但是，程序为什么会执行到一个已经被卸载的模块的地址呢？</p>
+<h2 id="追本溯源"><a href="#追本溯源" class="headerlink" title="追本溯源"></a>追本溯源</h2><p>从调用栈可以得知，<code>dll3.dll</code> 中的函数是由 <code>dll2!Init()</code> 调用的， 通过查看  <code>dll2!Init()</code> 源码，可以发现 <code>dll2!Init()</code> 函数中会遍历 <code>s_init_callbacks</code>。在 <code>windbg</code> 中输入<code>dx dll2!s_init_callbacks</code> 查看其内容，如下图：</p>
+<p><img src="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cview-s_init_callbacks.png" alt="view-s_init_callbacks"></p>
+<p>可以发现，<code>s_init_callbacks</code> 中只有一项，是 <code>dll3.dll</code> 中的函数。</p>
+<p>根据源码可知，<code>dll3.dll</code> 在加载的时候会自动调用 <code>dll2!RegisterInitCallback()</code> 注册回调函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN_AUTO_RUN</span><br><span class="line">RegisterInitCallback(<span class="string">"dll3"</span>, Dll3InitCallback);</span><br><span class="line">END_AUTO_RUN</span><br></pre></td></tr></table></figure>
+
+<p>可以推理，<code>s_init_callbacks</code> 中的函数是 <code>dll3!Dll3InitCallback</code>。</p>
+<p>加载 <code>dll3.dll</code> 的调试符号后，查看调用栈，可以证实我们的猜想。如下图：</p>
+<p><img src="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Ccompare-callstacks-after-reload-dll3-symbol.png" alt="compare-callstacks-after-reload-dll3-symbol"></p>
+<p>根据源码可知，<code>dll3.dll</code> 在加载的时候还会自动调用 <code>RegisterCallback()</code>，相关代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN_AUTO_RUN</span><br><span class="line">RegisterCallback(<span class="string">"dll3"</span>, Dll3Callback);</span><br><span class="line">END_AUTO_RUN</span><br></pre></td></tr></table></figure>
+
+<p>因为调用 <code>RegisterCallback()</code> 的时候发生了异常（在<a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1" target="_blank" rel="noopener">上篇文章</a>中已经分析过了），导致 <code>dll3.dll</code> 加载失败，<code>dll3.dll</code> 会被自动<strong>卸载</strong> 。但是通过 <code>RegisterInitCallback()</code> 注册的回调函数已经保存在了 <code>dll2!s_init_callbacks</code> 中，没有被清除。</p>
+<p>当后面调用 <code>dll2!Init()</code> 时，会调用 <code>dll3.dll</code> 注册到  <code>dll2!s_init_callbacks</code> 中的函数（<code>Dll3InitCallback</code>），因为 <code>dll3.dll</code> 已经被卸载了，对应的函数地址也无效了，也就会发生上文中的异常。</p>
+<h2 id="深入思考"><a href="#深入思考" class="headerlink" title="深入思考"></a>深入思考</h2><p>如果在 <code>LoadDlls.exe</code> 中也显式加载了 <code>dll3.dll</code>，还会不会崩溃呢？答案是<strong>可能崩溃，也可能不崩溃</strong>。</p>
+<p>因为 <code>RegisterInitCallback()</code>内部更新数据时使用的是 <code>map.insert()</code>，这会导致一个问题 —— 如果 <code>map</code> 中已经存在相同的 <code>key</code>，那么 <code>insert()</code> 会失败，不会更新数据。</p>
+<p>试想，如果显式加载 <code>dll3.dll</code> 成功，但是 <code>dll3.dll</code> 的基址变了。<code>map</code> 中保存的还是旧的无效地址，而不是新的函数地址。</p>
+<p>如果 <code>dll3.dll</code> 的基址没发生变化，新函数地址与旧函数地址一样，只不过变成有效的了。程序可以非常<strong>“幸运”</strong>的正常运行。 </p>
+<p>要想规避这种问题，可以换一种写法，修改后的代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RegisterInitCallback</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* key, <span class="keyword">void</span>(*callback)())</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//s_init_callbacks.insert(std::make_pair(key, callback));</span></span><br><span class="line">    s_init_callbacks[key] = callback;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>调试由于模块被卸载导致的异常，其实很简单 —— 直接在 <code>windbg</code> 中使用 <code>!analyze -v</code> 基本上就可以定位到问题了</p>
+</li>
+<li><p>这次的崩溃，直接原因在于模块被意外的卸载了，归根结底还是代码不规范导致的</p>
+</li>
+<li><p>如果 <code>map</code> 中想保存最新数据，那么不要使用 <code>map.insert</code>，而要使用 <code>operater []</code></p>
+</li>
+<li><p><code>map.insert()</code> 在插入新数据时，如果发现对应的 <code>key</code> 已经存在，会直接返回 <code>false</code>，而不会更新数据。<code>operator []</code> 会强制更新数据</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.png" alt="BianChengNan wechat" style="width: 400px; max-width: 100%;">
+    <div>扫描左侧二维码关注公众号，扫描右侧二维码加我个人微信:)</div>
+</div>
+
       </div>
+    
 
-    </header>
-  </article>
+    
 
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    BianChengNan
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+  <li class="post-copyright-itellyou">
+    <strong>作者寄语： </strong>
+    文章的结束只是思考的开始，您宝贵的意见和建议将是我继续前行的动力，点击右侧分享按钮即可携友同行！
+  </li>
+</ul>
 
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/原/" rel="tag"><i class="fa fa-tag"></i> 原</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" rel="next" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
+                <i class="fa fa-chevron-left"></i> debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" rel="prev" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
+                debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
       
 
-    </div>
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -363,6 +613,18 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+  <script src="https://utteranc.es/client.js" repo="BianChengNan/utterances-comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async>
+  </script>
+
+
+    </div>
+  
+
+
 
         </div>
         
@@ -383,8 +645,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -403,7 +674,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -477,6 +748,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例程序"><span class="nav-number">2.</span> <span class="nav-text">示例程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接运行崩溃了"><span class="nav-number">3.</span> <span class="nav-text">直接运行崩溃了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#追本溯源"><span class="nav-number">4.</span> <span class="nav-text">追本溯源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入思考"><span class="nav-number">5.</span> <span class="nav-text">深入思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -641,6 +928,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -1053,6 +1344,23 @@
   </script>
 
   
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 21416,
+    el: 'wpac-rating',
+    color: 'fadb14'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
 
   
 

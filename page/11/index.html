@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-dump-our-own-process/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-force-system-to-crash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -325,7 +325,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/articles/how-to-dump-our-own-process/" itemprop="url">向大厂看齐！为自己的程序增加自动转储的功能！</a></h2>
+                <a class="post-title-link" href="/articles/how-to-force-system-to-crash/" itemprop="url">系统蓝屏的几种姿势，确定不了解下么？</a></h2>
         
 
         <div class="post-meta">
@@ -338,8 +338,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-06T21:43:53+08:00">
-                2020-02-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-22T17:09:42+08:00">
+                2020-02-22
               </time>
             
 
@@ -354,8 +354,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -442,7 +442,584 @@
 
       
         
-          <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.gitee.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 <a href="https://bianchengnan.github.io/articles/kernel-memory-dump-setting/" target="_blank" rel="noopener">蓝屏（BSOD）转储设置，看本文就够了！</a> 这篇文章里比较详细的介绍了蓝屏转储设置。做好设置后，我们就可以在需要的时候使系统蓝屏了。这样我们就可以拿到一份系统转储，供我们分析问题了。本文介绍几种可以使系统蓝屏的办法。当然肯定还有其它办法，如果哪位小伙伴儿知道比较实用的方法，欢迎留言分享。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/how-to-force-system-to-crash/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/kernel-memory-dump-setting/" itemprop="url">蓝屏（BSOD）转储设置，看本文就够了！</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-15T21:55:43+08:00">
+                2020-02-15
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/转储/" itemprop="url" rel="index">
+                    <span itemprop="name">转储</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们在 <a href="https://bianchengnan.github.io/articles/kernel-mode-dump-begins/" target="_blank" rel="noopener">内核转储，开抓啦！</a> 这篇文章里介绍了一个关键的系统设置。设置好后可以让系统在蓝屏（<strong>B</strong>lue <strong>S</strong>creen <strong>o</strong>f <strong>D</strong>eath，简称 <code>BSOD</code>）的时候自动保存转储文件。那篇文章只是简单的介绍了设置步骤，本文力求详细的介绍相关内容。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/kernel-memory-dump-setting/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/kernel-mode-dump-begins/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/kernel-mode-dump-begins/" itemprop="url">内核转储，开抓啦！</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-13T22:55:43+08:00">
+                2020-02-13
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/转储/" itemprop="url" rel="index">
+                    <span itemprop="name">转储</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前面几篇文章主要介绍了用户态转储文件（<code>User-Mode Dump File</code>）相关的内容。相信通过前面几篇文章的介绍，大家对用户态转储文件的抓取方法有了进一步的了解。接下来的几篇文章将介绍如何保存内核态转储文件（<code>Kernel-Model Dump File</code>）。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/kernel-mode-dump-begins/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-dump-our-own-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/how-to-dump-our-own-process/" itemprop="url">向大厂看齐！为自己的程序增加自动转储的功能！</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-06T21:43:53+08:00">
+                2020-02-06
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/转储/" itemprop="url" rel="index">
+                    <span itemprop="name">转储</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不知道各位小伙伴有没有遇到过 <code>微信</code> 或者 <code>QQ</code> 崩溃的情况。它们在崩溃的时候都会自动弹出一个对话框，提示用户上传相关文件，供开发人员分析问题的原因。有的小伙伴儿可能不太清楚我在说什么。没关系，下图就是微信崩溃后自动弹出的界面。</p>
           <!--noindex-->
           <div class="post-button text-center">
@@ -635,7 +1212,7 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇介绍 <code>JIT Debugging</code> 的文章 —— <a href="https://bianchengnan.gitee.io/articles/little-problem-about-dump-file/" target="_blank" rel="noopener">你需要了解的JIT Debugging</a> 中，我们了解到 <code>procdump</code> 设置为 <code>JIT</code>调试器的时候，在设置的参数中，有一个叫 <code>%p</code> 的参数（需要和 <code>-j</code> 一起使用），指向了 <code>JIT_DEBUG_INFO</code>。今天简单介绍一下 <code>JIT_DEBUG_INFO</code>。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇介绍 <code>JIT Debugging</code> 的文章 —— <a href="https://bianchengnan.github.io/articles/little-problem-about-dump-file/" target="_blank" rel="noopener">你需要了解的JIT Debugging</a> 中，我们了解到 <code>procdump</code> 设置为 <code>JIT</code>调试器的时候，在设置的参数中，有一个叫 <code>%p</code> 的参数（需要和 <code>-j</code> 一起使用），指向了 <code>JIT_DEBUG_INFO</code>。今天简单介绍一下 <code>JIT_DEBUG_INFO</code>。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/articles/brief-introduction-to-jit-debug-info/#more" rel="contents">
@@ -827,8 +1404,8 @@
 
       
         
-          <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.gitee.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>细心的小伙伴可能注意到了，我在上一篇介绍抓取转储文件的工具的文章 —— <a href="https://bianchengnan.gitee.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">你需要知道的 N 种抓取 dump 的工具</a> 中提到了：</p>
+          <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>细心的小伙伴可能注意到了，我在上一篇介绍抓取转储文件的工具的文章 —— <a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">你需要知道的 N 种抓取 dump 的工具</a> 中提到了：</p>
 <blockquote>
 <p>如果用 <code>64</code> 位的 <code>windbg</code> 附加到 <code>32</code> 位目标进程后，直接执行<code>.dump</code> 命令生成的转储文件会 “有问题”。</p>
 </blockquote>
@@ -1024,8 +1601,8 @@
 
       
         
-          <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.gitee.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我在 <a href="https://bianchengnan.gitee.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">你需要知道的 N 种抓取 dump 的工具</a> 这篇文章里，向大家介绍了几款可以抓取转储文件的工具及其简单用法。不知道大家是否还记得，以<strong>管理员权限</strong>运行 <code>procdump -i</code> 可以注册 <code>procdump</code> 为事后调试器。大家是否了解其实现原理？今天让我们一起揭开其神秘面纱。</p>
+          <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我在 <a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">你需要知道的 N 种抓取 dump 的工具</a> 这篇文章里，向大家介绍了几款可以抓取转储文件的工具及其简单用法。不知道大家是否还记得，以<strong>管理员权限</strong>运行 <code>procdump -i</code> 可以注册 <code>procdump</code> 为事后调试器。大家是否了解其实现原理？今天让我们一起揭开其神秘面纱。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/articles/auto-dump-when-process-crash/#more" rel="contents">
@@ -1217,7 +1794,7 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天，向大家介绍几种可以抓取应用程序转储文件的工具及基本使用方法。更详细的用法，请参考每个工具对应的帮助文档。如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.gitee.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天，向大家介绍几种可以抓取应用程序转储文件的工具及基本使用方法。更详细的用法，请参考每个工具对应的帮助文档。如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/articles/process-dump-tools-you-should-know/#more" rel="contents">
@@ -1657,605 +2234,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/troubleshoot-CPU-100/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/troubleshoot-CPU-100/" itemprop="url">调试实战 | 程序 CPU 占用率飙升，你知道如何快速定位吗？</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-14T23:06:27+08:00">
-                2019-12-14
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2019-12-14T23:06:27+08:00">
-                2019-12-14
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/调试/" itemprop="url" rel="index">
-                    <span itemprop="name">调试</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/调试/调试案例/" itemprop="url" rel="index">
-                    <span itemprop="name">调试案例</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果我们自己的程序的<code>CPU Usage</code>（<code>CPU占用率</code>）飙升，并且居高不下，很有可能陷入了死循环。你知道怎么快速定位并解决吗？今天跟大家分享几种定位方法，希望对你有所帮助。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/troubleshoot-CPU-100/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/DebugView-Usage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/DebugView-Usage/" itemprop="url">神兵利器 | 你知道怎么使用 DebugView 查看内核调试信息吗？</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-12T22:11:53+08:00">
-                2019-12-12
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2019-12-12T22:11:53+08:00">
-                2019-12-12
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排错/" itemprop="url" rel="index">
-                    <span itemprop="name">排错</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><code>DebugView</code>是<code>sysinternals</code>工具集中的一款用来查看调试信息的工具。不管你是内核开发人员还是应用程序开发人员，都会用到这款神器。先简单看看<code>DebugView</code>可以干什么吧。</p>
-<ul>
-<li>可以查看应用程序输出的调试信息。</li>
-<li>可以查看驱动程序输出的调试信息。</li>
-<li>可以查看本地机器的调试信息。</li>
-<li>可以查看远程机器的调试信息。</li>
-<li>可以根据规则<strong>高亮显示</strong>。</li>
-<li>可以根据关键字<strong>过滤</strong>。</li>
-<li>可以根据关键字<strong>搜索</strong>。</li>
-<li>可以自动显示最新一条记录。</li>
-<li>……</li>
-</ul>
-<p>功能太多太全了，有木有？！心动了吗？ 快跟我一起来了解下这个神器吧。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/DebugView-Usage/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/My-Ignite-Beijing-2019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/My-Ignite-Beijing-2019/" itemprop="url">Ignite Beijing 2019你参加了吗？多图，慎点！</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-10T18:03:57+08:00">
-                2019-12-10
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2019-12-10T18:03:57+08:00">
-                2019-12-10
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术会议/" itemprop="url" rel="index">
-                    <span itemprop="name">技术会议</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>第一次参加微软技术大会。之前对微软技术大会有太多遐想，今天终于亲身参与其中了。现在，终于有时间回顾下今天的 <code>Ignite</code>之旅了（全称是 <code>Microsoft Ignite The Tour</code>）。特记流水账一篇，以纪念我的第一次。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/My-Ignite-Beijing-2019/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2310,7 +2288,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，在项目中遇到一个有趣的异常。在没附加调试器的情况下会直接崩溃。附加调试器后，会中断到调试器中，但是按 F5 继续运行后，程序还能继续执行。 interesting ！你能猜出这是个什么异常吗？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd/stack-overflow-exception.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd/access-violation-exception-after-stack-overflow.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.839Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd/stack-overflow-exception.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd/access-violation-exception-after-stack-overflow.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.443Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="有趣的异常">
 <meta name="twitter:description" content="缘起最近，在项目中遇到一个有趣的异常。在没附加调试器的情况下会直接崩溃。附加调试器后，会中断到调试器中，但是按 F5 继续运行后，程序还能继续执行。 interesting ！你能猜出这是个什么异常吗？">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd/stack-overflow-exception.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd/stack-overflow-exception.png">
 
 
 
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -455,14 +455,14 @@
 <h2 id="初遇错误"><a href="#初遇错误" class="headerlink" title="初遇错误"></a>初遇错误</h2><p>在测试程序功能的时候，意外的崩溃了。以为是偶发事件，于是重新执行，依然会崩溃。一般遇到这种问题可以先考虑在调试器中运行，看看是否能重现。</p>
 <h2 id="上调试器"><a href="#上调试器" class="headerlink" title="上调试器"></a>上调试器</h2><p>附加 <code>vs</code> 到目标进程，再次执行相应的功能，果然中断到了调试器中。简单查看调用栈及出错的代码，并没有显著异常（其实，有相当明显的提示，只是当时没有注意）。偶然点了 <code>F5</code>，没想到居然可以继续运行，有点意思。由于项目比较紧，就一直将就着挂着调试器运行测试代码。前些日子有点时间，再次看了下这个问题。</p>
 <h2 id="再次检查"><a href="#再次检查" class="headerlink" title="再次检查"></a>再次检查</h2><p>再次在调试器中运行程序，异常果然再次发生了。这次心态比较平和，不急不躁，仔细一看异常提示信息，差点被自己气吐血。具体是什么异常呢？请看下图：</p>
-<p><img src="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd/stack-overflow-exception.png" alt="stack-overflow-exception"></p>
+<p><img src="/articles/interesting-exception-0xc00000fd/stack-overflow-exception.png" alt="stack-overflow-exception"></p>
 <p>这不是栈溢出吗？这么明显的提示，当时怎么就给华丽丽的错过了呢？一定要仔细看提示啊！知道是栈溢出，后面的问题就不用查了。这里简单介绍一下 <code>32</code> 位程序的栈增长过程。</p>
 <h2 id="栈增长过程"><a href="#栈增长过程" class="headerlink" title="栈增长过程"></a>栈增长过程</h2><p>默认情况下，每个线程有 <code>1 MB</code> 的栈空间，这 <code>1 MB</code> 的空间对应的虚拟内存（按页面组织的，页面大小一般是 <code>4KB</code>）并不是一开始就有对应的物理页面的，而是按需分配的。</p>
 <p>开始时，最上方的两个虚拟页面（栈是向下增长的）有对应的物理页面，这两个页面有 <code>PAGE_READWRITE</code> 保护属性，其中第二个页面还额外包含 <code>PAGE_GUARD</code> 保护属性，是防护页面。当线程试图访问防护页面中的内存时，系统会得到通知 ，系统会去除第二个页面的 <code>PAGE_GUARD</code> 保护属性标志，为第三个页面调拨物理页面，然后为第三个页面设置 <code>PAGE_GUARD</code> 保护属性标志，以此类推。</p>
 <p>第 <code>254</code> 个页面是最后一个带 <code>PAGE_GUARD</code> 的页面，也就是最后一个保护页面。当线程访问第 <code>254</code> 个页面的时候，系统会得到通知，系统会去除第 <code>254</code> 个页面的 <code>PAGE_GUARD</code> 保护属性标志，为第 <code>255</code> 个页面调拨物理页面，但是系统并不会为第 <code>255</code> 个页面设置 <code>PAGE_GUARD</code> 保护属性标志，相反的，会抛出 <code>EXCEPTION_STACK_OVERFLOW</code> 异常，该异常对应的值是 <code>0xC00000FD</code>。</p>
 <p>系统永远不会为第 <code>256</code> 个页面调拨物理页面。这样是为了保护进程的其它数据，使它们不会因为意外的内存写越界而遭到破坏。</p>
 <h2 id="现象解释"><a href="#现象解释" class="headerlink" title="现象解释"></a>现象解释</h2><p>相信弄明白栈的增长过程，基本就明白了为什么在调试器中可以继续运行的原因了。当调试器收到栈溢出异常时，系统已经把保护页面的<code>PAGE_GUARD</code> 保护属性标志去除了，并且为下一个页面调拨了物理页面。在调试器中按 <code>F5</code> 继续运行，再次访问相同的地址已经不会产生异常。所以就可以继续运行了。但并不是所有情况下都可以这么幸运，当使用内存过多，访问到第 <code>256</code> 个页面时，还是会报页面访问异常（对应的异常码是 <code>0xC0000005</code>）。</p>
-<p><img src="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd/access-violation-exception-after-stack-overflow.png" alt="access-violation-exception-after-stack-overflow"></p>
+<p><img src="/articles/interesting-exception-0xc00000fd/access-violation-exception-after-stack-overflow.png" alt="access-violation-exception-after-stack-overflow"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p>一定要仔细看错误提示！</p>
 </li>
@@ -1006,6 +1006,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1094,7 +1100,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

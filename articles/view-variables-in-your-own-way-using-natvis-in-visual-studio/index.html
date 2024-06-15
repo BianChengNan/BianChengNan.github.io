@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近在调试的时候，需要观察第三方容器中每一个元素的值。默认情况下，vs 并不知道如何显示第三方容器的内容，只能手动观察容器中的每一个值，超级不方便。我找到一个非常给力的好办法，你还知道其它好办法吗？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/copy-watch-expression.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip-with-natvis.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window-with-natvis.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window-with-natvis.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/natvis-path.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.366Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/copy-watch-expression.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip-with-natvis.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window-with-natvis.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window-with-natvis.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/natvis-path.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.532Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试技巧 | 你很可能需要知道这个调试小技巧">
 <meta name="twitter:description" content="缘起最近在调试的时候，需要观察第三方容器中每一个元素的值。默认情况下，vs 并不知道如何显示第三方容器的内容，只能手动观察容器中的每一个值，超级不方便。我找到一个非常给力的好办法，你还知道其它好办法吗？">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip.png">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -463,30 +463,30 @@
 <blockquote>
 <p>小贴士：把鼠标移动到对应的变量即可。</p>
 </blockquote>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip.png" alt="悬浮提示"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip.png" alt="悬浮提示"></p>
 <p>可以发现，现在 <code>vs</code> 并不知道如何解析 <code>pts</code> 的内容，只能 “傻傻” 的显示出 <code>bvector</code> 中的三个成员。</p>
 <p>2、通过 <code>watch</code> 窗口观察。</p>
 <blockquote>
 <p>小贴士：可以使用快捷键 <code>ctrl + alt + w, 1</code> 来打开第一个 <code>watch</code> 窗口。据我观察，最多支持 <code>4</code> 个 <code>watch</code> 窗口。</p>
 </blockquote>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window.png" alt="watch-in-watch-window"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window.png" alt="watch-in-watch-window"></p>
 <p>可以发现，我们可以在代码中使用的 <code>at(index)</code> 和 <code>[index]</code> 已经失效了，只能使用蹩脚的 <code>(pts._C_alloc)._C_begin + index</code> 来观察对应的变量（反人类，有木有）。 </p>
 <p>你也许好奇，我是怎么知道可以使用 <code>(pts._C_alloc)._C_begin + index</code> 来观察的，简单！在悬浮提示中，右键，复制表达式(X)，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/copy-watch-expression.png" alt="copy-watch-expression"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/copy-watch-expression.png" alt="copy-watch-expression"></p>
 <p>3、通过 <code>quick watch</code> 窗口观察。</p>
 <blockquote>
 <p>小贴士：可以选中要观察的变量，然后按快捷键 <code>shift + f9</code> 打开快速监视窗口。</p>
 </blockquote>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window.png" alt="watch-in-quick-watch-window"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window.png" alt="watch-in-quick-watch-window"></p>
 <p>同样，没什么用。</p>
 <p>难道只能这么<strong>低效</strong>吗？<code>vs2012</code> 之前是的，但是事情从 <code>vs2012</code> 发生了变化。从 <code>vs2012</code> 开始，<code>vs</code> 支持通过  <code>natvis</code> 来观察变量，超级方便。</p>
 <p>话不多说，开启 <code>natvis</code> 后再使用上面的三种方法观察同样的变量。</p>
 <h2 id="开启-natvis-后观察"><a href="#开启-natvis-后观察" class="headerlink" title="开启 natvis 后观察"></a>开启 natvis 后观察</h2><p>1、通过 <code>vs</code> 的悬浮提示观察。</p>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip-with-natvis.png" alt="watch-in-tip-with-natvis"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-tip-with-natvis.png" alt="watch-in-tip-with-natvis"></p>
 <p>2、通过 <code>watch</code> 窗口观察。</p>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window-with-natvis.png" alt="watch-in-watch-window-with-natvis"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-watch-window-with-natvis.png" alt="watch-in-watch-window-with-natvis"></p>
 <p>3、通过 <code>quick watch</code> 窗口观察。</p>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window-with-natvis.png" alt="watch-in-quick-watch-window-with-natvis"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/watch-in-quick-watch-window-with-natvis.png" alt="watch-in-quick-watch-window-with-natvis"></p>
 <p>有木有很方便？要是很多元素要观察（比如，有 <code>128</code> 或者 <code>1024</code> 个），是不是可以节省很多时间？</p>
 <h2 id="如何开启"><a href="#如何开启" class="headerlink" title="如何开启"></a>如何开启</h2><p>可以自己编写 <code>.natvis</code>文件并放到指定目录下，重启 <code>vs</code> 后即可加载。请原谅我比较懒，直接从官方文档上摘录了一段，更多内容可以参考文末给出的参考链接。</p>
 <p><a href="https://blogs.msdn.microsoft.com/vcblog/2015/09/28/debug-visualizers-in-visual-c-2015/" target="_blank" rel="noopener">搜索位置及顺序转载如下</a></p>
@@ -500,7 +500,7 @@
 </ul>
 </blockquote>
 <p>我放到了 <code>%USERPROFILE%\My Documents\Visual Studio 2013\Visualizers</code> 下。</p>
-<p><img src="http://resources.bianchengnan.tech/view-variables-in-your-own-way-using-natvis-in-visual-studio/natvis-path.png" alt="natvis-path"></p>
+<p><img src="/articles/view-variables-in-your-own-way-using-natvis-in-visual-studio/natvis-path.png" alt="natvis-path"></p>
 <h2 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h2><p>在高版本的 <code>vs</code> 中（<code>vs2017/vs2019</code> ，<code>vs2015</code> 没亲自确认），可以自动重新加载修改的 <code>.natvis</code> 文件内容，但是 <code>vs2012/vs2013</code> 并不支持动态加载。</p>
 <h2 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h2><p>如果 <code>natvis</code> 加载有问题，可以通过设置注册表<a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/6e4a67f8-1239-4b3c-af45-f5ea5ea41e80/enabling-natvis-diagnostic-mode" target="_blank" rel="noopener">开启诊断信息</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\11.0_Config\Debugger]</span><br><span class="line">&quot;EnableNatvisDiagnostics&quot;=dword:00000001</span><br></pre></td></tr></table></figure>
@@ -1071,6 +1071,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1159,7 +1165,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

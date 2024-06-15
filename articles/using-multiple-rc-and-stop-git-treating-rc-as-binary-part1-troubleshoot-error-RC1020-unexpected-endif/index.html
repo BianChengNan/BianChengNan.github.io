@@ -96,27 +96,27 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近这些天，我一有时间就捣鼓 .rc 。用 git 管理过 .rc 文件的小伙伴儿应该都知道，.rc 文件会被 git 默认当作二进制文件来管理。每次合并代码的时候，只要涉及到 .rc 文件的变更，很大概率会报冲突，而且工具不能很好的解决，只能手动解决。为了解决这个问题，我想到了两个方案：  让 git 把 .rc 文件当成普通文件来管理。 把一个大的 .rc 文件拆成多个小的 .rc 文件，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/unexpected-end-of-file-error.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/multiple-rc-include-success.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/binary-rc-diff-fail.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/gitattributes.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/git-diff-rc-success.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/error-RC1020-unexpected-endif.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/check-file-modification.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-rc-by-double-click.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-normal-rc-by-double-click.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compare-two-rc-files.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/hex-compare-bom-header.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/save-as-utf16-le.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compile-success.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/startup-fail.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/debug-startup-fail.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/view-pe-resource-segment.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.339Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/unexpected-end-of-file-error.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/multiple-rc-include-success.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/binary-rc-diff-fail.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/gitattributes.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/git-diff-rc-success.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/error-RC1020-unexpected-endif.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/check-file-modification.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-rc-by-double-click.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-normal-rc-by-double-click.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compare-two-rc-files.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/hex-compare-bom-header.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/save-as-utf16-le.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compile-success.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/startup-fail.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/debug-startup-fail.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/view-pe-resource-segment.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 记一次曲折的多资源文件拆分折腾过程（1）">
 <meta name="twitter:description" content="缘起最近这些天，我一有时间就捣鼓 .rc 。用 git 管理过 .rc 文件的小伙伴儿应该都知道，.rc 文件会被 git 默认当作二进制文件来管理。每次合并代码的时候，只要涉及到 .rc 文件的变更，很大概率会报冲突，而且工具不能很好的解决，只能手动解决。为了解决这个问题，我想到了两个方案：  让 git 把 .rc 文件当成普通文件来管理。 把一个大的 .rc 文件拆成多个小的 .rc 文件，">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/unexpected-end-of-file-error.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/unexpected-end-of-file-error.png">
 
 
 
@@ -369,8 +369,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -474,30 +474,30 @@
 <h2 id="拆分-rc"><a href="#拆分-rc" class="headerlink" title="拆分 rc"></a>拆分 rc</h2><p>按照微软官方文档 <a href="https://docs.microsoft.com/en-us/cpp/mfc/tn035-using-multiple-resource-files-and-header-files-with-visual-cpp?view=msvc-160" target="_blank" rel="noopener">TN035: Using Multiple Resource Files and Header Files with Visual C++</a> 的指示，很快就拆分好了。满心欢喜的准备编译运行，验收成果。</p>
 <p>没想到……</p>
 <h2 id="初遇错误"><a href="#初遇错误" class="headerlink" title="初遇错误"></a>初遇错误</h2><p>编译很快结束了，不过 <code>vs</code> 报告了下图所示的编译错误：</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/unexpected-end-of-file-error.png" alt="unexpected-end-of-file-error"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/unexpected-end-of-file-error.png" alt="unexpected-end-of-file-error"></p>
 <p>乍一看有一点懵，不过仔细看文件内容后知道怎么回事了。原来这是一个“老朋友”了，之前遇到过。不是什么大问题，只需要在后面多加一个空行就行了。</p>
 <blockquote>
 <p><strong>温馨提示：</strong></p>
 <p>如果在 <code>resource.h</code> 中包含自定义的头文件时，也需要在被包含的头文件的末尾加一个空行。否则也会报错。</p>
 </blockquote>
 <p>在末尾加好空行后，再次编译，成功，正常运行。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/multiple-rc-include-success.png" alt="multiple-rc-include-success"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/multiple-rc-include-success.png" alt="multiple-rc-include-success"></p>
 <p>解决了在同一工程中使用多个 <code>.rc</code> 的问题，下一个问题是让 <code>git</code> 不再把 <code>.rc</code> 文件当成二进制文件来管理。默认情况下，<code>.rc</code> 文件会被当成 <code>binary file</code> 来管理的，当 <code>.rc</code> 中有差异的时候，在命令行中执行 <code>git diff</code> 命令，不能显示出有意义的信息。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/binary-rc-diff-fail.png" alt="binary-rc-diff-fail"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/binary-rc-diff-fail.png" alt="binary-rc-diff-fail"></p>
 <h2 id="修改-git-设置"><a href="#修改-git-设置" class="headerlink" title="修改 git 设置"></a>修改 git 设置</h2><p>按照 <a href="https://git-scm.com/docs/gitattributes" target="_blank" rel="noopener">gitattribtes帮助文档</a> 中的说明，我在项目根目录建立了 <code>.gitattributes</code> 文件，把 <code>.rc</code> 和 <code>.rc2</code> 文件都当成 <code>UTF-16</code> 来管理，这样再冲突的时候就可以比较差异了。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/gitattributes.png" alt="gitattributes"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/gitattributes.png" alt="gitattributes"></p>
 <blockquote>
 <p><strong>说明：</strong></p>
 <p>因为现有项目中的 <code>.rc</code> 文件都被当成了二进制文件，所以我在 <code>.gitattributes</code> 中末尾的位置把旧的 <code>.rc</code> 和 <code>.rc2</code> 文件强制设置为了 <code>binary</code>。</p>
 </blockquote>
 <p>设置好 <code>.gitattributes</code> 文件后，手动修改 <code>.rc</code> 文件内容，然后执行 <code>git diff</code> 查看差异。结果如下图，这次显示的差异简直完美。以说明新增加的设置是生效的。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/git-diff-rc-success.png" alt="git-diff-rc-success"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/git-diff-rc-success.png" alt="git-diff-rc-success"></p>
 <p>本以为本次折腾就这么顺利的结束了，可以打扫战场，编写操作文档，收工了。</p>
 <p>没想到……</p>
 <h2 id="高兴的太早了"><a href="#高兴的太早了" class="headerlink" title="高兴的太早了"></a>高兴的太早了</h2><p>撤销完变更后，编译，居然出现了下图中的错误：</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/error-RC1020-unexpected-endif.png" alt="error-RC1020-unexpected-endif"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/error-RC1020-unexpected-endif.png" alt="error-RC1020-unexpected-endif"></p>
 <p>这是什么错误？一脸懵逼，难道上面哪个地方多写了 <code>#endif</code> 导致不匹配了？赶紧把改动过的文件都检查一遍，尤其是刚刚改动过的文件。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/check-file-modification.png" alt="check-file-modification"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/check-file-modification.png" alt="check-file-modification"></p>
 <p>每个文件都反反复复看了好几遍，什么问题都没看出来。<code>#if</code> 和 <code>#endif</code> 都是成对儿的。这可如何是好，网上搜索 <code>error RC1020</code>，没有一条能解决我遇到的问题。</p>
 <h2 id="绝望"><a href="#绝望" class="headerlink" title="绝望"></a>绝望</h2><p>看了很长时间也没发现哪不对，于是我开始玄学了。</p>
 <ul>
@@ -512,30 +512,30 @@
 </ul>
 <p>就这样排除了很多种“可能性”，试了很多方案，都没有用。但是得到了一个结论：只要包含这个 <code>.rc</code> 文件，编译就有问题。要不是刚开始在拆分完 <code>.rc</code> 后已经成功运行程序了，我都有些怀疑是不是不支持在同一个工程中使用多个 <code>.rc</code>了。</p>
 <h2 id="柳暗花明"><a href="#柳暗花明" class="headerlink" title="柳暗花明"></a>柳暗花明</h2><p>实在不知道是哪里出问题了，于是起来接了杯水，在回座位的路上，脑子里突然蹦出来一个想法：双击打开有问题的 <code>.rc</code> 文件看看能不能看出点什么门道来。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-rc-by-double-click.png" alt="open-rc-by-double-click"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-rc-by-double-click.png" alt="open-rc-by-double-click"></p>
 <p>嗯？怎么是空的？我的对话框去哪了？（内心一阵窃喜）赶紧打开一个正常的 <code>.rc</code> 文件看看，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-normal-rc-by-double-click.png" alt="open-normal-rc-by-double-click"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/open-normal-rc-by-double-click.png" alt="open-normal-rc-by-double-click"></p>
 <p>该有的都有。手动把正常显示的对话框的内容拷贝到有问题的 <code>.rc</code> 中，看看能否打开，发现居然还是打不开！！！炸了，赶紧通过 <code>beyond compare</code> 对比看看。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compare-two-rc-files.png" alt="compare-two-rc-files"></p>
-<p>虽然提示 <code>Difference not found</code>，但是如果仔细看的话，两边的编码是不同的。为了进一步确认，于是打开 <code>Hex Editor</code> 查看文件头，果然不一样。<img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/hex-compare-bom-header.png" alt="hex-compare-bom-header"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compare-two-rc-files.png" alt="compare-two-rc-files"></p>
+<p>虽然提示 <code>Difference not found</code>，但是如果仔细看的话，两边的编码是不同的。为了进一步确认，于是打开 <code>Hex Editor</code> 查看文件头，果然不一样。<img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/hex-compare-bom-header.png" alt="hex-compare-bom-header"></p>
 <p>正常的 <code>.rc</code> 文件是按小端存储的—— <code>FF FE</code>，也就是<code>UTF16 LE with Bom</code>。有问题的 <code>.rc</code> 文件是按大端存储的—— <code>FE FF</code>，也就是 <code>UTF16 BE With Bom</code>。</p>
 <p>知道了原因，于是赶紧修改有问题的 <code>.rc</code> 文件为小端模式.</p>
 <blockquote>
 <p><strong>警告：</strong></p>
 <p>不能直接修改文件头，否则打开时文件内容不对。可以使用 notepad.exe 打开有问题的 .rc 文件，然后另存为的时候选 <code>UTF16 LE</code> 即可。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/save-as-utf16-le.png" alt="save-as-utf16-le"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/save-as-utf16-le.png" alt="save-as-utf16-le"></p>
 </blockquote>
 <p>再次双击打开发现可以正常打开了，并且编译也没问题了。特地贴一张编译通过的截图，我太难了。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compile-success.png" alt="compile-success"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/compile-success.png" alt="compile-success"></p>
 <h2 id="又遇错误"><a href="#又遇错误" class="headerlink" title="又遇错误"></a>又遇错误</h2><p>本以为编译都通过了，应该就万事大吉了吧，没想到运行的时候直接崩溃了。我也要崩溃了。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/startup-fail.png" alt="startup-fail"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/startup-fail.png" alt="startup-fail"></p>
 <blockquote>
 <p><strong>说明：</strong><br>因为我设置了 <code>windbg</code> 为 <code>JIT</code> 调试器，所以程序崩溃后直接到 <code>windbg</code> 中了。</p>
 </blockquote>
 <p>在 <code>vs</code> 中按 <code>F10</code> 启动，单步跟踪，很快就发现是获取对话框的时候失败了。</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/debug-startup-fail.gif" alt="debug-startup-fail"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/debug-startup-fail.gif" alt="debug-startup-fail"></p>
 <p>看来又是 <code>.rc</code> 问题，难道生成的程序的资源段有问题了？使用 <code>CFF Explorer</code> 打开程序查看资源段，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/view-pe-resource-segment.png" alt="view-pe-resource-segment"></p>
+<p><img src="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/view-pe-resource-segment.png" alt="view-pe-resource-segment"></p>
 <p>果然，程序资源段中没有任何对话框，难怪查找对话框的时候找不到。看来跟刚才的 <code>.rc</code> 是一个问题，查看对应的 <code>.rc</code> 文件的文件编码，果然是一样的问题。修改文件编码，然后重新生成，启动后终于正常了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次的折腾真是一波三折，有点意思。几个关键点总结如下：</p>
 <ul>
@@ -1016,6 +1016,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1104,7 +1110,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言前两篇文章 part1 和 part2 基本上理清了 IsSplitter() 运行缓慢的原因 —— 在函数内部使用了带 Compile 选项的正则表达式。 但是没想到在 IsSplitter() 内部使用不带 Compiled 选项的正则表达式，整个程序运行起来非常快，跟静态函数版本的运行速度不相上下。又有了如下疑问：  为什么使用不带 Compiled 选项实例化的 Regex 速度会这么">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-no-compiled-option-events.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-filter-event-with-etwlogger.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-global-regex-events.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/class-relationship-and-call-sequence.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/compiled-regex-constructor.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-dynamic-FindFirstChar.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-none-dynamic-FindFirstChar.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/runner.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.027Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-no-compiled-option-events.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-filter-event-with-etwlogger.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-global-regex-events.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/class-relationship-and-call-sequence.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/compiled-regex-constructor.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-dynamic-FindFirstChar.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-none-dynamic-FindFirstChar.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/runner.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化 | 记一次 .NET 程序的性能优化实战（3）—— 深入 .NET 源码">
 <meta name="twitter:description" content="前言前两篇文章 part1 和 part2 基本上理清了 IsSplitter() 运行缓慢的原因 —— 在函数内部使用了带 Compile 选项的正则表达式。 但是没想到在 IsSplitter() 内部使用不带 Compiled 选项的正则表达式，整个程序运行起来非常快，跟静态函数版本的运行速度不相上下。又有了如下疑问：  为什么使用不带 Compiled 选项实例化的 Regex 速度会这么">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-no-compiled-option-events.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-no-compiled-option-events.png">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -453,7 +453,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前两篇文章 <a href="https://bianchengnan.gitee.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">part1</a> 和 <a href="https://bianchengnan.gitee.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/" target="_blank" rel="noopener">part2</a> 基本上理清了 <code>IsSplitter()</code> 运行缓慢的原因 —— 在函数内部使用了带 <code>Compile</code> 选项的正则表达式。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前两篇文章 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">part1</a> 和 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/" target="_blank" rel="noopener">part2</a> 基本上理清了 <code>IsSplitter()</code> 运行缓慢的原因 —— 在函数内部使用了带 <code>Compile</code> 选项的正则表达式。</p>
 <p>但是没想到在 <code>IsSplitter()</code> 内部使用不带 <code>Compiled</code> 选项的正则表达式，整个程序运行起来非常快，跟静态函数版本的运行速度不相上下。又有了如下疑问：</p>
 <ol>
 <li>为什么使用不带 <code>Compiled</code> 选项实例化的 <code>Regex</code> 速度会这么快？</li>
@@ -471,10 +471,10 @@
 
 <h2 id="解惑"><a href="#解惑" class="headerlink" title="解惑"></a>解惑</h2><ol>
 <li><p><strong>为什么使用不带 <code>Compiled</code> 选项实例化的 <code>Regex</code> 速度会这么快？</strong></p>
-<p>还是使用 <code>PerfView</code> 采集性能数据并分析，如下图：<img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-no-compiled-option-events.png" alt></p>
+<p>还是使用 <code>PerfView</code> 采集性能数据并分析，如下图：<img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-no-compiled-option-events.png" alt></p>
 <p>可以发现， <code>IsSplitter()</code> 函数只在第一次被调用时发生了一次 <code>JIT</code>，后续调用耗时不到 <code>0.1ms</code>（图中最后一次调用耗时：<code>4090.629-4090.597 = 0.032ms</code>）。</p>
 <p>使用带 <code>Compiled</code> 选项实例化的 <code>Regex</code> 的 <code>IsSplitter()</code> 函数，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-filter-event-with-etwlogger.png" alt="view-filter-event-with-etwlogger"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-filter-event-with-etwlogger.png" alt="view-filter-event-with-etwlogger"></p>
 <p>每次调用大概要消耗 <code>11ms</code> （<code>5616.375 - 5604.637 = 11.738 ms</code>）。</p>
 </li>
 </ol>
@@ -482,7 +482,7 @@
 <ol start="2">
 <li><p><strong>为什么把  <code>Regex</code> 变量从局部改成全局变量后运行速度有了极大提升？除了避免重复实例化，还有哪些提升？</strong></p>
 <p>修改代码，把局部变量改成全局变量，编译。再次使用 <code>PerfView</code> 采集性能数据并分析，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-global-regex-events.png" alt></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/view-global-regex-events.png" alt></p>
 <p>可以发现与使用不带 <code>Compiled</code> 选项的局部变量版本一样，只发生了一次 <code>JIT</code>。所以把局部变量改成全局变量后，除了避免了重复实例化的开销（很小），更重要的是避免了多余的 <code>JIT</code> 操作。</p>
 </li>
 </ol>
@@ -525,7 +525,7 @@
 </li>
 </ol>
 <p><strong>疑问7</strong> 与由 <strong>疑问1</strong> 引申出来的 <code>JIT</code> 问题是一个问题。之所以会 <code>JIT</code>，是因为有需要 <code>JIT</code> 的代码，如果不断有新的动态方法产生出来并执行，那么就需要不断地 <code>JIT</code>。由于此问题涉及到的代码量比较大，逻辑比较复杂，需要深入 <code>.NET</code> 源码进行查看。为了更好的理解整个过程，我简单梳理了 <code>IsSpitter()</code> 函数中涉及到的关键类以及类之间的关系，整理成下图，供参考。</p>
-<h2 id="流程-amp-类关系梳理"><a href="#流程-amp-类关系梳理" class="headerlink" title="流程 &amp; 类关系梳理"></a>流程 &amp; 类关系梳理</h2><p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/class-relationship-and-call-sequence.png" alt></p>
+<h2 id="流程-amp-类关系梳理"><a href="#流程-amp-类关系梳理" class="headerlink" title="流程 &amp; 类关系梳理"></a>流程 &amp; 类关系梳理</h2><p><img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/class-relationship-and-call-sequence.png" alt></p>
 <p>看完上图后，可以继续看剩下的 <code>JIT</code> 问题了。因为大多数 <code>JIT</code> 都出现在 <code>MatchCollection.Count</code> 中，可以由此切入。</p>
 <h2 id="MatchCollection-Count"><a href="#MatchCollection-Count" class="headerlink" title="MatchCollection.Count"></a>MatchCollection.Count</h2><p>实现代码如下：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Count &#123;</span><br><span class="line">  <span class="keyword">get</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (_done)</span><br><span class="line">      <span class="keyword">return</span> _matches.Count;</span><br><span class="line">    GetMatch(infinite);</span><br><span class="line">    <span class="keyword">return</span> _matches.Count;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -570,22 +570,22 @@
 <p>   在执行 <code>MatchCollection.Count</code> 的时候，会调用 <code>MatchCollection.GetMatch()</code> 函数，<code>GetMatch()</code> 函数会调用对应 <code>RegexRunner</code> 的 <code>Scan()</code> 函数。<code>Scan()</code> 函数会调用 <code>RegexRunner.FindFirstChar()</code>，而 <code>CompiledRegexRunner</code> 类型中的 <code>FindFirstChar()</code> 函数调用的是设置好的动态函数。</p>
 <h2 id="Compiled-与-非-Compiled-对比"><a href="#Compiled-与-非-Compiled-对比" class="headerlink" title="Compiled 与 非 Compiled 对比"></a>Compiled 与 非 Compiled 对比</h2><h3 id="1-构造函数"><a href="#1-构造函数" class="headerlink" title="1. 构造函数"></a>1. 构造函数</h3><p>*<em>带 <code>Compiled</code> 选项的 <code>Regex</code> *</em></p>
 <p><code>useCache</code> 传递的是 <code>false</code>，表示不使用缓存。因为指定了 <code>RegexOptions.Compiled</code> 选项， <code>Regex</code> 的构造函数内部会调用 <code>RegexCompiler.Compile()</code> 函数，<code>Compile()</code> 函数又会调用 <code>RegexLWCGCompiler.FactoryInstanceFromCode()</code>，<code>FactoryInstanceFromCode()</code> 函数内部会分别调用 <code>GenerateFindFirstChar()</code>, <code>GenerateGo()</code>, <code>GenerateInitTrackCount()</code> 生成对应的动态方法，然后返回 <code>CompiledRegexRunnerFactory</code> 类型的实例。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/compiled-regex-constructor.png" alt="compiled-regex-constructor"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/compiled-regex-constructor.png" alt="compiled-regex-constructor"></p>
 <p>*<em>不带 <code>Compiled</code> 选项的 <code>Regex</code> *</em></p>
 <p>构造函数与 <code>Compiled</code> 的基本一致，<code>useCache</code> 传递的也是 <code>false</code>，不使用缓存。因为 <code>UseOptionC()</code> 返回的是 <code>false</code>，所以不会执行 <code>Compile()</code> 函数。所以 <code>factory</code> 成员变量是 <code>null</code>。</p>
 <p>这里就不贴图了。</p>
 <h3 id="2-matches-Count"><a href="#2-matches-Count" class="headerlink" title="2. matches.Count"></a>2. matches.Count</h3><p>*<em>带 <code>Compiled</code> 选项的 <code>Regex</code> *</em></p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-dynamic-FindFirstChar.png" alt="MatchCollection-count-dynamic-FindFirstChar"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-dynamic-FindFirstChar.png" alt="MatchCollection-count-dynamic-FindFirstChar"></p>
 <p><code>MatchCollection.Count</code> 内部会调用 <code>GetMatch()</code> 函数，<code>GetMatch()</code> 函数会调用对应 <code>RegexRunner</code> 的 <code>Scan()</code> 函数（这里的 <code>runner</code> 类型是 <code>CompiledRegexRunner</code>）。<code>Scan()</code> 内部会调用 <code>FindFirstChar()</code> 函数，而 <code>CompiledRegexRunner</code> 类型的 <code>FindFirstChar()</code> 函数内部调用的是设置好的动态方法。</p>
 <p>*<em>不带 <code>Compiled</code> 选项的 <code>Regex</code> *</em></p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-none-dynamic-FindFirstChar.png" alt="MatchCollection-count-none-dynamic-FindFirstChar"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/MatchCollection-count-none-dynamic-FindFirstChar.png" alt="MatchCollection-count-none-dynamic-FindFirstChar"></p>
 <p>与带 <code>Compiled</code> 版本的调用栈基本一致，不一样的是这里 <code>runner</code> 的类型是 <code>RegexInterpreter</code>，该类型的 <code>FindFirstChar()</code> 函数调用的代码不是动态生成的。</p>
 <h3 id="3-runner-赋值"><a href="#3-runner-赋值" class="headerlink" title="3. runner 赋值"></a>3. runner 赋值</h3><p>当 <code>runner</code> 是 <code>null</code> 的时候，需要根据情况获取对应的 <code>runner</code>。</p>
 <p>*<em>带 <code>Compiled</code> 选项的 <code>Regex</code> *</em></p>
 <p><code>factory</code> 成员在 <code>Regex</code> 构造函数里通过 <code>Compile()</code> 赋过值，<code>runner</code> 会通过下图 <code>1306</code> 行的 <code>factory.CreateInstance()</code> 赋值。</p>
 <p>*<em>不带 <code>Compiled</code> 选项的 <code>Regex</code> *</em></p>
 <p><code>factory</code> 成员没有被赋过值，因此是空的，<code>runner</code> 会通过下图 <code>1308</code> 行的 <code>new RegexInterpreter()</code> 赋值。</p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/runner.png" alt="runner"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/runner.png" alt="runner"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li>不要在循环内部创建编译型的正则表达式（带 <code>Compiled</code> 选项），会频繁导致 <code>JIT</code> 的发生进而影响效率。</li>
 <li><code>Regex.IsMatch()</code> 也会创建 Regex 实例，但是最后一个参数 <code>bUseCache</code> 是 <code>true</code>，表示使用缓存。</li>
@@ -971,6 +971,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1059,7 +1065,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起之前写了一个小工具用来处理 .rc 文件，有些地方需要优化，周末准备继续优化一下。没想到，遇到了一个意想不到的错误—— xxx.tmp 不是有效的 win32 资源文件。 本文总结了使用 process monitor 快速定位此问题的过程。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-cs1583/cs1583-invalid-win32-resource.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-cs1583/no-resource-file-used.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-cs1583/view-process-tree.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.230Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-cs1583/cs1583-invalid-win32-resource.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-cs1583/no-resource-file-used.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-cs1583/view-process-tree.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.512Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="快速搞定 vs 编译错误之 cs1583 —— xxx 不是有效的 win32 资源文件">
 <meta name="twitter:description" content="缘起之前写了一个小工具用来处理 .rc 文件，有些地方需要优化，周末准备继续优化一下。没想到，遇到了一个意想不到的错误—— xxx.tmp 不是有效的 win32 资源文件。 本文总结了使用 process monitor 快速定位此问题的过程。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-cs1583/cs1583-invalid-win32-resource.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-cs1583/cs1583-invalid-win32-resource.png">
 
 
 
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -454,14 +454,14 @@
 
 
 <h2 id="初遇错误"><a href="#初遇错误" class="headerlink" title="初遇错误"></a>初遇错误</h2><p>优化好代码后准备编译验证，没想到遇到了下图中的错误。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-cs1583/cs1583-invalid-win32-resource.png" alt="cs1583-invalid-win32-resource"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-cs1583/cs1583-invalid-win32-resource.png" alt="cs1583-invalid-win32-resource"></p>
 <p>说实话，看到这个错误我是懵逼的。 <code>CSC5A262FDC58864A1891AD4252B55132.TMP</code> 不是有效的 <code>Win32</code> 资源文件。这个 <code>.TMP</code> 文件是什么鬼？难道被我不小心破坏了？不管三七二十一，先删除，重新编译，看看是否还会报错。</p>
 <p>不出所料，还是会报这个错误。</p>
 <p>赶紧细看一下工程文件，这个报错的工程也没有使用任何资源文件啊。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-cs1583/no-resource-file-used.png" alt="no-resource-file-used"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-cs1583/no-resource-file-used.png" alt="no-resource-file-used"></p>
 <p>搞不懂，先用 <code>process monitor</code> 看看再说。</p>
 <h2 id="process-monitor"><a href="#process-monitor" class="headerlink" title="process monitor"></a>process monitor</h2><p>启动 <code>process monitor</code>，在 <code>vs</code> 中重新编译，报错后停止监听，通过 <code>Tools -&gt; Process Tree...</code> 打开进程树，快速浏览到关键进程（盯着 <code>Life Time</code> 列看，一般编译涉及到的子进程生存周期都很短）</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-cs1583/view-process-tree.png" alt="view-process-tree"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-cs1583/view-process-tree.png" alt="view-process-tree"></p>
 <p>看到 <code>cdb.exe</code> 和 <code>windbg.exe</code> ，我一下子就明白是怎么回事了。之前为了调试 <code>cvtres.exe</code> 相关逻辑的时候，我通过 <code>gflags.exe</code> 为 <code>cvtres.exe</code> 设置了 <code>Image File Excute Option</code>。</p>
 <h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>通过 <code>gflags.exe</code> 去掉对 <code>cvtres.exe</code> 的相关设置即可。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个问题虽然刚开始看报错信息的时候一头雾水，但是使用 <code>process monitor</code> 很简单就解决了。</p>
@@ -1003,6 +1003,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1091,7 +1097,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

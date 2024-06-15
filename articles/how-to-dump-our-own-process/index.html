@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言不知道各位小伙伴有没有遇到过 微信 或者 QQ 崩溃的情况。它们在崩溃的时候都会自动弹出一个对话框，提示用户上传相关文件，供开发人员分析问题的原因。有的小伙伴儿可能不太清楚我在说什么。没关系，下图就是微信崩溃后自动弹出的界面。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-dump-our-own-process/wechat-crash-report-ui-expand.jpg">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-dump-our-own-process/file-locator-search-MINIDUMP_TYPE.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-dump-our-own-process/crashRpt-official-mainpage.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.729Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-dump-our-own-process/wechat-crash-report-ui-expand.jpg">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-dump-our-own-process/file-locator-search-MINIDUMP_TYPE.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-dump-our-own-process/crashRpt-official-mainpage.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="向大厂看齐！为自己的程序增加自动转储的功能！">
 <meta name="twitter:description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言不知道各位小伙伴有没有遇到过 微信 或者 QQ 崩溃的情况。它们在崩溃的时候都会自动弹出一个对话框，提示用户上传相关文件，供开发人员分析问题的原因。有的小伙伴儿可能不太清楚我在说什么。没关系，下图就是微信崩溃后自动弹出的界面。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-to-dump-our-own-process/wechat-crash-report-ui-expand.jpg">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/how-to-dump-our-own-process/wechat-crash-report-ui-expand.jpg">
 
 
 
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -448,11 +448,11 @@
       
 
       
-        <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.gitee.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
+        <p>如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">转储文件知多少</a>。</p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不知道各位小伙伴有没有遇到过 <code>微信</code> 或者 <code>QQ</code> 崩溃的情况。它们在崩溃的时候都会自动弹出一个对话框，提示用户上传相关文件，供开发人员分析问题的原因。有的小伙伴儿可能不太清楚我在说什么。没关系，下图就是微信崩溃后自动弹出的界面。</p>
 <a id="more"></a>
 
-<p><img src="http://resources.bianchengnan.tech/how-to-dump-our-own-process/wechat-crash-report-ui-expand.jpg" alt="微信 Crash Report 界面"></p>
+<p><img src="/articles/how-to-dump-our-own-process/wechat-crash-report-ui-expand.jpg" alt="微信 Crash Report 界面"></p>
 <p>如果勾选了 <code>发送错误报告(S)</code> 按钮，点击 <code>确定(O)</code> 按钮后，会把收集到的文件上传给开发人员。同样的，如果勾选了 <code>重启程序(R)</code>，点击 <code>确定(O)</code> 按钮后，微信会自动重启。有没有觉得很酷？我们自己的程序可以做到类似的效果吗？答案是肯定的。如果感兴趣，就请继续阅读吧！</p>
 <h2 id="MiniDumpWriteDump"><a href="#MiniDumpWriteDump" class="headerlink" title="MiniDumpWriteDump"></a>MiniDumpWriteDump</h2><p>微软提供了专门的 <code>API</code> 来生成转储文件，这个 <code>API</code> 就是 <code>MiniDumpWriteDump()</code>。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">MiniDumpWriteDump</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HANDLE                            hProcess,</span></span></span><br><span class="line"><span class="function"><span class="params">  DWORD                             ProcessId,</span></span></span><br><span class="line"><span class="function"><span class="params">  HANDLE                            hFile,</span></span></span><br><span class="line"><span class="function"><span class="params">  MINIDUMP_TYPE                     DumpType,</span></span></span><br><span class="line"><span class="function"><span class="params">  PMINIDUMP_EXCEPTION_INFORMATION   ExceptionParam,</span></span></span><br><span class="line"><span class="function"><span class="params">  PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,</span></span></span><br><span class="line"><span class="function"><span class="params">  PMINIDUMP_CALLBACK_INFORMATION    CallbackParam</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
@@ -485,7 +485,7 @@
 </ul>
 <p>因为 <code>DumpType</code>会影响最后生成的转储文件的大小，这里介绍下这个参数。</p>
 <h2 id="DumpType-参数"><a href="#DumpType-参数" class="headerlink" title="DumpType 参数"></a>DumpType 参数</h2><p><code>DumpType</code> 类型为 <code>MINIDUMP_TYPE</code>。以下定义摘自 <code>10.0.18362.0</code> 版本的 <code>minidumpapiset.h</code>，应该是比较全的了。如果你问我：你怎么知道 <code>MINIDUMP_TYPE</code> 定义在这个文件里？答案很简单：用 <code>File Locator</code> 搜的呗。</p>
-<p><img src="http://resources.bianchengnan.tech/how-to-dump-our-own-process/file-locator-search-MINIDUMP_TYPE.png" alt="搜索结果"></p>
+<p><img src="/articles/how-to-dump-our-own-process/file-locator-search-MINIDUMP_TYPE.png" alt="搜索结果"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> _MINIDUMP_TYPE &#123;</span><br><span class="line">    MiniDumpNormal                         = <span class="number">0x00000000</span>,</span><br><span class="line">    MiniDumpWithDataSegs                   = <span class="number">0x00000001</span>,</span><br><span class="line">    MiniDumpWithFullMemory                 = <span class="number">0x00000002</span>,</span><br><span class="line">    MiniDumpWithHandleData                 = <span class="number">0x00000004</span>,</span><br><span class="line">    MiniDumpFilterMemory                   = <span class="number">0x00000008</span>,</span><br><span class="line">    MiniDumpScanMemory                     = <span class="number">0x00000010</span>,</span><br><span class="line">    MiniDumpWithUnloadedModules            = <span class="number">0x00000020</span>,</span><br><span class="line">    MiniDumpWithIndirectlyReferencedMemory = <span class="number">0x00000040</span>,</span><br><span class="line">    MiniDumpFilterModulePaths              = <span class="number">0x00000080</span>,</span><br><span class="line">    MiniDumpWithProcessThreadData          = <span class="number">0x00000100</span>,</span><br><span class="line">    MiniDumpWithPrivateReadWriteMemory     = <span class="number">0x00000200</span>,</span><br><span class="line">    MiniDumpWithoutOptionalData            = <span class="number">0x00000400</span>,</span><br><span class="line">    MiniDumpWithFullMemoryInfo             = <span class="number">0x00000800</span>,</span><br><span class="line">    MiniDumpWithThreadInfo                 = <span class="number">0x00001000</span>,</span><br><span class="line">    MiniDumpWithCodeSegs                   = <span class="number">0x00002000</span>,</span><br><span class="line">    MiniDumpWithoutAuxiliaryState          = <span class="number">0x00004000</span>,</span><br><span class="line">    MiniDumpWithFullAuxiliaryState         = <span class="number">0x00008000</span>,</span><br><span class="line">    MiniDumpWithPrivateWriteCopyMemory     = <span class="number">0x00010000</span>,</span><br><span class="line">    MiniDumpIgnoreInaccessibleMemory       = <span class="number">0x00020000</span>,</span><br><span class="line">    MiniDumpWithTokenInformation           = <span class="number">0x00040000</span>,</span><br><span class="line">    MiniDumpWithModuleHeaders              = <span class="number">0x00080000</span>,</span><br><span class="line">    MiniDumpFilterTriage                   = <span class="number">0x00100000</span>,</span><br><span class="line">    MiniDumpWithAvxXStateContext           = <span class="number">0x00200000</span>,</span><br><span class="line">    MiniDumpWithIptTrace                   = <span class="number">0x00400000</span>,</span><br><span class="line">    MiniDumpScanInaccessiblePartialPages   = <span class="number">0x00800000</span>,</span><br><span class="line">    MiniDumpValidTypeFlags                 = <span class="number">0x00ffffff</span>,</span><br><span class="line">&#125; MINIDUMP_TYPE;</span><br></pre></td></tr></table></figure>
 
 <p>下面是每个选项的意义，主要翻译自官方帮助文档。</p>
@@ -610,7 +610,7 @@
 <ol>
 <li><a href="http://crashrpt.sourceforge.net/" target="_blank" rel="noopener">CrashRpt</a> （之前在项目里用过，如果你想自己手动实现一个类似的，可以参考此项目的代码）。</li>
 </ol>
-<p><img src="http://resources.bianchengnan.tech/how-to-dump-our-own-process/crashRpt-official-mainpage.png" alt="CrashRpt 官方介绍"></p>
+<p><img src="/articles/how-to-dump-our-own-process/crashRpt-official-mainpage.png" alt="CrashRpt 官方介绍"></p>
 <ol start="2">
 <li><p>除了 <code>CrashRpt</code>，<code>chromium</code> 里使用的 <a href="https://github.com/chromium/crashpad" target="_blank" rel="noopener">crashpad</a> 也是一个非常好的选择。<code>google</code> 出品，质量有保障。</p>
 <p><code>crashpad</code> 的前身是 <a href="https://github.com/google/breakpad" target="_blank" rel="noopener">breakpad</a>（根据 <code>google</code> 官方介绍，<code>breakpad</code> 使用的是进程内报告机制，不再建议大家使用）。</p>
@@ -620,7 +620,7 @@
 <li><p>其它平台（<code>Android</code>，<code>iOS</code>等）也有类似的开源库。可以在 <code>github</code> 上搜索 <code>crash report</code>。我就不截图了。</p>
 </li>
 </ol>
-<div class="note info"><p><strong>说明：</strong> 本文介绍的方法只适用于我们自己的程序。如果我们想转储其它进程，我们需要借助现有工具（当然，如果有时间和精力，也可以自己写一个）。关于抓取转储的工具的介绍，可以参考之前的文章—— <a href="https://bianchengnan.gitee.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">你需要知道的 N 种抓取 dump 的工具</a>。</p></div>
+<div class="note info"><p><strong>说明：</strong> 本文介绍的方法只适用于我们自己的程序。如果我们想转储其它进程，我们需要借助现有工具（当然，如果有时间和精力，也可以自己写一个）。关于抓取转储的工具的介绍，可以参考之前的文章—— <a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">你需要知道的 N 种抓取 dump 的工具</a>。</p></div>
 
 
 
@@ -1050,6 +1050,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1138,7 +1144,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

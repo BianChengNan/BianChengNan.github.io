@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起今天，被某些开机自动运行的程序“惹毛”了。打算使用 Autoruns 查看这个进程为什么会开机启动。没想到打开 Autoruns 后，只能在任务栏看到图标，怎么点都点出不来。Autoruns 已经启动了，不然任务栏不会看到图标，到底是什么原因导致的呢？继续阅读前，请回忆下是否遇到过类似的情况，有什么思路吗？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/add-autoruns-to-include-filter.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/process-monitor-filter-empty.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/process-monitor-filter-autoruns-excluded-by-default.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/autoruns-events-show-up.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/autoruns-position-registry-setting.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/troubleshoot-autoruns-can-not-show-up-screen-record.gif">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.122Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-autoruns-can-not-showup/add-autoruns-to-include-filter.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-autoruns-can-not-showup/process-monitor-filter-empty.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-autoruns-can-not-showup/process-monitor-filter-autoruns-excluded-by-default.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-autoruns-can-not-showup/autoruns-events-show-up.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-autoruns-can-not-showup/autoruns-position-registry-setting.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-autoruns-can-not-showup/troubleshoot-autoruns-can-not-show-up-screen-record.gif">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.496Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 1 分钟解救 run 不出来的 Autoruns">
 <meta name="twitter:description" content="缘起今天，被某些开机自动运行的程序“惹毛”了。打算使用 Autoruns 查看这个进程为什么会开机启动。没想到打开 Autoruns 后，只能在任务栏看到图标，怎么点都点出不来。Autoruns 已经启动了，不然任务栏不会看到图标，到底是什么原因导致的呢？继续阅读前，请回忆下是否遇到过类似的情况，有什么思路吗？">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/add-autoruns-to-include-filter.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-autoruns-can-not-showup/add-autoruns-to-include-filter.png">
 
 
 
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -458,19 +458,19 @@
 
 <p><strong>说明：</strong>很早就写了初稿，一直没来得及编辑完善，直到周末才编辑完。</p>
 <h2 id="捕获事件"><a href="#捕获事件" class="headerlink" title="捕获事件"></a>捕获事件</h2><p>照例请出我们的老朋友 —— <code>process monitor</code>。开始捕获，然后打开 <code>Autoruns</code>，当任务栏出现 <code>Autoruns</code> 的图标后，停止捕获。通过 <code>Tools</code> -&gt; <code>Process Tree...</code> （或者按 <code>Ctrl + T</code>）查找到 <code>Autoruns</code>，在其上面右键，<code>Add Process to Include Filter</code>，只显示 <code>Autoruns</code> 相关的事件，准备进一步分析。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/add-autoruns-to-include-filter.png" alt="add-autoruns-to-include-filter"></p>
+<p><img src="/articles/troubleshoot-autoruns-can-not-showup/add-autoruns-to-include-filter.png" alt="add-autoruns-to-include-filter"></p>
 <p>没想到！？居然一篇空白，什么都没有了！</p>
-<h2 id="小意外"><a href="#小意外" class="headerlink" title="小意外"></a>小意外</h2><p><img src="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/process-monitor-filter-empty.png" alt="process-monitor-filter-empty"></p>
+<h2 id="小意外"><a href="#小意外" class="headerlink" title="小意外"></a>小意外</h2><p><img src="/articles/troubleshoot-autoruns-can-not-showup/process-monitor-filter-empty.png" alt="process-monitor-filter-empty"></p>
 <p><code>process monitor</code> 肯定捕获了对应的事件，但是为什么什么都没有了呢？先检查下过滤条件。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/process-monitor-filter-autoruns-excluded-by-default.png" alt="process-monitor-filter-autoruns-excluded-by-default"></p>
+<p><img src="/articles/troubleshoot-autoruns-can-not-showup/process-monitor-filter-autoruns-excluded-by-default.png" alt="process-monitor-filter-autoruns-excluded-by-default"></p>
 <p>原来，<code>process monitor</code> 默认会过滤掉 <code>Autoruns</code> 相关的事件。关闭这条过滤规则，点击 <code>OK</code>，关于 <code>Autoruns</code> 的事件都出来了。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/autoruns-events-show-up.png" alt="autoruns-events-show-up"></p>
+<p><img src="/articles/troubleshoot-autoruns-can-not-showup/autoruns-events-show-up.png" alt="autoruns-events-show-up"></p>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>捕获的事件有了，我们就可以继续分析了。我猜测，<code>Autoruns</code> 应该把配置保存到了注册表中，所以排除其它几类事件，只保留注册表相关事件。应该是<strong>成功</strong>的<strong>读取</strong>到了某些错误的设置，所以只保留 <code>Reuslt</code> 是 <code>Success</code> 而且 <code>Operation</code> 是 <code>RegQueryValue</code> 的事件。（当然，这是我的猜测。还有可能是没读取到某些关键设置，如果是没读取到，我们应该把 <code>Result</code> 列是 <code>Success</code> 的排除掉。）</p>
 <p>一般情况下，很多程序会把对应的设置保存到 <code>HKCU</code> 下，而不是 <code>HKLM</code>。因为写入 <code>HKLM</code> 需要管理员权限，读取不用。所以我们还可以排除  <code>Path</code>  以 <code>HKLM</code> 开头的记录。</p>
 <p>做好过滤后，往下浏览下，发现了四个跟位置有关的参数。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/autoruns-position-registry-setting.png" alt="autoruns-position-registry-setting"></p>
+<p><img src="/articles/troubleshoot-autoruns-can-not-showup/autoruns-position-registry-setting.png" alt="autoruns-position-registry-setting"></p>
 <p>发现，其中的 <code>ypos</code> 的值很奇怪，删除后重新启动 <code>Autoruns</code> 即可正常显示了。整个过程请参考下面的屏幕录像。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-autoruns-can-not-showup/troubleshoot-autoruns-can-not-show-up-screen-record.gif" alt="troubleshoot-autoruns-can-not-show-up-screen-record"></p>
+<p><img src="/articles/troubleshoot-autoruns-can-not-showup/troubleshoot-autoruns-can-not-show-up-screen-record.gif" alt="troubleshoot-autoruns-can-not-show-up-screen-record"></p>
 <blockquote>
 <p><strong>友情提示：</strong></p>
 <p><code>Autoruns</code> 在关闭的时候会保存相关配置到注册表，所以需要先关闭 <code>Autoruns</code>，再做修改操作。</p>
@@ -938,6 +938,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1026,7 +1032,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

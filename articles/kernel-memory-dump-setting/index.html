@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言我们在 内核转储，开抓啦！ 这篇文章里介绍了一个关键的系统设置。设置好后可以让系统在蓝屏（Blue Screen of Death，简称 BSOD）的时候自动保存转储文件。那篇文章只是简单的介绍了设置步骤，本文力求详细的介绍相关内容。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/kernel-memory-dump-setting/system-crash-dump-setting.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/kernel-memory-dump-setting/system-crash-dump-setting-investigate.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/kernel-memory-dump-setting/filter-with-path-begin-with.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/kernel-memory-dump-setting/compare-of-full-and-active-setting.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/kernel-memory-dump-setting/win7-system-dump-setting.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/kernel-memory-dump-setting/manually-set-page-file-size.gif">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.861Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/system-crash-dump-setting.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/system-crash-dump-setting-investigate.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/filter-with-path-begin-with.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/compare-of-full-and-active-setting.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/win7-system-dump-setting.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/manually-set-page-file-size.gif">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="蓝屏（BSOD）转储设置，看本文就够了！">
 <meta name="twitter:description" content="前言我们在 内核转储，开抓啦！ 这篇文章里介绍了一个关键的系统设置。设置好后可以让系统在蓝屏（Blue Screen of Death，简称 BSOD）的时候自动保存转储文件。那篇文章只是简单的介绍了设置步骤，本文力求详细的介绍相关内容。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/kernel-memory-dump-setting/system-crash-dump-setting.gif">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/kernel-memory-dump-setting/system-crash-dump-setting.gif">
 
 
 
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -451,16 +451,16 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们在 <a href="https://bianchengnan.gitee.io/articles/kernel-mode-dump-begins/" target="_blank" rel="noopener">内核转储，开抓啦！</a> 这篇文章里介绍了一个关键的系统设置。设置好后可以让系统在蓝屏（<strong>B</strong>lue <strong>S</strong>creen <strong>o</strong>f <strong>D</strong>eath，简称 <code>BSOD</code>）的时候自动保存转储文件。那篇文章只是简单的介绍了设置步骤，本文力求详细的介绍相关内容。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们在 <a href="https://bianchengnan.github.io/articles/kernel-mode-dump-begins/" target="_blank" rel="noopener">内核转储，开抓啦！</a> 这篇文章里介绍了一个关键的系统设置。设置好后可以让系统在蓝屏（<strong>B</strong>lue <strong>S</strong>creen <strong>o</strong>f <strong>D</strong>eath，简称 <code>BSOD</code>）的时候自动保存转储文件。那篇文章只是简单的介绍了设置步骤，本文力求详细的介绍相关内容。</p>
 <a id="more"></a>
 
 
 
 <p>我们先根据下面的动图回顾一下设置步骤：</p>
-<p><img src="http://resources.bianchengnan.tech/kernel-memory-dump-setting/system-crash-dump-setting.gif" alt="系统转储设置"></p>
+<p><img src="/articles/kernel-memory-dump-setting/system-crash-dump-setting.gif" alt="系统转储设置"></p>
 <p>不知道大家有没有想过这些设置保存在哪里了呢？我猜保存在注册表里。是不是呢？我们一起来看看吧。</p>
 <h2 id="保存位置"><a href="#保存位置" class="headerlink" title="保存位置"></a>保存位置</h2><p>为了找到这些设置保存的位置，我特意用 <code>process monitor</code> 捕获了整个设置过程，并录制了一段视频。</p>
-<p><img src="http://resources.bianchengnan.tech/kernel-memory-dump-setting/system-crash-dump-setting-investigate.gif" alt="system-crash-dump-setting-investigate"></p>
+<p><img src="/articles/kernel-memory-dump-setting/system-crash-dump-setting-investigate.gif" alt="system-crash-dump-setting-investigate"></p>
 <p>根据调查结果可知，<code>转储类型</code> 保存在注册表如下位置： <code>HKLM\System\CurrentControlSet\Control\CrashControl\CrashDumpEnabled</code> 。每一项对应的值如下表：</p>
 <table>
 <thead>
@@ -502,12 +502,12 @@
 </tr>
 </tbody></table>
 <p>我们可以发现， <code>完全内存转储</code> 和 <code>活动内存转储</code> 设置的 <code>CrashDumpEnabled</code> 的值居然一样，都是 1。肯定有其它地方不一样。把过滤条件改为 <code>Path</code>  <code>begins with</code>  <code>HKLM\System\CurrentControlSet\Control\CrashControl</code>，</p>
-<p><img src="http://resources.bianchengnan.tech/kernel-memory-dump-setting/filter-with-path-begin-with.png" alt="更改过滤条件"></p>
+<p><img src="/articles/kernel-memory-dump-setting/filter-with-path-begin-with.png" alt="更改过滤条件"></p>
 <p>继续观察，得到的对比结果如下。</p>
-<p><img src="http://resources.bianchengnan.tech/kernel-memory-dump-setting/compare-of-full-and-active-setting.png" alt="结果对比"></p>
+<p><img src="/articles/kernel-memory-dump-setting/compare-of-full-and-active-setting.png" alt="结果对比"></p>
 <p>经过对比我们发现，当设置为 <code>活动内存转储</code> 时，会设置注册表项<code>HKLM\System\CurrentControlSet\Control\CrashControl\FilterPages</code> 的值为 <code>1</code>，当设置为 <code>完全内存转储</code> 时，会删除 <code>FilterPages</code> 子项。</p>
 <div class="note info"><p><strong>说明：</strong><code>win7</code> 及更早的系统中没有 <code>自动内存转储</code> 和 <code>活动内存转储</code> 选项。 <code>自动内存转储</code> 是从 <code>win8</code> 开始引入的。<code>活动内存转储</code> 是从 <code>win10</code> 开始引入的。</p>
-<p><img src="http://resources.bianchengnan.tech/kernel-memory-dump-setting/win7-system-dump-setting.png" alt="win7 系统转储设置"></p></div>
+<p><img src="/articles/kernel-memory-dump-setting/win7-system-dump-setting.png" alt="win7 系统转储设置"></p></div>
 
 
 
@@ -532,7 +532,7 @@
 <ul>
 <li><p>完全内存转储</p>
 <p>包含操作系统使用的所有物理内存。默认不包含平台固件占用的物理内存。为了确保转储文件可以顺利生成，请确保引导盘上的页面文件大小至少是物理内存大小 + 1 MB（写转储文件时需要一些头信息）。假设，物理内存是 <code>4GB</code>，我们需要保证初始大小至少是 <code>4097MB</code>。当然设置成更大的值也没关系。我们可以按下图进行设置：</p>
-<p><img src="http://resources.bianchengnan.tech/kernel-memory-dump-setting/manually-set-page-file-size.gif" alt="手动设置分页文件大小"></p>
+<p><img src="/articles/kernel-memory-dump-setting/manually-set-page-file-size.gif" alt="手动设置分页文件大小"></p>
 </li>
 </ul>
 <ul>
@@ -1027,6 +1027,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1115,7 +1121,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

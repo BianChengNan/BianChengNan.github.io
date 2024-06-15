@@ -306,6 +306,605 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/review-CreateFile-DesireAccess-ShareMode/" itemprop="url">开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-12-23T15:44:22+08:00">
+                2023-12-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/开发/" itemprop="url" rel="index">
+                    <span itemprop="name">开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前一阵子，我在编写文件变化监控程序的时候遇到了文件被占用的问题。很早之前写过一篇关于 <code>CreateFile</code> 函数的 <code>dwDesiredAccess</code> 和 <code>dwShareMode</code> 参数的笔记。我发现之前的理解不够全面、准确。为了更好的理解这两个参数的作用，我搜索了大量资料，编写了测试程序及测试脚本，参考了 <code>xp</code> 源码，终于搞清楚这两个参数的作用。简而言之，需要遵循以下两个规则：</p>
+<p><strong>规则 1</strong>：后续的<strong>访问权限</strong>与先前的<strong>共享模式</strong>不能冲突。</p>
+<p><strong>规则 2</strong>：后续的<strong>共享模式</strong>与先前的<strong>访问权限</strong>不能冲突。</p>
+<p>如果你对下面的几个问题有明确的答案并且清楚的知道原因，那么可以跳过本文了。</p>
+<ol>
+<li>第一次以<strong>读</strong>访问权限，<strong>写</strong>共享模式打开文件，会成功吗？</li>
+<li>如果第一次打开成功了，第二次以<strong>写</strong>访问权限，<strong>读</strong>共享模式打开。会成功吗？</li>
+<li>如果第二次打开成功了，第三次以<strong>读</strong> / <strong>写</strong> / <strong>读写</strong>访问权限，<strong>读写</strong>共享模式打开，会成功吗？</li>
+<li>第一次以<strong>读</strong>访问权限，<strong>写</strong>共享模式打开文件，第二次以<strong>写</strong>访问权限，<strong>读写</strong>共享模式打开。第三次以<strong>写</strong>访问权限，<strong>读写</strong>共享模式打开，会成功吗？</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/review-CreateFile-DesireAccess-ShareMode/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/how-to-check-thread-stack-base/" itemprop="url">如何确定线程栈的基址？</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-10-29T07:44:04+08:00">
+                2023-10-29
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/调试实战/" itemprop="url" rel="index">
+                    <span itemprop="name">调试实战</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/调试实战/工具/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/" target="_blank" rel="noopener">《栈大小可以怎么改？》</a>、<a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/" target="_blank" rel="noopener">《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》</a>、<a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/" target="_blank" rel="noopener">《栈又溢出了》</a>、<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/" target="_blank" rel="noopener">《有趣的异常》</a>。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 <code>PE</code> 头中的字段判断，因为在创建线程的时候可以指定线程栈大小。<code>TEB</code> 中的 <code>StackLimit</code> 是真正的栈底吗？带着这些疑问一起来刨根问底吧~</p>
+<blockquote>
+<p><strong>友情提示</strong>：结论在文章末尾。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/how-to-check-thread-stack-base/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/troubleshoot-crash-after-tidy-dialog-control-id/" itemprop="url">调试实战 | 记一次有教益的 MFC 程序崩溃分析</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-10-22T11:50:01+08:00">
+                2023-10-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/调试/" itemprop="url" rel="index">
+                    <span itemprop="name">调试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>实际项目中，<code>resource.h</code> 文件中的控件太多太乱了，合并代码的时候非常痛苦。为了解决这个问题，需要对 <code>resource.h</code> 中的 <code>ID</code> 进行整理。根据之前整理的成果，很快把控件 <code>ID</code> 按对话框分类整理好了。没想到测试的时候遇到了各种崩溃，废了好大劲儿才解决。究其原因，是对 <code>MFC</code> 资源管理机制认识不够深刻。尝试创建某个模块内的对话框的时候，意外地找到了其它模块中的对话框资源。<code>MFC</code> 到底是怎么查找资源模块的呢？应该如何排查这种问题呢？一起来看看吧。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/troubleshoot-crash-after-tidy-dialog-control-id/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-find-registered-message-name/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -354,8 +953,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -546,8 +1145,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -743,8 +1342,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -831,7 +1430,7 @@
 
       
         
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.gitee.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
 <p>相信各位小伙伴儿应该听过下面这种说法：<code>32</code> 位进程有 <code>4GB</code> 的虚拟内存，其中低 <code>2GB</code> 是用户空间，应用程序可以访问，高 <code>2GB</code> 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 <code>/3GB</code> 的情况下，用户空间可以提升至 <code>3GB</code>，内核空间被压缩到 <code>1GB</code>。</p>
 <p>这也是我学到的关于 <code>32</code> 位进程虚拟内存相关的知识，但是上述描述不够准确。比如，开启了 <code>/3GB</code>，进程用户空间就一定可以提升至 <code>3GB</code> 吗？在 <code>64</code> 位系统上，上述说法还成立吗？</p>
 <p>带着上述疑问，我翻看了微软官方文档，本文尽可能全面的总结进程的虚拟内存空间划分。因为能力有限，本文只涉及 <code>x86/x64</code> 平台，不涉及 <code>ARM</code> 平台。</p>
@@ -938,8 +1537,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1131,8 +1730,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1219,7 +1818,7 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前一阵子遇到了 <code>vs2022</code> 卡死的问题，在上一篇<a href="https://bianchengnan.gitee.io/articles/crazy-vs2022-allocate-memory-failed-part1/" target="_blank" rel="noopener">文章</a>中重点分析了崩溃的原因 —— 当 <code>vs2022</code> 尝试分配 <code>923MB</code> 的内存时，物理内存+页文件大小不足以满足这次分配请求，于是抛出异常。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前一阵子遇到了 <code>vs2022</code> 卡死的问题，在上一篇<a href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/" target="_blank" rel="noopener">文章</a>中重点分析了崩溃的原因 —— 当 <code>vs2022</code> 尝试分配 <code>923MB</code> 的内存时，物理内存+页文件大小不足以满足这次分配请求，于是抛出异常。</p>
 <p>本篇文章将重点挖掘一下 <code>vs2022</code> 在崩溃之前已经分配的内容。</p>
 <blockquote>
 <p><strong>说明：</strong> 本文很早就写了草稿，一直没时间整理发布，Finally~</p>
@@ -1327,8 +1926,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1522,8 +2121,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1610,593 +2209,10 @@
 
       
         
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>曾经在 <code>2022</code> 年分析过一个崩溃转储，文章在<a href="https://bianchengnan.gitee.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">这里</a>。在那个案例中，堆空间大小将近 <code>4GB</code>。根据上次的结论，这应该是一个运行在 <code>64</code> 位系统下的 <code>32</code> 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 <code>32</code> 位的还是 <code>64</code> 位的？如果是 <code>32</code> 位进程，怎么判断是运行在 <code>32</code> 位系统上还是运行在 <code>64</code> 位系统上呢？</p>
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>曾经在 <code>2022</code> 年分析过一个崩溃转储，文章在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">这里</a>。在那个案例中，堆空间大小将近 <code>4GB</code>。根据上次的结论，这应该是一个运行在 <code>64</code> 位系统下的 <code>32</code> 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 <code>32</code> 位的还是 <code>64</code> 位的？如果是 <code>32</code> 位进程，怎么判断是运行在 <code>32</code> 位系统上还是运行在 <code>64</code> 位系统上呢？</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/find-the-right-exception-context-in-x64-dump-continue/" itemprop="url">如何快速从 32 位转储文件中找到异常发生时的线程上下文</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-10-15T13:44:22+08:00">
-                2023-10-15
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/调试/" itemprop="url" rel="index">
-                    <span itemprop="name">调试</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇<a href="https://bianchengnan.gitee.io/articles/find-the-right-exception-context-in-x64-dump/" target="_blank" rel="noopener">文章</a>中介绍了如何在 <code>64</code> 位进程的转储文件中查找异常上下文的方法 —— <code>KiUserExceptionDispatcher()</code> 函数对应栈帧的 <code>Child-SP</code> 的值保存了异常发生时的线程上下文。</p>
-<p>本文将介绍如何在 <code>32</code> 位进程及 <code>wow64</code> 进程的转储文件中查找异常上下文的方法，并且会先介绍几个跟异常分发相关的函数和结构体。如果忘记了结论，可以根据函数参数手动逆向查找验证。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/find-the-right-exception-context-in-x64-dump-continue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/find-the-right-exception-context-in-x64-dump/" itemprop="url">如何快速从 64 位转储文件中找到异常发生时的线程上下文</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-09-29T15:44:22+08:00">
-                2023-09-29
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/调试/" itemprop="url" rel="index">
-                    <span itemprop="name">调试</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>经常做调试的朋友可能会遇到在 <code>windbg</code> 里通过 <code>k</code> 系列命令得到的调用栈没有太大参考意义。一般是由于线程上下文不对导致的。这时候可以通过 <code>!analyze -v</code> 让 <code>windbg</code> 自动帮我们分析出正确的调用栈及异常发生时的线程上下文。有了上下文信息，就可以执行 <code>.cxr address_to_context</code> 命令切换上下文，这时候再通过 <code>k</code> 命令查看调用栈，一般可以得到一个有意义的调用栈。</p>
-<p>但有时候 <code>!analyze -v</code> 分析出来的上下文信息也是不对的。这时候就需要我们自己手动查找异常上下文了。</p>
-<p>这不，最近我就遇到了一个需要手动查找异常上下文的情况。经过调查发现了一个非常重要的规律 —— <code>64</code> 位程序中，<code>KiUserExceptionDispatcher</code> 函数对应栈帧的 <code>Child-SP</code> 的值保存了异常发生时的线程上下文。</p>
-<p>本文完整记录了整个查找验证的过程。</p>
-<blockquote>
-<p><strong>吐槽：</strong> <code>64</code> 位程序的参数传递方式与 <code>32</code> 位程序大不相同，不能根据 <code>ebp</code> 定位参数了。而是需要结合反汇编代码来推断某个函数的参数是否保存到栈上。如果没保存到栈上，基本上很难找到相关参数了。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/find-the-right-exception-context-in-x64-dump/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/download-the-old-new-thing-archive-blog-using-powershell-with-the-help-of-Cursor/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/download-the-old-new-thing-archive-blog-using-powershell-with-the-help-of-Cursor/" itemprop="url">感受 AI 的力量——利用 Cursor 自动生成 powershell 脚本下载 TheOldNewThing 博文</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-08-06T20:24:04+08:00">
-                2023-08-06
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AI/" itemprop="url" rel="index">
-                    <span itemprop="name">AI</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>今天查资料的时候，偶然发现了一位国外网友镜像了 <code>TheOleNewThing</code> 从 <code>2003</code> 年到 <code>2019</code> 年的<a href="https://bytepointer.com/resources/old_new_thing/index.htm" target="_blank" rel="noopener">博文</a>，竟然有 <code>5000</code> 多篇（真是高产）。值得注意的是，微软官方博客中许多链接都已经失效了。为了防止这位网友的镜像链接也失效，我决定赶紧将这些内容下载保存下来。手动保存显然不现实，毕竟有 <code>5000</code> 多篇文章呢！所以，我决定写脚本来自动下载，这才是明智之举！如果是几年前，我肯定要亲自动手写脚本，不过如今，<code>AI</code> 这么强大，我无需再费力。幸运的是，我利用 <a href="https://www.cursor.so/" target="_blank" rel="noopener">Cursor</a> 自动生成下载脚本的全过程，并对其进行了简单的修改，成功地将全部 <code>5000</code> 多篇文章下载并压缩存档，并按年月分类打包好了！不得不赞叹一句，<code>AI</code> 真是太强大了。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/download-the-old-new-thing-archive-blog-using-powershell-with-the-help-of-Cursor/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2290,7 +2306,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

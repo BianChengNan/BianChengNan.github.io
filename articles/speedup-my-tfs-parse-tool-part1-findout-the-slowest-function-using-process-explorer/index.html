@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起因为需要分析 tfs 提交日志，并按照一定条件（比如，提交信息或者用户名）分类整理，特意写了这个小工具。在使用过程中发现，某些情况下会花费很长时间才能返回处理结果，当时稍稍做了一些优化，已经能满足当时的应用场景了。但是在处理大文件的时候依然会花费很长时间。忍了这么久了，终于有机会做一次效率优化了。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/parsetfslog-slow.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/slow-result.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/fast-result.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.007Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/parsetfslog-slow.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/slow-result.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/fast-result.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化 | 记一次 .NET 程序的性能优化实战（1）—— 使用 process explorer 快速定位问题代码">
 <meta name="twitter:description" content="缘起因为需要分析 tfs 提交日志，并按照一定条件（比如，提交信息或者用户名）分类整理，特意写了这个小工具。在使用过程中发现，某些情况下会花费很长时间才能返回处理结果，当时稍稍做了一些优化，已经能满足当时的应用场景了。但是在处理大文件的时候依然会花费很长时间。忍了这么久了，终于有机会做一次效率优化了。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/parsetfslog-slow.gif">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/parsetfslog-slow.gif">
 
 
 
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -458,7 +458,7 @@
 
 <p>背景介绍完毕，下面可以进行优化了。</p>
 <h2 id="初步观察"><a href="#初步观察" class="headerlink" title="初步观察"></a>初步观察</h2><p>启动 <code>ParseTfsLog.exe</code>，然后使用 <code>process explorer</code>  观察运行情况。我录制了一段视频，如下：</p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/parsetfslog-slow.gif" alt="parsetfslog-slow"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/parsetfslog-slow.gif" alt="parsetfslog-slow"></p>
 <p>可以看出，<code>ParseTfsLog.exe</code> 在运行过程中占满了一个核心（我的 <code>cpu</code> 是 <code>8</code> 核的，<code>ParseTfsLog.exe</code> 的 <code>cpu</code> 占用率是 <code>12.5</code> 左右）。仔细观察每次刷新时出现在调用栈中的函数名，名为 <code>IsSplitter</code> 的函数基本上每次都会出现。如果每次刷新，同一个函数都出现的话，这个函数就很值得怀疑了。</p>
 <p>但是这个函数的实现非常简单，只有三行代码，实现如下：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">IsSplitter</span>(<span class="params"><span class="keyword">string</span> curLine</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">var</span> splitterRegex = <span class="keyword">new</span> Regex(<span class="string">@"-&#123;100,&#125;"</span>, RegexOptions.Compiled | RegexOptions.IgnoreCase);</span><br><span class="line">  MatchCollection matches = splitterRegex.Matches(curLine);</span><br><span class="line">  <span class="keyword">return</span> (matches.Count &gt; <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -468,9 +468,9 @@
 
 <p>再次编译运行，一眨眼的功夫结果就出来了。</p>
 <h2 id="大文件效率对比"><a href="#大文件效率对比" class="headerlink" title="大文件效率对比"></a>大文件效率对比</h2><p>为了更好的感受一下效率的提升，我换了一个更大一些的日志文件来分析，大概有 <code>18.6MB</code>，没优化之前耗时 <code>8676448</code> 毫秒（<code>8676</code> 秒，<code>144</code> 分钟），如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/slow-result.png" alt="slow-result"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/slow-result.png" alt="slow-result"></p>
 <p>优化后耗时 <code>9428</code> 毫秒，不到 <code>10</code> 秒，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/fast-result.png" alt="fast-result"></p>
+<p><img src="/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/fast-result.png" alt="fast-result"></p>
 <p>居然提高了 <code>800</code> 多倍！说实话，我真没想到，没优化的时候居然会花那么久才完成。</p>
 <h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>在开始分析之前，脑子中有各种猜想（有时候想想，自己的脑洞真是够大的）：</p>
 <ul>
@@ -867,6 +867,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -955,7 +961,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

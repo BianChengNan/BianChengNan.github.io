@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -325,7 +325,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/" itemprop="url">性能优化 | 记一次 .NET 程序的性能优化实战（3）—— 深入 .NET 源码</a></h2>
+                <a class="post-title-link" href="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part1/" itemprop="url">调试实战 | 使用 IDA 和 windbg 调试 LNK1123 转换到 COFF 期间失败：文件无效或损坏（上）</a></h2>
         
 
         <div class="post-meta">
@@ -338,8 +338,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-26T21:10:33+08:00">
-                2021-12-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-06T18:24:04+08:00">
+                2022-02-06
               </time>
             
 
@@ -354,8 +354,201 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/调试/" itemprop="url" rel="index">
+                    <span itemprop="name">调试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>前一段时间在折腾拆分 <code>rc</code> 的问题，已经把遇到的问题整理成文了。感兴趣的小伙伴儿可以参考<a href="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/" target="_blank" rel="noopener">这里</a>，<a href="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part2-findout-why-rc-encoding-changed/" target="_blank" rel="noopener">这里</a> 和 <a href="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part3-reference-git-source/" target="_blank" rel="noopener">这里</a>。本以为不会有问题了，后续流程就请其它同事帮忙处理了，没想到在拆分实际项目时遇到了一个非常奇怪的链接问题。</p>
+<p>本文总结了使用 <code>process monitor</code> 监听进程创建，查看进程参数、使用 <code>gflags</code> 设置 <code>Image File Excution Options</code>、使用 <code>IDA</code> 静态分析相关函数的业务逻辑以及使用 <code>windbg</code> 进行动态调试的整个过程。我认为这是一个由不良的编程习惯与  <code>crt</code> 的限制共同导致的问题。快来一起看看吧。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/" itemprop="url">性能优化 | 记一次 .NET 程序的性能优化实战（4）—— .NET 源码查看及使用 vs 调试</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-16T18:10:33+08:00">
+                2022-01-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -442,7 +635,400 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前两篇文章 <a href="https://bianchengnan.gitee.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">part1</a> 和 <a href="https://bianchengnan.gitee.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/" target="_blank" rel="noopener">part2</a> 基本上理清了 <code>IsSplitter()</code> 运行缓慢的原因 —— 在函数内部使用了带 <code>Compile</code> 选项的正则表达式。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面三篇文章中应该已经把 <code>.NET</code> 中正则表达式相关的问题”格尽”了。感兴趣的小伙伴儿可以参考 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">part1</a>，<a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/" target="_blank" rel="noopener">part2</a> 和 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/" target="_blank" rel="noopener">part3</a>。</p>
+<p>由于篇幅原因，在前面的文章中并没有介绍如何下载 <code>.NET</code> 源码，如何调试 <code>.NET</code> 源码。本文会简单介绍如何下载 <code>.NET</code> 源码，如何在线浏览 <code>.NET</code> 源码，如何使用 <code>vs</code> 调试 <code>.NET</code> 源码。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/2022-startup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/2022-startup/" itemprop="url">2022 开工喽</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-03T18:15:25+08:00">
+                2022-01-03
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/福利/" itemprop="url" rel="index">
+                    <span itemprop="name">福利</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="回首-2021"><a href="#回首-2021" class="headerlink" title="回首 2021"></a>回首 2021</h2><p><code>2021</code> 年真是又忙又累的一年，一直在加班，清明加，五一加，周末更别提了。一直忙到年底，才真正休息了几天。<code>2021</code> 真的是在忙碌中度过的，好在努力没有白费，付出了不少，也收获了很多：</p>
+<ul>
+<li>交付的项目得到了客户的认可。</li>
+<li>我们的团队在不断壮大成长。</li>
+<li>我们的工作流程在持续优化中。</li>
+<li>我们的技术交流依旧在持续举办中。</li>
+<li>我们开始 <code>code review</code> 啦。</li>
+<li>我们开始全面拥抱 <code>git</code> 啦。</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/articles/2022-startup/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BianChengNan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BianChengNan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/" itemprop="url">性能优化 | 记一次 .NET 程序的性能优化实战（3）—— 深入 .NET 源码</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-26T21:10:33+08:00">
+                2021-12-26
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                   分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前两篇文章 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">part1</a> 和 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/" target="_blank" rel="noopener">part2</a> 基本上理清了 <code>IsSplitter()</code> 运行缓慢的原因 —— 在函数内部使用了带 <code>Compile</code> 选项的正则表达式。</p>
 <p>但是没想到在 <code>IsSplitter()</code> 内部使用不带 <code>Compiled</code> 选项的正则表达式，整个程序运行起来非常快，跟静态函数版本的运行速度不相上下。又有了如下疑问：</p>
 <ol>
 <li>为什么使用不带 <code>Compiled</code> 选项实例化的 <code>Regex</code> 速度会这么快？</li>
@@ -557,8 +1143,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -645,7 +1231,7 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我在上一篇文章<a href="https://bianchengnan.gitee.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">《性能优化 | 记一次 .NET 程序的性能优化实战（1）—— 使用 process explorer 快速定位问题代码》</a>中用 <code>process explorer</code> 定位到了导致程序运行缓慢的原因——使用了 <code>.NET</code> 中的正则表达式。<code>.NET</code> 中的正则表达式真这么慢吗？带着疑问，开始了本次的探索之旅。喜欢刨根问底的小伙伴儿快来一起看看吧！</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我在上一篇文章<a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">《性能优化 | 记一次 .NET 程序的性能优化实战（1）—— 使用 process explorer 快速定位问题代码》</a>中用 <code>process explorer</code> 定位到了导致程序运行缓慢的原因——使用了 <code>.NET</code> 中的正则表达式。<code>.NET</code> 中的正则表达式真这么慢吗？带着疑问，开始了本次的探索之旅。喜欢刨根问底的小伙伴儿快来一起看看吧！</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/#more" rel="contents">
@@ -749,8 +1335,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -837,7 +1423,7 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面两篇文章 <a href="https://bianchengnan.gitee.io/articles/troubleshoot-error-RC1020-unexpected-endif-using-multiple-rc-in-one-project-and-stop-git-treating-rc-as-binary/" target="_blank" rel="noopener">记一次曲折的多资源文件拆分折腾过程（1）</a> 和 <a href="https://bianchengnan.gitee.io/articles/troubleshoot-error-RC1020-unexpected-endif-using-multiple-rc-in-one-project-and-stop-git-treating-rc-as-binary-part2/" target="_blank" rel="noopener">记一次曲折的多资源文件拆分折腾过程（2）</a> 中，已经把折腾过程中遇到的问题都弄清楚了。因为对这个问题印象太深刻了，而且 <code>git</code> 又是开源的，于是特地翻看了 <code>git</code> 的源码，并且在 <code>windows</code> 上用 <code>gdb</code> 简单调试了一波。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面两篇文章 <a href="https://bianchengnan.github.io/articles/troubleshoot-error-RC1020-unexpected-endif-using-multiple-rc-in-one-project-and-stop-git-treating-rc-as-binary/" target="_blank" rel="noopener">记一次曲折的多资源文件拆分折腾过程（1）</a> 和 <a href="https://bianchengnan.github.io/articles/troubleshoot-error-RC1020-unexpected-endif-using-multiple-rc-in-one-project-and-stop-git-treating-rc-as-binary-part2/" target="_blank" rel="noopener">记一次曲折的多资源文件拆分折腾过程（2）</a> 中，已经把折腾过程中遇到的问题都弄清楚了。因为对这个问题印象太深刻了，而且 <code>git</code> 又是开源的，于是特地翻看了 <code>git</code> 的源码，并且在 <code>windows</code> 上用 <code>gdb</code> 简单调试了一波。</p>
 <blockquote>
 <p><strong>说明：</strong> 本篇文章适合 <code>geek</code> 阅读，全是一些源码查看及编译环境+调试的总结。</p>
 </blockquote>
@@ -944,8 +1530,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1032,7 +1618,7 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇是上篇文章—— <a href="https://bianchengnan.gitee.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/" target="_blank" rel="noopener">记一次曲折的多资源文件拆分折腾过程（1）</a> 的续篇。在上篇文章找到了导致编译报错的根本原因是 <code>.rc</code> 文件的编码不再是默认的 <code>UTF-16LE-BOM</code> 了。但是为什么 <code>.rc</code> 文件的编码会发生变化，并没有深究。本文继续探究一下。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇是上篇文章—— <a href="https://bianchengnan.github.io/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part1-troubleshoot-error-RC1020-unexpected-endif/" target="_blank" rel="noopener">记一次曲折的多资源文件拆分折腾过程（1）</a> 的续篇。在上篇文章找到了导致编译报错的根本原因是 <code>.rc</code> 文件的编码不再是默认的 <code>UTF-16LE-BOM</code> 了。但是为什么 <code>.rc</code> 文件的编码会发生变化，并没有深究。本文继续探究一下。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/articles/using-multiple-rc-and-stop-git-treating-rc-as-binary-part2-findout-why-rc-encoding-changed/#more" rel="contents">
@@ -1136,8 +1722,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1333,8 +1919,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1525,8 +2111,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -1656,632 +2242,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/A-better-file-system-wacher-based-on-dotnet-FileSystemWatcher/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/A-better-file-system-wacher-based-on-dotnet-FileSystemWatcher/" itemprop="url">一个更好的文件监控类，基于 DotNet 官方提供的 FileSystemWatcher</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-14T18:16:11+08:00">
-                2021-06-14
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/源码/" itemprop="url" rel="index">
-                    <span itemprop="name">源码</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>前一段时间，想使用 <code>.net</code> 监听特定文件夹中的文件是否发生变化。网上一搜，可以使用 <code>.net</code> 官方提供的 <code>FileSystemWatcher</code>，很开心的写好了代码。随着使用的不断深入，发现了 <code>FileSystemWatcher</code> 几个不够完善的地方。比如，</p>
-<ol>
-<li>事件触发时，文件可能还不能被访问。</li>
-<li>如果监听选项设置的过多，则有可能会触发多次文件变化事件。</li>
-<li>监听过滤器不够灵活，我没找到同时监听多种特定文件类型的方法。比如，同时只监听 <code>.docx</code> 和 <code>.bmp</code> 文件。</li>
-</ol>
-<p>鉴于此，基于 <code>.net</code> 官方提供的 <code>FileSystemWatcher</code>，我又封装了一个新的类。可以在一定程度上解决以上几个问题。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/A-better-file-system-wacher-based-on-dotnet-FileSystemWatcher/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/unexpected-dotnet-equal-compare/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/unexpected-dotnet-equal-compare/" itemprop="url">dotnet 中的判等</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-01T12:50:27+08:00">
-                2021-05-01
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/" itemprop="url" rel="index">
-                    <span itemprop="name">c#</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/调试/" itemprop="url" rel="index">
-                    <span itemprop="name">调试</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/调试/IL/" itemprop="url" rel="index">
-                    <span itemprop="name">IL</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/调试/IL/ildasm/" itemprop="url" rel="index">
-                    <span itemprop="name">ildasm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前几天，同事在 <code>.net</code> 程序中，遇到一个很 “诡异” 的问题：明明两个值是相等的，可偏偏却不相等，这是怎么回事呢？</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/unexpected-dotnet-equal-compare/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BianChengNan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BianChengNan's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/" itemprop="url">谁是磁盘空间占用大户？</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-27T20:14:23+08:00">
-                2021-03-27
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                   分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>磁盘已经全面爆红很久了，使用 <code>dism++</code> 清理了几次，依然很紧张。终于，昨天在编译程序的时候又因为磁盘空间不足失败了！是可忍熟不可忍。必须安排！</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2336,7 +2296,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

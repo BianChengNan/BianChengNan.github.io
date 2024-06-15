@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起实际项目中，resource.h 文件中的控件太多太乱了，合并代码的时候非常痛苦。为了解决这个问题，需要对 resource.h 中的 ID 进行整理。根据之前整理的成果，很快把控件 ID 按对话框分类整理好了。没想到测试的时候遇到了各种崩溃，废了好大劲儿才解决。究其原因，是对 MFC 资源管理机制认识不够深刻。尝试创建某个模块内的对话框的时候，意外地找到了其它模块中的对话框资源。MFC 到底">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/grouped_resource_h.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/invalid_window_handle.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/failed_but_last_error_success.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/view-hInst-and-find-it-not-right.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/cdynlinklibrary-constructor.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/createwindow-return-0-last-error-1407.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/dialog-custom-control-MFCGridCtrl.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/mfc140u.amd64.pdb.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.140Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/grouped_resource_h.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/invalid_window_handle.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/failed_but_last_error_success.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/view-hInst-and-find-it-not-right.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/cdynlinklibrary-constructor.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/createwindow-return-0-last-error-1407.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/dialog-custom-control-MFCGridCtrl.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/mfc140u.amd64.pdb.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.499Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的 MFC 程序崩溃分析">
 <meta name="twitter:description" content="缘起实际项目中，resource.h 文件中的控件太多太乱了，合并代码的时候非常痛苦。为了解决这个问题，需要对 resource.h 中的 ID 进行整理。根据之前整理的成果，很快把控件 ID 按对话框分类整理好了。没想到测试的时候遇到了各种崩溃，废了好大劲儿才解决。究其原因，是对 MFC 资源管理机制认识不够深刻。尝试创建某个模块内的对话框的时候，意外地找到了其它模块中的对话框资源。MFC 到底">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/grouped_resource_h.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/grouped_resource_h.png">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -459,7 +459,7 @@
 
 
 <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>根据之前的认知，同一个模块中，对话框 <code>ID</code> 不能重复，对话框之间的控件 <code>ID</code> 是可以重复的。因为查找资源的时候是分层查找的，先找到对应的对话框资源，然后在此对话框范围内再查找控件。如果认知没错，那么不同对话框可以使用重复的控件 <code>ID</code> ，也就是说对话框 <code>A</code> 用到的控件 <code>ID</code> 值可以与对话框 <code>B</code> 用到的控件 <code>ID</code> 值一样。以此为依据，我遍历并解析了 <code>.rc</code> 文件中的所有对话框及其控件 <code>ID</code>，并以对话框为组，把每个对话框用到的控件 <code>ID</code> 重新归类。整理后的 <code>resource.h</code> 如下图所示：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/grouped_resource_h.png" alt="grouped_resource_h"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/grouped_resource_h.png" alt="grouped_resource_h"></p>
 <p><code>IDD_DIALOG1</code> 和 <code>IDD_DIALOG2</code> 都用到宏名为 <code>IDC_BUTTON1</code> 和 <code>IDC_BUTTON2</code> 的按钮。因为有多个对话框用到了同样的控件名，需要把重复的控件名整理到 <code>IdGroup.Common</code> 组下，<code>IDC_BUTTON3</code> 和 <code>IDC_BUTTON4</code> 的值都被设置为了 <code>20003</code>。整理前，控件 <code>ID</code> 是递增排列的，整理后两个对话框中的控件 <code>ID</code> 值是完全重复的。</p>
 <h2 id="理想很丰满，现实很骨感"><a href="#理想很丰满，现实很骨感" class="headerlink" title="理想很丰满，现实很骨感"></a>理想很丰满，现实很骨感</h2><p>在本地测试通过后，就开始在实际项目中实战了。没想到遇到了各种各样的编译问题。</p>
 <p>比如，<code>.rc</code> 中用了一个控件名，实际代码中用了另外一个名字（使用 <code>vs</code> 修改控件名就会产生名称不同，但是值相同的宏）。</p>
@@ -476,7 +476,7 @@
 <p>难道真的是我之前的认知出现了偏差？于是赶紧又写了一段测试代码，还是没问题。<code>google</code>、<code>bing</code>、<code>baidu</code> 都没搜到有用的资料。</p>
 <p>难道就这样放弃，不处理了？放弃是不可能放弃的。找不到资料，只能自己调试了。</p>
 <h2 id="上调试器"><a href="#上调试器" class="headerlink" title="上调试器"></a>上调试器</h2><p>一般调用某个 <code>API</code> 失败都会有错误码，可以通过 <code>GetLastError()</code> 或者在 <code>vs</code> 的 <code>watch</code> 窗口中输入 <code>$err,hr</code> 查看。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/invalid_window_handle.png" alt="invalid_window_handle"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/invalid_window_handle.png" alt="invalid_window_handle"></p>
 <p>从错误提示可知，<strong>无效的窗口句柄</strong>，说明创建对话框的时候就失败了，而不是调用 <code>GetDlgItem(IDC_BTN_TITLE)</code> 在对话框中查找控件的时候才失败。这说得通，因为使用 <code>resource hacker</code> 查看到的资源确实是对的。</p>
 <blockquote>
 <p><strong>说明：</strong> </p>
@@ -484,7 +484,7 @@
 <li><p>为了更好的调查问题，我把原代码中的 <code>GetDlgItem(IDC_BTN_TITLE)-&gt;ShowWindow(SW_HIDE);</code> 拆分成了两句 <code>auto title = ::GetDlgItem(m_hWnd, IDC_BTN_TITLE); title-&gt;ShowWindow(SW_HIDE);</code></p>
 </li>
 <li><p><code>GetDlgItem(IDC_BTN_TITLE)</code> 内部会调用 <code>CWnd::FromHandle(::GetDlgItem(m_hWnd, nID));</code>，会导致 <code>LastError</code> 的值被覆盖。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/failed_but_last_error_success.png" alt="failed_but_last_error_success"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/failed_but_last_error_success.png" alt="failed_but_last_error_success"></p>
 </li>
 </ol>
 </blockquote>
@@ -497,7 +497,7 @@
 <p><strong>说明：</strong> 关于 <code>chkmatch</code> 还有一段故事，后面有机会总结成文，分享给大家</p>
 </blockquote>
 <h2 id="上-windbg"><a href="#上-windbg" class="headerlink" title="上 windbg"></a>上 windbg</h2><p>使用 <code>windbg</code> 附加进程后，加载好对应模块的调试符号并在调用 <code>Create()</code> 函数的地方设置好断点，然后让程序重新运行起来，中断后，单步步入（跟 <code>vs</code> 一样，<code>F11</code>），简单跟踪了一下，没发现异常。<code>::CreateDialogIndirect()</code> 返回 <code>NULL</code>，<code>LastError</code> 的值是 <code>0</code>。后面调试时，发现 <code>hInst</code> 的值有些奇怪，不是预期的模块。<code>hInst</code> 本来应该是 <code>AssemblyDesign_Tools.dll</code>，但是现在却是 <code>PBimsPCDrawing.dll</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/view-hInst-and-find-it-not-right.png" alt="view-hInst-and-find-it-not-right"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/view-hInst-and-find-it-not-right.png" alt="view-hInst-and-find-it-not-right"></p>
 <p>这很不正常！说明在创建对话框的时候，在错误的模块 <code>PBimsPCDrawing.dll</code> 中找到了对应 <code>ID</code> 值的对话框。手动修改 <code>PBimsPCDrawing.dll</code>  中相应的对话框 <code>ID</code> 为其它值，再次编译运行，果然不再崩溃了。</p>
 <p>但是为什么在创建对话框的时候，会到 <code>PBimsPCDrawing.dll</code> 中查找，而不是到预期的  <code>AssemblyDesign_Tools.dll</code> 中查找呢？</p>
 <h2 id="hInst-从哪来"><a href="#hInst-从哪来" class="headerlink" title="hInst 从哪来"></a>hInst 从哪来</h2><p>简单排查后发现 <code>hInst</code> 来自 <code>AfxFindResourceHandle()</code> 的返回值。此函数内部会按照如下顺序查找：</p>
@@ -521,14 +521,14 @@
 </blockquote>
 <h2 id="CDynLinkLibrary"><a href="#CDynLinkLibrary" class="headerlink" title="CDynLinkLibrary"></a>CDynLinkLibrary</h2><p>经过简单代码搜索，发现每个模块都会使用 <code>CDynLinkLibrary</code> 把自己加到 <code>AfxGetModuleState()-&gt;m_libraryList</code> 中。</p>
 <p><code>CDynLinkLibrary</code> 的构造函数会保存传入的 <code>hModule</code>，并把自己加到 <code>m_pModuleState-&gt;m_libraryList</code> 中。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/cdynlinklibrary-constructor.png" alt="cdynlinklibrary-constructor"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/cdynlinklibrary-constructor.png" alt="cdynlinklibrary-constructor"></p>
 <p>至此，基本弄清了创建对话框失败的原因 —— <code>AfxFindResourceHandle()</code>  返回了错误的模块。</p>
 <p><code>AssemblyDesign_Tools.dll</code> 模块<strong>先</strong>被加载，在其 <code>DllMain()</code> 中把自己加到 <code>AfxGetModuleState()-&gt;m_libraryList</code> 中，然后 <code>PBimsPCDrawing.dll</code> 模块也被加载，也在 <code>DllMain()</code> 中把自己添加到 <code>AfxGetModuleState()-&gt;m_libraryList</code> 中，而且添加到 <code>AssemblyDesign_Tools.dll</code> 模块的前面。当创建 <code>AssemblyDesign_Tools.dll</code> 中的对话框时，如果 <code>PBimsPCDrawing.dll</code> 模块中包含相同 <code>ID</code> 的对话框，那么会加载错误模块中的对话框资源。</p>
 <h2 id="收工？"><a href="#收工？" class="headerlink" title="收工？"></a>收工？</h2><p>本以为到此就可以再水一篇文章了。但是当我在本地按照上述逻辑新建测试工程，准备重现时，发现测试程序能正常创建对话框。调试确认在创建 <code>Dialog1</code> 中的对话框时，<code>AfxFindResourceHandle()</code> 返回的确实是另外一个模块的句柄。</p>
 <p>为什么同样是找到了错误的模块，在测试程序中创建对话框成功了，但是在实际项目中却创建失败了？看来，虽然加载了其它模块的对话框资源，但是创建对话框不一定会失败。难道是其它原因导致的崩溃？</p>
 <h2 id="继续调查"><a href="#继续调查" class="headerlink" title="继续调查"></a>继续调查</h2><p>使用 <code>windbg</code> 附加到进程，中断下来后，执行到创建对话框的关键函数 <code>::CreateDialogIndirect()</code> （实际上是从此函数开始没有源码可跟了）。在此函数开头位置执行 <code>wt</code>，经过漫长的等待，查看统计结果，发现有对 <code>win32u!NtUserCreateWindowEx</code> 的调用。</p>
 <p>在 <code>win32u!NtUserCreateWindowEx()</code> 中设置断点，重新运行程序。中断后，执行 <code>gu</code> 让该函数执行完，然后执行 <code>r</code> 命令查看寄存器，<code>rax</code> 寄存器保存了执行结果。当 <code>rax</code> 的值是 <code>0</code> 时，说明创建窗体失败了。这时候执行 <code>!gle</code> 可知错误码是 <code>0x57f</code>（也就是十进制的 <code>1407</code>）。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/createwindow-return-0-last-error-1407.png" alt="createwindow-return-0-last-error-1407"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/createwindow-return-0-last-error-1407.png" alt="createwindow-return-0-last-error-1407"></p>
 <p>经过查询可知，这个错误码是 <strong>ERROR_CANNOT_FIND_WND_CLASS</strong>，也就是 <strong>找不到窗口类</strong>。居然是窗口类没有注册！要知道一般的控件已经注册过了。遇到窗口类没注册的错误，大概率是使用了自定义控件类。</p>
 <blockquote>
 <p><strong>说明：</strong> 可以使用如下命令在 <code>NtUserCreateWindowEx()</code> 失败时自动中断下来，并显示 <code>LastError</code>。</p>
@@ -536,13 +536,13 @@
 <p><code>@$ra</code> 表示返回地址。<code>bp /1 @$ra</code> 表示在函数返回地址处设置一次性断点。</p>
 </blockquote>
 <h2 id="MFCGridCtrl"><a href="#MFCGridCtrl" class="headerlink" title="MFCGridCtrl"></a>MFCGridCtrl</h2><p>于是赶紧查看 <code>.rc</code> 中对应的对话框内容，发现了一个可疑的控件 —— <code>MFCGridCtrl</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/dialog-custom-control-MFCGridCtrl.png" alt="dialog-custom-control-MFCGridCtrl"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/dialog-custom-control-MFCGridCtrl.png" alt="dialog-custom-control-MFCGridCtrl"></p>
 <p>这个名字太有迷惑性了，乍一看还以为是 <code>MFC</code> 提供的呢。<code>google</code> 之后发现是三方控件，源码可以在 <a href="https://www.codeproject.com/Articles/8/MFC-Grid-control-2-27" target="_blank" rel="noopener">codeproject</a> 上找到。</p>
 <p>下载相应源码并把关键文件添加到项目中，关联好对应的控件后，重新编译运行，这次果然没报错了。</p>
 <h2 id="破案"><a href="#破案" class="headerlink" title="破案"></a>破案</h2><p>至此，这个问题算是水落石出了 —— 实际项目中创建对话框失败是因为对话框中使用了未注册窗口类的控件。创建对话框的时候会依次创建对话框中的控件，在创建这个没注册窗口类的控件时失败了，从而导致整个对话框创建失败。</p>
 <h2 id="这个-bug-这么长寿？"><a href="#这个-bug-这么长寿？" class="headerlink" title="这个 bug 这么长寿？"></a>这个 bug 这么长寿？</h2><p>按理说，这个问题应该很容易被测试出来才对。带着这个疑问，搜索了一下项目代码，发现已经没有代码在使用这个对话框了。所以，实际项目中不会出问题。直到这次意外的 “撞衫”，这个问题才显现出来，有点“坑”。</p>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>后来在折腾符号加载时，发现 <code>chkmatch</code> 修改完的调试符号是可以被 <code>vs</code> 加载的。是我当时手动修改 <code>dll</code> 名字的时候改错了，<code>vs</code> 在加载 <code>mfc140u.dll</code> 的调试符号时，只会查找名字为 <code>mfc140u.amd64.pdb</code> 的调试符号，而我却手动改成了 <code>mfc140u.pdb</code>，所以 <code>vs</code> 加载调试符号失败了。可以在<strong>模块</strong>对话框（可以通过 <code>ctrl + alt + u</code> 打开）中指定的模块上<strong>右键</strong>，<strong>符号加载信息</strong> 查看某个模块对应的符号文件加载信息。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-crash-after-tidy-dialog-control-id/mfc140u.amd64.pdb.png" alt="mfc140u.amd64.pdb"></p>
+<p><img src="/articles/troubleshoot-crash-after-tidy-dialog-control-id/mfc140u.amd64.pdb.png" alt="mfc140u.amd64.pdb"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p>调试符号对于调试简直太重要了。</p>
 </li>
@@ -1095,6 +1095,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1183,7 +1189,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -96,27 +96,27 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言最近项目里总是遇到 dll 加载不上的问题，原因各种各样。今天先总结一个虽然不是项目中实际遇到的问题，但是却非常经典的问题。其它几种问题，后续慢慢总结。 示例代码包含一个 exe 工程，两个 dll 工程。 exe 会加载两个 dll 并调用它们的导出函数（GetCallCount），结果只有一个 dll 的导出函数被成功调用。会是什么原因呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dumpbin-exports.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/loaded_dll.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/procmon-trace.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/exception-and-call-stack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/invalid-eax.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/watch-this-value.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/__DllMainCRTStartup-call-_CRT_INIT.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/crt_init.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/_initterm.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/set-breakpoint-by-bm.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/single-step-to-initterm.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll2-dps-0x001f6000-0x001f6250.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll1-dps-0x10026000-0x10026250.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/difference-of-project1-2.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/success.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.493Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dumpbin-exports.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/loaded_dll.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/procmon-trace.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/exception-and-call-stack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/invalid-eax.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/watch-this-value.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/__DllMainCRTStartup-call-_CRT_INIT.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/crt_init.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/_initterm.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/set-breakpoint-by-bm.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/single-step-to-initterm.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll2-dps-0x001f6000-0x001f6250.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll1-dps-0x10026000-0x10026250.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/difference-of-project1-2.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/success.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | dll 加载失败之全局变量初始化篇">
 <meta name="twitter:description" content="前言最近项目里总是遇到 dll 加载不上的问题，原因各种各样。今天先总结一个虽然不是项目中实际遇到的问题，但是却非常经典的问题。其它几种问题，后续慢慢总结。 示例代码包含一个 exe 工程，两个 dll 工程。 exe 会加载两个 dll 并调用它们的导出函数（GetCallCount），结果只有一个 dll 的导出函数被成功调用。会是什么原因呢？">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
 
 
 
@@ -369,8 +369,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -479,21 +479,21 @@
 
 
 <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>运行效果如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png" alt="run_result"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png" alt="run_result"></p>
 <p>通过 <code>dumpbin</code> 已经确认两个 <code>dll</code> 都有名为 <code>GetCallCount</code> 的函数。但是只有一个调用成功了，另外一个却调用失败。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dumpbin-exports.png" alt="dumpbin-exports"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dumpbin-exports.png" alt="dumpbin-exports"></p>
 <p>使用 <code>process explorer</code> 观察 <code>dll</code> 加载情况，发现只加载了一个 <code>dll</code>，没发现另外一个 <code>dll</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/loaded_dll.png" alt="loaded_dll"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/loaded_dll.png" alt="loaded_dll"></p>
 <p>对于这个问题，如果我们使用 <code>process monitor</code> 观察整个加载过程，看到的都是 <code>Success</code>。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/procmon-trace.png" alt="procmon-trace"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/procmon-trace.png" alt="procmon-trace"></p>
 <p>说明，加载正常，在本地找到了这个文件，并正确的映射到内存空间中了。但为什么在进程中观察不到这个 <code>dll</code> 呢？是时候上调试器了。</p>
 <h2 id="上调试器"><a href="#上调试器" class="headerlink" title="上调试器"></a>上调试器</h2><p>直接在 <code>vs</code> 中按 <code>F5</code> 启动，果然中断到 <code>vs</code> 中了。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/exception-and-call-stack.png" alt="exception-and-call-stack"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/exception-and-call-stack.png" alt="exception-and-call-stack"></p>
 <p>从上图右侧部分，我们可以看到完整的调用栈。</p>
 <p>这里简单介绍下相关代码。在 <code>GlobalVariableInitializeOrder.cpp</code> 的第 <code>15</code> 行调用了 <code>HMODULE hDll2 = LoadLibraryA(&quot;GlobalVariableInitializeOrderDll2.dll&quot;);</code> 加载对应的模块。</p>
 <p><code>Common\Test2.cpp</code> 的第 <code>10</code> 行定义了全局变量 <code>CTest2 g_t2;</code>（在 <code>dll</code> 中），问题就出在这个全局变量的初始化代码中。</p>
 <p>从上图左侧部分，我们可以得知错误代码是 <code>0xc0000005</code>，内存访问异常。访问的地址是 <code>0x00000004</code>，对应的指令位置是 <code>0x001EA6DB</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/invalid-eax.png" alt="invalid-eax"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/invalid-eax.png" alt="invalid-eax"></p>
 <p>从上图中的反汇编看，确实是挂在了 <code>001EA6DB  mov eax,dword ptr [eax]</code>。因为 <code>eax</code> 的值是 <code>4</code>，我们需要查明 <code>eax</code> 为什么的值是 <code>4</code>。相信很多小伙伴都知道，<code>eax</code> 用来保存函数调用的返回值。我们可以把注意力集中到 <code>0x001EA6D6</code> 处的 <code>call</code> 指令了，调用的是成员函数 <code>_Root()</code> 。</p>
 <p>查看 <code>vs</code> 提供的源码，如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_Nodeptr&amp; _Root() <span class="keyword">const</span></span><br><span class="line">&#123;	<span class="comment">// return root of nonmutable tree</span></span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">this</span>-&gt;_Parent(<span class="keyword">this</span>-&gt;_Myhead));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -503,7 +503,7 @@
 
 <p><strong>务必注意：</strong> <code>_Parent()</code> 的返回值类型是 <code>_Nodepref</code>，返回的是引用（最后三个字母 <code>ref</code> 已经说明了一切）！相当于返回的是 <code>_Pnode-&gt;_Parent</code> 的地址！我们可以查看 <code>_Nodepref</code> 的定义：<code>typedef _Nodeptr&amp; _Nodepref;</code>。</p>
 <p>所以 <code>_Root()</code> 函数相当于 <code>&amp;(this-&gt;_Myhead-&gt;_Parent)</code>。我们来观察下 <code>this</code> 各个成员的值。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/watch-this-value.png" alt="watch-this-value"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/watch-this-value.png" alt="watch-this-value"></p>
 <p>可以看到 <code>_Myhead</code> 的值是 <code>0</code>，类型是 <code>std::_Tree_node&lt;...&gt;</code>。</p>
 <p>我们再看下 <code>_Tree_node</code> 的定义：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> _<span class="title">Value_type</span>,	<span class="title">class</span> _<span class="title">Voidptr</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> _<span class="title">Tree_node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  _Voidptr _Left;     <span class="comment">// offset: 0x0</span></span><br><span class="line">  _Voidptr _Parent;   <span class="comment">// offset: 0x4</span></span><br><span class="line">  _Voidptr _Right;    <span class="comment">// offset: 0x8</span></span><br><span class="line">  <span class="keyword">char</span> _Color;        <span class="comment">// offset: 0xC</span></span><br><span class="line">  <span class="keyword">char</span> _Isnil;        <span class="comment">// offset: 0xD</span></span><br><span class="line">  _Value_type _Myval; <span class="comment">// offset: 0x10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  _Tree_node&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> _Tree_node&amp;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -521,36 +521,36 @@
 <p>第一种方法比较简单，直接修改 <code>vs</code> 提供的源码即可，注意修改只读属性。本文以第 <code>2</code> 种方法为例展开。</p>
 <h2 id="全局变量初始化简介"><a href="#全局变量初始化简介" class="headerlink" title="全局变量初始化简介"></a>全局变量初始化简介</h2><p>本小节根据上面的调用栈简单的介绍全局变量的初始化过程（只介绍我们关心的部分）。</p>
 <p>不知道各位小伙伴儿是否记得上面的调用栈。切换到 <code>8</code> 号栈帧，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/__DllMainCRTStartup-call-_CRT_INIT.png" alt="__DllMainCRTStartup-call-_CRT_INIT"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/__DllMainCRTStartup-call-_CRT_INIT.png" alt="__DllMainCRTStartup-call-_CRT_INIT"></p>
 <p>可以发现，在 <code>__DllMainCRTStartup()</code> 函数中，当 <code>dwReason == DLL_PROCESS_ATTACH</code> 或者 <code>dwReason == DLL_THREAD_ATTACH</code> 的时候，会调用 <code>_CRT_INIT()</code> 函数。<code>_CRT_INIT()</code> 会执行运行时库的初始化相关功能，比如，初始化全局变量。然后才会调用用户提供的 <code>DllMain()</code> 函数。</p>
 <p>继续切换到 <code>7</code> 号栈帧，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/crt_init.png" alt="crt_init"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/crt_init.png" alt="crt_init"></p>
 <p>通过注释可知，<code>_initterm()</code> 是在调用 <code>C++ constructors</code>。</p>
 <p>我们继续切换到 <code>6</code> 号栈帧，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/_initterm.png" alt="_initterm"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/_initterm.png" alt="_initterm"></p>
 <p>根据注释猜测，应该是在依次调用每个全局变量的初始化函数。<code>pfbegin</code> 指向了保存全局变量初始化函数的表格的起始位置，<code>pfend</code> 指向最后一个有效位置的下一个位置，跟标准库中的容器多么相似啊。如果 <code>*pfbegin</code> 的值不为 <code>0</code>，说明表格对应的位置有有效的初始化函数，需要调用，否则就跳过。</p>
 <p>在 <code>vs</code> 中，我们想遍历出这个表格的内容有些费劲。是时候请 <code>windbg</code> 出场了。</p>
 <h2 id="windbg-出场"><a href="#windbg-出场" class="headerlink" title="windbg 出场"></a>windbg 出场</h2><p>在使用 <code>windbg</code> 之前一定要设置好符号路径，否则很多内容看不到。</p>
 <p>使用 <code>windbg</code> 打开要运行的程序，在命令窗口输入 <code>bm GlobalVariableInitializeOrderDll2!_CRT_INIT</code> ，埋伏好断点后执行 <code>g</code> 命令继续运行。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/set-breakpoint-by-bm.png" alt="set-breakpoint-by-bm"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/set-breakpoint-by-bm.png" alt="set-breakpoint-by-bm"></p>
 <p>很快，就中断到我们设置好的断点处了。在调用 <code>_initterm()</code> 的地方设置好断点，执行 <code>g</code> 命令（也可以和 <code>vs</code> 一样按 <code>F5</code>），断下来后，单步进入 <code>_initterm()</code> 函数，执行 <code>dv</code> 查看局部变量。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/single-step-to-initterm.png" alt="single-step-to-initterm"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/single-step-to-initterm.png" alt="single-step-to-initterm"></p>
 <p>从输出结果可知，<code>pfbegin = 0x001f6000</code>，<code>pfend = 0x001f6250</code>。然后我们就可以用强悍的 <code>dps</code> 来查看<code>pfbegin</code> 和 <code>pfend</code> 之间的内容了。在命令窗口执行，<code>dps 0x001f6000 0x001f6250</code>。因为有很多空项，这里只截取中间部分。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll2-dps-0x001f6000-0x001f6250.png" alt="dps-0x001f6000-0x001f6250"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll2-dps-0x001f6000-0x001f6250.png" alt="dps-0x001f6000-0x001f6250"></p>
 <p>我们可以很明显的看到，<code>g_t2</code>的构造函数在前，<code>s_manager</code> 的构造函数在后。</p>
 <p>至此，已经证实了我们之前的猜想。</p>
 <h2 id="对比强化"><a href="#对比强化" class="headerlink" title="对比强化"></a>对比强化</h2><p>因为工程 <code>GlobalVariableInitializeOrderDll1</code> 和工程 <code>GlobalVariableInitializeOrderDll2</code> 代码一模一样，只有一点点的不同，就是这一点不同导致了一个 <code>dll</code> 可以正常使用，另外一个却不能正常使用。</p>
 <p>我们可以用相同的手法观察 <code>GlobalVariableInitializeOrderDll1.dll</code> 的初始化过程。</p>
 <p>在命令窗口输入 <code>bm GlobalVariableInitializeOrderDll1!_CRT_INIT;g</code> ，埋伏好断点后运行起来。再次中断后，使用相同的办法进入<code>_initterm()</code> 函数，通过 <code>dv</code> 命令得到 <code>pfbegin = 0x10026000</code> 和 <code>pfend = 0x10026250</code> 的值，然后执行 <code>dps 0x10026000 0x10026250</code>，如下图（同样有很多空项，只截取了中间部分）：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll1-dps-0x10026000-0x10026250.png" alt="dps-0x001f6000-0x001f6250"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll1-dps-0x10026000-0x10026250.png" alt="dps-0x001f6000-0x001f6250"></p>
 <p>我们发现，<code>s_manager</code> 的构造函数在前，<code>g_t2</code>的构造函数在后。</p>
 <h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p>我们应该从根本上消除对全局变量的依赖，只需要把 <code>s_manager</code> 放到 <code>GetMap()</code> 中就可以了。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt;&amp; GetMap()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt; s_manager;</span><br><span class="line">    <span class="keyword">return</span> s_manager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>但有时候，由于各种各样的原因，我们不能消除这种依赖。我们还可以调整全局变量的初始化顺序。只要有办法让 <code>g_t2</code> 在 <code>s_manager</code> 之后再初始化就可以了。对比两个 <code>dll</code> 工程文件，我们发现有一处关键的不同点。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/difference-of-project1-2.png" alt="difference-of-project1-2"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/difference-of-project1-2.png" alt="difference-of-project1-2"></p>
 <p>在能正常加载的 <code>dll</code> 对应的工程中， <code>Test1.cpp, Test2.cpp</code> 出现的顺序是 <code>Test1.cpp, Test2.cpp</code>，在不能正常加载的 <code>dll</code> 对应的工程中，出现的顺序是 <code>Test2.cpp, Test1.cpp</code>。调整 <code>dll2.vcxproj</code> 中的文件顺序和 <code>dll1.vcxproj</code> 一样，再次编译运行，一切顺利。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/success.png" alt="success"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/success.png" alt="success"></p>
 <h2 id="动手实战"><a href="#动手实战" class="headerlink" title="动手实战"></a>动手实战</h2><p>强烈建议你也动手实战一番，毕竟纸上来的终觉浅。如果你也想动手实战，可以下载完整的工程文件，使用 <code>vs2013</code> 编译运行即可。如果没装 <code>vs2013</code>，也可以手动改成其它版本的 <code>vs</code>。</p>
 <p>完整的测试工程下载链接：</p>
 <p>百度云 链接: <a href="https://pan.baidu.com/s/1gW1dZsNYZoo0s_rfaO2Jzg" target="_blank" rel="noopener">https://pan.baidu.com/s/1gW1dZsNYZoo0s_rfaO2Jzg</a> 提取码: 7irh</p>
@@ -1113,6 +1113,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1201,7 +1207,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前几天，在加班赶进度时遇到了一个意想不到的崩溃。由于是新加的代码导致的问题，所以很快就定位到了问题代码。但是，看了好几遍也没看出问题在哪？虽然代码在逻辑上有漏洞——某些情况下没有返回值，但是在我的认知里，应该不会导致崩溃。本文记录了使用 IDA 静态分析反汇编代码定位这个问题的过程。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/crash-when-destrcutor-called.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/GetParam-real-type.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/key-logic-not-assign-result.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/result-not-initialized-in-main.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/not-all-control-paths-return-a-value-warning.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/view-disassembly-code-of-getparam-in-gcc5.2.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/view-disassembly-code-of-main-in-gcc5.2.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-crash/undefined-behaviour-in-cpp-standard-draft.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.292Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/crash-when-destrcutor-called.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/GetParam-real-type.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/key-logic-not-assign-result.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/result-not-initialized-in-main.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/not-all-control-paths-return-a-value-warning.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/view-disassembly-code-of-getparam-in-gcc5.2.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/view-disassembly-code-of-main-in-gcc5.2.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/undefined-behaviour-in-cpp-standard-draft.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.520Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="这个崩溃，有点意思">
 <meta name="twitter:description" content="缘起前几天，在加班赶进度时遇到了一个意想不到的崩溃。由于是新加的代码导致的问题，所以很快就定位到了问题代码。但是，看了好几遍也没看出问题在哪？虽然代码在逻辑上有漏洞——某些情况下没有返回值，但是在我的认知里，应该不会导致崩溃。本文记录了使用 IDA 静态分析反汇编代码定位这个问题的过程。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/unexpected-crash/crash-when-destrcutor-called.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/unexpected-crash/crash-when-destrcutor-called.png">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -464,28 +464,28 @@
 <p>在开始分析之前，请先停下来思考一下，上面的代码有问题吗？会导致崩溃吗？</p>
 <p>如果之前看到这段代码，你问我会不会崩溃。我的回答是：<strong>不会</strong>。但是现在我的回答是：<strong>会</strong>。多么痛的领悟。</p>
 <h2 id="残酷的崩溃"><a href="#残酷的崩溃" class="headerlink" title="残酷的崩溃"></a>残酷的崩溃</h2><p>在 <code>vs 2010</code> 中按 F5 调试启动，无情的中断下来了。入下图：</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/crash-when-destrcutor-called.png" alt="crash-when-destrcutor-called"></p>
+<p><img src="/articles/unexpected-crash/crash-when-destrcutor-called.png" alt="crash-when-destrcutor-called"></p>
 <p>惊不惊喜，意不意外？</p>
 <p><code>GetParam()</code> 反回一个 <code>ConfigParam</code> 类型的对象，这个反回的对象在析构的时候却崩溃了。如果仔细观察 <code>GetParam()</code> 的实现，可以发现 <code>GetParam()</code> 并不是所有分支上都有返回值，但是编译器应该会返回一个临时对象。难道这个反回的临时对象有问题？对于这种问题，唯有通过反汇编才能找到答案。</p>
 <h2 id="请出-IDA"><a href="#请出-IDA" class="headerlink" title="请出 IDA"></a>请出 IDA</h2><p>使用 IDA 打开 对应的程序，找到 <code>GetParam()</code> 的反汇编，可以发现一个有意思的事情是 <code>GetParam()</code> 的形式。本来声明的是</p>
 <p><code>ConfigParam GetParam(int option)</code>，在 IDA 中看到的却是 <code>ConfigParam *__fastcall GetParam(ConfigParam *result, int option)</code>。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/GetParam-real-type.png" alt="GetParam-real-type"></p>
+<p><img src="/articles/unexpected-crash/GetParam-real-type.png" alt="GetParam-real-type"></p>
 <p>依稀记得多年前接触汇编的时候，了解到一种说法：如果返回值类型比较大（大家应该知道在 <code>32</code> 位程序中，函数的返回值基本是通过 <code>EAX</code> 反回的），那么会把返回值的地址当作第一个参数传递给函数，<code>EAX</code> 指向的是返回值的地址。正好跟 <code>IDA</code> 对应上了。</p>
 <h2 id="查看关键逻辑"><a href="#查看关键逻辑" class="headerlink" title="查看关键逻辑"></a>查看关键逻辑</h2><p>代码中的 <code>GetParam()</code> 函数，当 <code>option</code> 是 <code>0</code> 的时候，会反回局部的 <code>result</code>，否则什么都不做。看看编译器帮我们做了什么吧。编译器做的事情也是，当 <code>option</code> 为 <code>0</code> 的时候，执行拷贝构造函数把局部的 <code>result</code> 返回出去，否则不会对参数中的 <code>result</code> 做任何操作。关键代码如下图所示：</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/key-logic-not-assign-result.png" alt="key-logic-not-assign-result"></p>
+<p><img src="/articles/unexpected-crash/key-logic-not-assign-result.png" alt="key-logic-not-assign-result"></p>
 <p>那么在调用 <code>GetParam()</code> 函数的地方，会对 <code>result</code> 做什么初始化的工作吗？</p>
 <h2 id="查看-main-函数逻辑"><a href="#查看-main-函数逻辑" class="headerlink" title="查看 main 函数逻辑"></a>查看 main 函数逻辑</h2><p>从下图可以清楚的看到，<code>main()</code> 函数并没有对 <code>result</code> 做任何初始化就传递给了 <code>GetParam()</code> 函数。</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/result-not-initialized-in-main.png" alt="result-not-initialized-in-main"></p>
+<p><img src="/articles/unexpected-crash/result-not-initialized-in-main.png" alt="result-not-initialized-in-main"></p>
 <p>所以，调用完 <code>GetParam()</code> 后，<code>main()</code> 函数中的 <code>result</code> 是一个未初始化的对象。而不是一个调用过构造函数的对象。所以后面再调用其析构函数的时候，发生什么事情都是正常的了。我在遇到这个问题之前，一直以为 <code>GetParam()</code> 函数返回来的是一个初始化过的对象，因为根据之前的认知，在对象产生的时候一定会调用构造函数。这里既没有调用构造函数，也没有调用拷贝构造函数。</p>
 <h2 id="vs-的-bug-？"><a href="#vs-的-bug-？" class="headerlink" title="vs 的 bug ？"></a>vs 的 bug ？</h2><p>这个问题最先是在 <code>vs2019</code> 上发现的，我还以为是 <code>vs2019</code> 的 <code>bug</code>，于是试了 <code>vs2017</code>、<code>vs2013</code>、<code>vs2010</code>，发现都会崩溃。但是每个版本的 <code>vs</code> 都会给出一个警告：<code>warning C4715: &#39;GetParam&#39; : not all control paths return a value</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/not-all-control-paths-return-a-value-warning.png" alt="not-all-control-paths-return-a-value-warning"></p>
+<p><img src="/articles/unexpected-crash/not-all-control-paths-return-a-value-warning.png" alt="not-all-control-paths-return-a-value-warning"></p>
 <p>虽然给了警告，但是多少还是觉得 <code>vs</code> 的处理不太合理，难道所有编译器都是这个行为吗？试试  <code>gcc</code> 中的行为。</p>
 <h2 id="gcc"><a href="#gcc" class="headerlink" title="gcc"></a>gcc</h2><p>不知道大家是否还记得我之前分享过的一个宝藏网址（<a href="https://gcc.godbolt.org/），可以查看各种编译器对同一段代码的编译结果。下图是" target="_blank" rel="noopener">https://gcc.godbolt.org/），可以查看各种编译器对同一段代码的编译结果。下图是</a> <code>gcc5.2</code> 中 <code>GetParam()</code> 函数的反汇编代码。</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/view-disassembly-code-of-getparam-in-gcc5.2.png" alt="view-disassembly-code-of-getparam-in-gcc5.2"></p>
+<p><img src="/articles/unexpected-crash/view-disassembly-code-of-getparam-in-gcc5.2.png" alt="view-disassembly-code-of-getparam-in-gcc5.2"></p>
 <p>可见，逻辑十分清晰， <code>56</code> 行中的 <code>rdi</code> 指向的是返回值地址，第 <code>60</code> 行会先调用构造函数，传递的对象地址就是 <code>56</code> 行的 <code>rdi</code> （虽然中间经过 <code>[rbp-24]</code> 及 <code>rax</code> 倒了两手）。第 <code>69</code> 行判断 <code>option</code> 是否为 <code>0</code>，但是第 <code>70</code> 行直接来了个强制跳转（并没有根据比较结果跳转，这个编译器有点屌），跳转到了 <code>.L8</code> 的位置，后面几行是函数返回的处理。</p>
 <p>可见，<code>gcc</code> 生成的代码会在 <code>GetParam()</code> 内部会先初始化，再返回。这样就避免了崩溃问题。</p>
 <p>再看看 <code>main()</code> 函数的反汇编代码，入下图：</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/view-disassembly-code-of-main-in-gcc5.2.png" alt="view-disassembly-code-of-main-in-gcc5.2"></p>
+<p><img src="/articles/unexpected-crash/view-disassembly-code-of-main-in-gcc5.2.png" alt="view-disassembly-code-of-main-in-gcc5.2"></p>
 <p>逻辑非常清晰易懂。第 <code>89</code> 行把局部变量的地址加载到 <code>rax</code> 中，第 <code>90</code> 行把 <code>1</code> 赋值到 <code>esi</code> 中，第 <code>91</code> 行把 <code>rax</code> 的值放到 <code>rdi</code> 中，第 <code>92</code> 行 调用 <code>GetParam()</code> 函数。</p>
 <blockquote>
 <p><strong>扩展：</strong> 感觉 <code>gcc</code> 生成的反汇编对应的调用约定是这样的 ：函数的第一个参数通过 <code>rdi</code> 传递，第二个参数通过 <code>rsi</code> 传递。</p>
@@ -498,7 +498,7 @@
 <p>A draft for the 2011 edition is available in <a href="https://open-std.org/JTC1/SC22/WG21/docs/papers/2011/n3242.pdf" target="_blank" rel="noopener">N3242</a>.</p>
 </blockquote>
 <p>在第 <code>6.6.3</code> 节中有一段简单的描述：有返回值却不返回值的情况是未定义的行为。原文截图如下：</p>
-<p><img src="http://resources.bianchengnan.tech/unexpected-crash/undefined-behaviour-in-cpp-standard-draft.png" alt="undefined-behaviour-in-cpp-standard-draft"></p>
+<p><img src="/articles/unexpected-crash/undefined-behaviour-in-cpp-standard-draft.png" alt="undefined-behaviour-in-cpp-standard-draft"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果一个函数是有返回值的，但是却不返回值，这个行为是未定义的。每个编译器可以自由发挥。很多版本的 <code>vs</code> 会給警告。一定要重视编译器的警告！！！</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>N3242  <a href="https://open-std.org/JTC1/SC22/WG21/docs/papers/2011/n3242.pdf" target="_blank" rel="noopener">https://open-std.org/JTC1/SC22/WG21/docs/papers/2011/n3242.pdf</a></p>
 <p>调用约定 <a href="https://www.cnblogs.com/shines77/p/3788514.html。" target="_blank" rel="noopener">https://www.cnblogs.com/shines77/p/3788514.html。</a></p>
@@ -1041,6 +1041,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1129,7 +1135,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

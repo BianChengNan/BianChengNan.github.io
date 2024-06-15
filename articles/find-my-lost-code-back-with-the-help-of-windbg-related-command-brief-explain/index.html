@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在上一篇文章中，我们主要使用了三个命令 !address，s，.writemem 把丢失的代码成功的保存到了文件中。本文简单介绍一下上文用到的这三个命令。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/display-by-range.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/range-specifier.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-usage.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-protection.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-state.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-type.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/option-c.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/search-type.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/display-by-range.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/range-specifier.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-usage.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-protection.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-state.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-type.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/option-c.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/search-type.png">
 <meta property="og:updated_time" content="2020-05-01T10:44:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 从堆里找回“丢失”的代码相关命令简介">
 <meta name="twitter:description" content="前言在上一篇文章中，我们主要使用了三个命令 !address，s，.writemem 把丢失的代码成功的保存到了文件中。本文简单介绍一下上文用到的这三个命令。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/display-by-range.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/display-by-range.png">
 
 
 
@@ -471,37 +471,37 @@
 
 <h2 id="windbg-中的地址范围语法"><a href="#windbg-中的地址范围语法" class="headerlink" title="windbg 中的地址范围语法"></a>windbg 中的地址范围语法</h2><p>很多命令都会用到 地址范围。比如 <code>s</code> 命令，<code>.writemem</code> 命令。</p>
 <p>在 <code>windbg</code> 中可以通过两种形式指定地址范围。<code>起始地址 L长度</code> 或者 <code>起始地址 终止地址</code>。在上一篇文章中，我们使用的是 <code>起始地址 终止地址</code> 的形式。我们也可以使用用 <code>起始地址 L长度</code> 的形式来指定一个范围。其中的 <code>L</code> 必不可少，而且，<code>L</code> 后面跟的是要查看的单位数量，不是字节数。比如，我们查看起始地址 <code>0xc0000</code> 处对应的内容，同样是<code>L4</code>，按字节（<code>db</code>），按四字节（<code>dd</code>）和按八字节（<code>dq</code>）查看，显示的内存范围是不一样的</p>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/display-by-range.png" alt="display-by-range"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/display-by-range.png" alt="display-by-range"></p>
 <p>有两点需要注意：</p>
 <ol>
 <li>如果搜寻的范围超过<code>256MB</code>，我们需要使用 <code>L?</code> ，而不是 <code>L</code>。</li>
 <li>我们可以使用 <code>L-</code> 表示给定的 <code>address</code> 是终止位置，而不是起始位置。</li>
 </ol>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/range-specifier.png" alt="range-specifier"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/range-specifier.png" alt="range-specifier"></p>
 <h2 id="address-命令"><a href="#address-命令" class="headerlink" title="!address 命令"></a>!address 命令</h2><p>该命令可以用来查看指定地址对应的信息，也可以用来查找过滤。在之前的文章里使用 <code>!address</code> 查看过某个地址对应的信息。上一篇文章中我们主要使用的是这个命令的查找过滤功能（通过  <code>-f</code> 参数，<code>f</code> 是 <code>filter</code> 的缩写）。</p>
 <ul>
 <li>我们可以根据用途过滤，具体参考下表。</li>
 </ul>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-usage.png" alt="filt-by-memory-usage"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-usage.png" alt="filt-by-memory-usage"></p>
 <ul>
 <li>还可以根据内存保护属性过滤，具体参考下表。</li>
 </ul>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-protection.png" alt="filt-by-memory-protection"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-protection.png" alt="filt-by-memory-protection"></p>
 <ul>
 <li>还可以根据内存状态过滤，具体参考下表。</li>
 </ul>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-state.png" alt="filt-by-memory-status"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-state.png" alt="filt-by-memory-status"></p>
 <ul>
 <li>还可以根据内存类型过滤，具体参考下表。</li>
 </ul>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-type.png" alt="filt-by-memory-type"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/filt-by-memory-type.png" alt="filt-by-memory-type"></p>
 <p><code>-f</code> 参数需要配合 <code>-c:&quot;command&quot;</code> 在查找的过程中执行对应的命令。</p>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/option-c.png" alt="option-c"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/option-c.png" alt="option-c"></p>
 <h2 id="s-命令"><a href="#s-命令" class="headerlink" title="s 命令"></a>s 命令</h2><p>该命令可以用来查找符合特定模式的内存。<code>s</code> 是 <code>Search Memory</code> 的缩写。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s [-[[Flags]Type]] Range Pattern </span><br><span class="line">s -[[Flags]]v Range Object </span><br><span class="line">s -[[Flags]]sa Range </span><br><span class="line">s -[[Flags]]su Range</span><br></pre></td></tr></table></figure>
 
 <p>这里仅截取 <code>Type</code> 的用法。更多用法请参考官方文档。</p>
-<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/search-type.png" alt="search-type"></p>
+<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg-related-command-brief-explain/search-type.png" alt="search-type"></p>
 <h2 id="writemem-命令"><a href="#writemem-命令" class="headerlink" title=".writemem 命令"></a>.writemem 命令</h2><p>该命令比较简单，<code>.writemem FileName Range</code>。</p>
 <p><code>FileName</code> ：如果路径中有空格，需要使用 <code>&quot;&quot;</code> 引起来，这个应该是常识了。</p>
 <p><code>Range</code> ：相关的语法已经在本文开始介绍了。</p>
@@ -890,6 +890,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -978,7 +984,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

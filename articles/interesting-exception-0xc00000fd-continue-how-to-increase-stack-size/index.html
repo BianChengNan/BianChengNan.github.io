@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 这里、 这里 和 这里。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！ 开源 就是增大栈尺寸。节流 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.828Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈大小可以怎么改？">
 <meta name="twitter:description" content="缘起前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 这里、 这里 和 这里。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！ 开源 就是增大栈尺寸。节流 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
 
 
 
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -447,7 +447,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 <a href="https://bianchengnan.gitee.io/articles/interesting-exception-0xc00000fd" target="_blank" rel="noopener">这里</a>、 <a href="https://bianchengnan.gitee.io/articles/another-interesting-stackoverflow/" target="_blank" rel="noopener">这里</a> 和 <a href="https://bianchengnan.gitee.io/articles/stack-variable-usage-optimization-investigation/" target="_blank" rel="noopener">这里</a>。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd" target="_blank" rel="noopener">这里</a>、 <a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/" target="_blank" rel="noopener">这里</a> 和 <a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/" target="_blank" rel="noopener">这里</a>。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！</p>
 <p><strong>开源</strong> 就是增大栈尺寸。<strong>节流</strong> 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。</p>
 <a id="more"></a>
 
@@ -459,12 +459,12 @@
 <p>可以通过参数 <code>dwStackSize</code> 指定栈大小，单位是<strong>字节</strong>。如果该参数是 <code>0</code> 的话，会使用 <code>PE</code> 文件头中的值。</p>
 <h2 id="2-修改工程配置"><a href="#2-修改工程配置" class="headerlink" title="2. 修改工程配置"></a>2. 修改工程配置</h2><p>可以在 <code>vs</code> 中设置默认的栈保留大小和栈提交大小，相应的值会记录在生成的 <code>PE</code> 头中。</p>
 <p>在工程上<code>右键</code> -&gt; <code>属性</code> -&gt; <code>配置属性</code> -&gt; <code>链接器</code> -&gt; <code>系统</code> -&gt; <code>堆栈保留大小</code>，<code>堆栈提交大小</code>。即可设置。具体位置如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png" alt="stack-reverse-setting"></p>
+<p><img src="/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png" alt="stack-reverse-setting"></p>
 <blockquote>
 <p>说明：这里设置的单位是<strong>字节</strong>。而且是 <code>10</code> 进制的。</p>
 </blockquote>
 <h2 id="3-手动修改PE文件头"><a href="#3-手动修改PE文件头" class="headerlink" title="3. 手动修改PE文件头"></a>3. 手动修改PE文件头</h2><p>如有由于某些原因，未能在开发的时候调整默认值，可以通过二进制编辑工具直接修改已经生成好的 <code>PE</code> 文件头中的字段来修改栈保留大小和栈提交大小。</p>
-<p><img src="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png" alt="stack-reverse-size-in-image-header"></p>
+<p><img src="/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png" alt="stack-reverse-size-in-image-header"></p>
 <p><code>SizeOfStackReserve</code> 指定了栈保留大小，默认值是 <code>1MB</code>，也就是这里的 <code>00100000</code>。</p>
 <p><code>SizeOfStackCommit</code> 指定了栈提交大小，默认值是 <code>4KB</code>，也就是这里的 <code>00001000</code>。</p>
 <blockquote>
@@ -1025,6 +1025,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1113,7 +1119,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

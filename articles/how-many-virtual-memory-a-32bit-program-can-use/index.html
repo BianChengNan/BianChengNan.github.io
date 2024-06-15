@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起我在《调试实战 | 记一次有教益的内存碎片转储文件分析》中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 32 位的，但是在查看堆空间大小的时候，居然有将近 4GB。 相信各位小伙伴儿应该听过下面这种说法：32 位进程有 4GB 的虚拟内存，其中低 2GB 是用户空间，应用程序可以访问，高 2GB 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 /3GB">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/enable-large-address-aware-flag.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/manually-set-large-address-aware-option.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/manually-modify-pe-header-to-support-large-address.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-disabled-32-bit-system.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-32-bit-system.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-on-64bit-system.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.695Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/enable-large-address-aware-flag.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-set-large-address-aware-option.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-modify-pe-header-to-support-large-address.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-disabled-32-bit-system.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-32-bit-system.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-on-64bit-system.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.424Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个 32 位程序的用户空间区域可以有多大？">
 <meta name="twitter:description" content="缘起我在《调试实战 | 记一次有教益的内存碎片转储文件分析》中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 32 位的，但是在查看堆空间大小的时候，居然有将近 4GB。 相信各位小伙伴儿应该听过下面这种说法：32 位进程有 4GB 的虚拟内存，其中低 2GB 是用户空间，应用程序可以访问，高 2GB 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 /3GB">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -453,7 +453,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.gitee.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
 <p>相信各位小伙伴儿应该听过下面这种说法：<code>32</code> 位进程有 <code>4GB</code> 的虚拟内存，其中低 <code>2GB</code> 是用户空间，应用程序可以访问，高 <code>2GB</code> 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 <code>/3GB</code> 的情况下，用户空间可以提升至 <code>3GB</code>，内核空间被压缩到 <code>1GB</code>。</p>
 <p>这也是我学到的关于 <code>32</code> 位进程虚拟内存相关的知识，但是上述描述不够准确。比如，开启了 <code>/3GB</code>，进程用户空间就一定可以提升至 <code>3GB</code> 吗？在 <code>64</code> 位系统上，上述说法还成立吗？</p>
 <p>带着上述疑问，我翻看了微软官方文档，本文尽可能全面的总结进程的虚拟内存空间划分。因为能力有限，本文只涉及 <code>x86/x64</code> 平台，不涉及 <code>ARM</code> 平台。</p>
@@ -516,7 +516,7 @@
 </tr>
 </tbody></table>
 <p>上面两个表格的关键内容是我从微软官方文档中摘录的，关于内存和地址空间的更多限制的可以参考下图（同样截自<a href="https://docs.microsoft.com/en-us/windows/win32/memory/memory-limits-for-windows-releases" target="_blank" rel="noopener">微软官方文档</a>）：</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png" alt="memory-and-address-space-limits"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png" alt="memory-and-address-space-limits"></p>
 <h2 id="如何开启-4GT"><a href="#如何开启-4GT" class="headerlink" title="如何开启 4GT"></a>如何开启 <code>4GT</code></h2><p>因为 <code>4GT</code> 只对 <code>32</code> 位系统有意义，所以下述设置方法仅针对 <code>32</code> 位系统生效。</p>
 <h3 id="xp-server2003"><a href="#xp-server2003" class="headerlink" title="xp server2003"></a>xp server2003</h3><p>在 <code>xp</code> 或者 <code>server2003</code> 上，可以通过修改 <code>Boot.ini</code> 文件来开启 <code>4GT</code>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[boot loader]</span><br><span class="line">timeout=30</span><br><span class="line">default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS</span><br><span class="line">[operating systems]</span><br><span class="line">multi(0)disk(0)rdisk(0)partition(1)\WINDOWS=&quot;Server03, Standard&quot; /fastdetect</span><br><span class="line">multi(0)disk(0)rdisk(0)partition(1)\WINDOWS=&quot;Server03, Standard /3GB Enabled&quot; /fastdetect /3GB</span><br><span class="line">multi(0)disk(0)rdisk(0)partition(1)\WINDOWS=&quot;Server03, Standard /3GB Enabled 2.5GB&quot; /fastdetect /3GB /USERVA=2560</span><br></pre></td></tr></table></figure>
@@ -533,24 +533,24 @@
 <p>介绍完调整系统设置的方法后，我们看看如何设置应用程序。</p>
 <h2 id="如何设置-IMAGE-FILE-LARGE-ADDRESS-AWARE"><a href="#如何设置-IMAGE-FILE-LARGE-ADDRESS-AWARE" class="headerlink" title="如何设置 IMAGE_FILE_LARGE_ADDRESS_AWARE"></a>如何设置 <code>IMAGE_FILE_LARGE_ADDRESS_AWARE</code></h2><p>如果有源码，可以直接调整 <code>vs</code> 的工程设置。</p>
 <p>在工程文件上右键，属性，打开工程属性设置对话框。找到 <code>Configuration Property -&gt; Linker -&gt; System</code> 选项，设置 <code>Enable Large Addresess</code> 的值为 <code>Yes</code>。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/enable-large-address-aware-flag.png" alt="enable-large-address-aware-flag"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/enable-large-address-aware-flag.png" alt="enable-large-address-aware-flag"></p>
 <p>当然，也可以直接在 <code>Linker</code> 下的 <code>Command Line</code> 中手动加上 <code>/LARGEADDRESSAWARE</code> 选项。效果是一样的。</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/manually-set-large-address-aware-option.png" alt="manually-set-large-address-aware-option"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-set-large-address-aware-option.png" alt="manually-set-large-address-aware-option"></p>
 <p>通过以上设置，可以为新编译出来的程序设置 <code>Large Address Aware</code> 标志。</p>
 <p>如果没有源码，或者程序已经生成了，该如何修改呢？直接修改 <code>PE</code> 文件中对应的标志位即可。下图是我使用 <code>CFF Explorer</code> 修改应用程序的 <code>Large Address Aware</code> 标志的截图。</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/manually-modify-pe-header-to-support-large-address.png" alt="manually-modify-pe-header-to-support-large-address"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-modify-pe-header-to-support-large-address.png" alt="manually-modify-pe-header-to-support-large-address"></p>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>为了加深自己的印象，也为了验证参考资料的准确性，我特意写了一个非常简单的程序，该程序可以获取到用户态内存最高地址。代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"windows.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">ToGb</span><span class="params">(<span class="keyword">size_t</span> bytes)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> bytes / <span class="number">1024.0</span> / <span class="number">1024.0</span> / <span class="number">1024.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">  LPVOID result = VirtualAllocEx(GetCurrentProcess(), (LPVOID)<span class="number">0</span>, <span class="number">0x1000</span>, MEM_RESERVE | MEM_TOP_DOWN, PAGE_READWRITE);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"highest address : %0x, about %.3lfGB\r\n"</span>, result, ToGb((<span class="keyword">size_t</span>)result));</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>相关的测试工程已经上传到了 <a href="https://gitee.com/bianchengnan/my-blog/tree/master/how-many-virtual-memory-a-32bit-program-can-use/FindLargestUserAddress" target="_blank" rel="noopener">gitee</a>，有需要的小伙伴儿可以自行下载。</p>
 <h3 id="验证-32-位程序在-32-位系统下的运行效果"><a href="#验证-32-位程序在-32-位系统下的运行效果" class="headerlink" title="验证 32 位程序在 32 位系统下的运行效果"></a>验证 <code>32</code> 位程序在 <code>32</code> 位系统下的运行效果</h3><p>第一张图是未开启 <code>4GT</code> 的运行结果：</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-disabled-32-bit-system.png" alt="highest-available-address-4gt-disabled-32-bit-system"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-disabled-32-bit-system.png" alt="highest-available-address-4gt-disabled-32-bit-system"></p>
 <p>第二张图是开启 <code>4GT</code> 并且使用默认值（<code>3GB</code>）的的运行结果：</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-32-bit-system.png" alt="highest-available-address-4gt-enabled-32-bit-system"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-32-bit-system.png" alt="highest-available-address-4gt-enabled-32-bit-system"></p>
 <p>第三张图是开启 <code>4GT</code> 并且指定 <code>/USERVA</code> 大小为 <code>2.5GB</code> 的运行结果：</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system.png" alt="highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system.png" alt="highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system"></p>
 <h3 id="验证-32-位程序在-64-位系统下的运行效果"><a href="#验证-32-位程序在-64-位系统下的运行效果" class="headerlink" title="验证 32 位程序在 64 位系统下的运行效果"></a>验证 <code>32</code> 位程序在 <code>64</code> 位系统下的运行效果</h3><p>我直接在我的 <code>win10</code> 系统中运行了，结果如下：</p>
-<p><img src="http://resources.bianchengnan.tech/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-on-64bit-system.png" alt="highest-available-address-on-64bit-system"></p>
+<p><img src="/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-on-64bit-system.png" alt="highest-available-address-on-64bit-system"></p>
 <p>从以上输出结果可知，微软的文档没有骗我们。</p>
 <h2 id="PAE"><a href="#PAE" class="headerlink" title="PAE"></a>PAE</h2><p>除了 <code>/3GB</code>，各位小伙伴儿可能还听过一个叫 <code>PAE</code> 的东东，全称是 <a href="https://docs.microsoft.com/en-us/windows/win32/memory/physical-address-extension" target="_blank" rel="noopener">Physical Address Extension</a>，直译过来就是物理地址扩展。从名字可以看出是跟物理地址有关的。</p>
 <p>我认为 <code>PAE</code> 解决的最重要的一个问题是，让 <code>32</code> 位操作系统可以使用更多的物理内存。假设，一台装有 <code>16GB</code> 的物理内存的机器上，装了 <code>32</code> 位的 <code>windows</code> 操作系统，在没开启 <code>PAE</code> 情况下，只能使用低 <code>4GB</code> 的物理内存，无法使用高 <code>12GB</code> 的物理内存。如果开启了 <code>PAE</code>，那么这 <code>16GB</code> 都可以使用。</p>
@@ -1109,6 +1109,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1197,7 +1203,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

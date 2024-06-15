@@ -96,20 +96,20 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前几天打开工作项目进行编译，没想到居然报错，明明前一天编译还正常的。简单排查后，临时修复了问题。但是今天新建工程时居然还有相同的问题，是可忍熟不可忍？本文记录了排查过程，希望对各位小伙伴儿有帮助。话不多说，上菜。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/search-sdk-ddk.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/inspect-project-property.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/inspect-macro-value.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/search-bcg-keyword-in-vcxproj.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/imported-props-in-vcxproj.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/search-bcgpro-by-filelocator.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/modified-user-props.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.677Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/search-sdk-ddk.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/inspect-project-property.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/inspect-macro-value.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/search-bcg-keyword-in-vcxproj.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/imported-props-in-vcxproj.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/search-bcgpro-by-filelocator.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/modified-user-props.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 修复被破坏的 vs 工程设置">
 <meta name="twitter:description" content="缘起前几天打开工作项目进行编译，没想到居然报错，明明前一天编译还正常的。简单排查后，临时修复了问题。但是今天新建工程时居然还有相同的问题，是可忍熟不可忍？本文记录了排查过程，希望对各位小伙伴儿有帮助。话不多说，上菜。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
 
 
 
@@ -362,8 +362,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -460,19 +460,19 @@
 
 
 <h2 id="初遇错误"><a href="#初遇错误" class="headerlink" title="初遇错误"></a>初遇错误</h2><p>不方便使用实际工程截图，就用我新建的测试工程吧，提示的错误是一样的。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png" alt="compile-error-c1083-missing-SDKDDKVer"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png" alt="compile-error-c1083-missing-SDKDDKVer"></p>
 <p>我的第一反映是，难道 <code>SDKDDKVer.h</code> 被意外删掉了？赶紧使用 <code>everything</code> 搜一下。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/search-sdk-ddk.png" alt="search-sdk-ddk"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/search-sdk-ddk.png" alt="search-sdk-ddk"></p>
 <p>本地有这个文件，而且这个文件的位置看上去没问题，但是为什么编译的时候会提示找不到这个文件呢？看看工程配置吧。</p>
 <h2 id="查看工程配置"><a href="#查看工程配置" class="headerlink" title="查看工程配置"></a>查看工程配置</h2><p>在选定的工程上<code>右键，属性</code> 打开工程属性页，并查看 <code>配置属性， VC++ 目录，包含目录</code> 的值，如下图。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/inspect-project-property.png" alt="inspect-project-property"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/inspect-project-property.png" alt="inspect-project-property"></p>
 <p>当看到 <code>BCG</code> 相关的字眼时，我突然想起来最近刚装了 <code>BCG</code>，不会是 <code>BCG</code> 把包含路径给弄坏了吧？在继续调查之前，先确认一下这些值指向的路路径确实没有一个路径里包含 <code>SDKDDKVer.h</code> 。</p>
 <h2 id="查看包含目录的值"><a href="#查看包含目录的值" class="headerlink" title="查看包含目录的值"></a>查看包含目录的值</h2><p>在 <code>vs</code> 中，<code>$()</code> 包含的值是宏，会展开成实际的值。点击 <code>宏（M）&gt;&gt;</code>，就可以查看每个宏对应的值了。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/inspect-macro-value.png" alt="inspect-macro-value"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/inspect-macro-value.png" alt="inspect-macro-value"></p>
 <p>经过一番查看，确实没有一个宏对应的路径包含 <code>SDKDDKVer.h</code> 。看来确实是 <code>BCG</code> 给弄乱了！</p>
 <h2 id="临时解决"><a href="#临时解决" class="headerlink" title="临时解决"></a>临时解决</h2><p>因为项目比较紧，从同事那拷贝了正确的包含路径，编译，通过！这个问题暂时就放下了。没想到……</p>
 <h2 id="再遇此错误"><a href="#再遇此错误" class="headerlink" title="再遇此错误"></a>再遇此错误</h2><p>今天准备编写简单的测试代码，于是新建一个工程，没想到编译时有报了同样的错误。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png" alt="compile-error-c1083-missing-SDKDDKVer"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png" alt="compile-error-c1083-missing-SDKDDKVer"></p>
 <p>根据上次的调查结果，是 <code>BCG</code> 把包含路径给弄乱了。简单查看工程属性中的包含路径确认了这点。</p>
 <p>新建工程也出了同样的问题，说明修改的是公共的位置。趁着周末有时间，正好调查调查 <code>BCG</code> 是怎么把自己加到包含目录里的。</p>
 <h2 id="追本溯源"><a href="#追本溯源" class="headerlink" title="追本溯源"></a>追本溯源</h2><p>很快脑子中浮现了两个思路：</p>
@@ -480,14 +480,14 @@
 <li>卸载 <code>BCG</code> 后，重新安装，在安装的过程中使用 <code>procmon</code> 监视安装过程中对文件和注册表的写操作。</li>
 <li>直接在本地文件和注册表中搜索包含路径中出现的 <code>BCG</code> 相关的关键字。</li>
 </ol>
-<p>我采用了第二个思路。先尝试在文件中搜索，如果搜不到再到注册表中搜索。说干就干，先在工程文件中搜索<code>bcgpro</code>，如下图：<img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/search-bcg-keyword-in-vcxproj.png" alt="search-bcg-keyword-in-vcxproj"></p>
+<p>我采用了第二个思路。先尝试在文件中搜索，如果搜不到再到注册表中搜索。说干就干，先在工程文件中搜索<code>bcgpro</code>，如下图：<img src="/articles/fix-corrupted-vs-project-include-settings/search-bcg-keyword-in-vcxproj.png" alt="search-bcg-keyword-in-vcxproj"></p>
 <p>没搜到，在意料之中。新建工程的时候，应该会从某个公共的位置读到这个值。</p>
 <p>正如我在之前文章中介绍的那样，<code>.vcxproj</code> 文件中可以通过导入 <code>.props</code> 文件引入一些属性。基本上每个新建的工程都会有一些默认的导入项，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/imported-props-in-vcxproj.png" alt="imported-props-in-vcxproj"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/imported-props-in-vcxproj.png" alt="imported-props-in-vcxproj"></p>
 <p><code>BCG</code> 会不会修改的这些文件中的一个呢？请出 <code>FileLocator</code>，并按下图输入关键字搜索，很幸运，搜到了。</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/search-bcgpro-by-filelocator.png" alt="search-bcgpro-by-filelocator"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/search-bcgpro-by-filelocator.png" alt="search-bcgpro-by-filelocator"></p>
 <p>打开 <code>Microsoft.Cpp.Win32.user.props</code> 查看，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/fix-corrupted-vs-project-include-settings/modified-user-props.png" alt="modified-user-props"></p>
+<p><img src="/articles/fix-corrupted-vs-project-include-settings/modified-user-props.png" alt="modified-user-props"></p>
 <p>果然被 <code>BCG</code> 改动过了！</p>
 <h2 id="彻底修复"><a href="#彻底修复" class="headerlink" title="彻底修复"></a>彻底修复</h2><p>在其它机器上找一份没改动的文件替换，关闭工程后再次打开编译，一切正常！在 <code>vs</code> 中新建一个工程编译，也正常！至此，我们从根本上解决了问题！</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -946,6 +946,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1034,7 +1040,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

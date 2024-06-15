@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起之前与同事交流 git 时，简单介绍了 git shell 和 tortoisegit （戏称 小乌龟，tortoisesvn 操作极其相似）。 tortoisegit 的命令基本上与 git bash 中的命令一一对应。在 git bash 中提交变更到本地仓库需要先 git add 添加到暂存区，再通过 git commit 命令提交到仓库，但是在 tortoisegit 中可以使用 co">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/tortoisegit-configure.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/disable-UseLibgit2.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/tortoise-commit-command.gif">
-<meta property="og:image" content="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/git-commit-command-details.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.406Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/what-commit-command-actually-do-in-tortoisegit/tortoisegit-configure.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/what-commit-command-actually-do-in-tortoisegit/disable-UseLibgit2.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/what-commit-command-actually-do-in-tortoisegit/tortoise-commit-command.gif">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/what-commit-command-actually-do-in-tortoisegit/git-commit-command-details.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 在 tortoisegit 执行 commit 会跳过暂存区直接提交到仓库中吗？">
 <meta name="twitter:description" content="缘起之前与同事交流 git 时，简单介绍了 git shell 和 tortoisegit （戏称 小乌龟，tortoisesvn 操作极其相似）。 tortoisegit 的命令基本上与 git bash 中的命令一一对应。在 git bash 中提交变更到本地仓库需要先 git add 添加到暂存区，再通过 git commit 命令提交到仓库，但是在 tortoisegit 中可以使用 co">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/tortoisegit-configure.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/what-commit-command-actually-do-in-tortoisegit/tortoisegit-configure.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -456,16 +456,16 @@
 
 
 <h2 id="小知识"><a href="#小知识" class="headerlink" title="小知识"></a>小知识</h2><p>默认，<code>tortoisegit</code> 会尽量使用 <a href="https://libgit2.org/" target="_blank" rel="noopener">libgit2</a> 来实现一系列的 <code>git</code> 操作。但是 <code>libgit2</code> 还有一些功能没实现，我想这就是为什么我们在安装 <code>tortoisegit</code> 的时候，会要求我们指定 <code>git bash</code> 的路径。</p>
-<p><img src="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/tortoisegit-configure.png" alt="tortoisegit 配置"></p>
+<p><img src="/articles/what-commit-command-actually-do-in-tortoisegit/tortoisegit-configure.png" alt="tortoisegit 配置"></p>
 <p>如果我们不希望使用 <code>libgit2</code> 而是完全使用 <code>git.exe</code> 来实现底层操作，我们可以在 <code>tortoisegit</code> 中禁用 <code>UseLibgit2</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/disable-UseLibgit2.png" alt="禁用 UseLibgit2"></p>
+<p><img src="/articles/what-commit-command-actually-do-in-tortoisegit/disable-UseLibgit2.png" alt="禁用 UseLibgit2"></p>
 <p>关于 <code>tortoisegit</code> 的各项设置请参考 <a href="https://tortoisegit.org/docs/tortoisegit/tgit-dug-settings.html" target="_blank" rel="noopener">tortoisegit 官方手册</a>。</p>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>做好设置后，我们可以开始验证了。</p>
 <p>使用 <code>process monitor</code> 追踪 <code>tortoisegit</code> 的整个提交过程。查看执行了哪些 <code>git</code> 命令。</p>
 <p>具体过程请参考下面的屏幕录像。</p>
-<p><img src="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/tortoise-commit-command.gif" alt="tortoise commit 执行过程"></p>
+<p><img src="/articles/what-commit-command-actually-do-in-tortoisegit/tortoise-commit-command.gif" alt="tortoise commit 执行过程"></p>
 <p>关键调用截图如下：</p>
-<p><img src="http://resources.bianchengnan.tech/what-commit-command-actually-do-in-tortoisegit/git-commit-command-details.png" alt="git-commit-command-details"></p>
+<p><img src="/articles/what-commit-command-actually-do-in-tortoisegit/git-commit-command-details.png" alt="git-commit-command-details"></p>
 <p>我们主要关注的是如下两条命令：</p>
 <p><code>git.exe update-index -- &quot;a&quot;</code></p>
 <p><code>git.exe commit -F &quot;C:\Users\BCN\AppData\Local\Temp\TortoiseGit\Pat2E66.tmp&quot;</code></p>
@@ -931,6 +931,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1019,7 +1025,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

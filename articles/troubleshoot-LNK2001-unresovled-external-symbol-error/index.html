@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，在加班的过程中遇到一个链接错误 —— fatal error LNK1120: 1 unresolved externals。这种错误是老朋友了，对我这种常年写 bug 的老手来说，完全不是事儿，轻松+愉快。 根据以下的排查思路基本上能解决大多数链接错误： 既然报了链接错误，说明编译已经通过了，问题基本出现在库文件上。 有可能是找不到库文件（缺少库，或者库文件搜索路径不对），可以先确认工">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-LNK2001-unresovled-external-symbol-error/link-option-verbose-lib.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-LNK2001-unresovled-external-symbol-error/verbose-lib-link-process.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-LNK2001-unresovled-external-symbol-error/compare-undname.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.171Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/link-option-verbose-lib.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/verbose-lib-link-process.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/compare-undname.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.504Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 解决另外一个链接错误">
 <meta name="twitter:description" content="缘起最近，在加班的过程中遇到一个链接错误 —— fatal error LNK1120: 1 unresolved externals。这种错误是老朋友了，对我这种常年写 bug 的老手来说，完全不是事儿，轻松+愉快。 根据以下的排查思路基本上能解决大多数链接错误： 既然报了链接错误，说明编译已经通过了，问题基本出现在库文件上。 有可能是找不到库文件（缺少库，或者库文件搜索路径不对），可以先确认工">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-LNK2001-unresovled-external-symbol-error/link-option-verbose-lib.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/link-option-verbose-lib.png">
 
 
 
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -463,9 +463,9 @@
 </blockquote>
 <h2 id="确保-lib-存在并且路径正确"><a href="#确保-lib-存在并且路径正确" class="headerlink" title="确保 lib 存在并且路径正确"></a>确保 lib 存在并且路径正确</h2><p>通过查看工程设置可以得知，依赖的库文件是 <code>TestLNK1120Dll.lib</code>，附加库目录中也添加了这个 <code>lib</code> 所在的路径。肉眼看上去没问题。为了保险（之前遇到过更诡异的错误，配置看上去都对，但是实际的值不对），还是通过 <code>/verbose:lib</code> 选项看一下链接过程。</p>
 <p>在对应工程上，<code>右键 -&gt; 属性 -&gt; Configuration Property -&gt; Linker -&gt; Command Line</code>，在 <code>Additional Options</code> 下面输入 <code>/verbose:lib</code> 即可。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-LNK2001-unresovled-external-symbol-error/link-option-verbose-lib.png" alt="link-option-verbose-lib"></p>
+<p><img src="/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/link-option-verbose-lib.png" alt="link-option-verbose-lib"></p>
 <p>设置好后，重新编译。可以看到链接时整个库查找过程，如下图。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-LNK2001-unresovled-external-symbol-error/verbose-lib-link-process.png" alt="verbose-lib-link-process"></p>
+<p><img src="/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/verbose-lib-link-process.png" alt="verbose-lib-link-process"></p>
 <p>至此，可以确定库文件路径配置没错，那大概率是库文件中的符号与程序中的符号不匹配导致的。</p>
 <blockquote>
 <p><strong>说明：</strong> 如果找不到 <code>.lib</code> 文件，报错应该类似下面这样：</p>
@@ -497,7 +497,7 @@
 <p>可以发现，<code>lib</code> 库中提供的函数的返回值是引用类型的，而 <code>vs</code> 中函数的返回值是不带引用的。</p>
 <p>至此就破案了！</p>
 <h2 id="undname-工具"><a href="#undname-工具" class="headerlink" title="undname 工具"></a>undname 工具</h2><p>如果只有经过名字改编后的符号名，可以通过微软提供的 <code>undname.exe</code> 工具来翻译成人类友好的名称。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-LNK2001-unresovled-external-symbol-error/compare-undname.png" alt="compare-undname"></p>
+<p><img src="/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/compare-undname.png" alt="compare-undname"></p>
 <h2 id="示例工程"><a href="#示例工程" class="headerlink" title="示例工程"></a>示例工程</h2><p>可以到 <a href="https://gitee.com/bianchengnan/my-blog/tree/master/troubleshoot-LNK2001-unresovled-external-symbol-error/TestLnk2001" target="_blank" rel="noopener">gitee</a> 上下载示例工程。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>dumpbin.exe</code> 可以查看 <code>lib</code> 库中的符号信息</p>
 <p><code>undname.exe</code> 可以非常方便的查看未经过编译器处理的函数名</p>
@@ -1037,6 +1037,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1125,7 +1131,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

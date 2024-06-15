@@ -96,27 +96,27 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，项目里遇到一个 dll 加载不上的问题。实际项目比较复杂，但是解决后，又是这么的简单，合情合理。本文是我使用示例工程模拟的，实际项目中另有玄机，但问题的本质是一样的。本文从行文上与 《调试实战 | dll 加载失败之全局变量初始化篇》  非常相似，示例代码也非常相似（原谅我比较懒），感兴趣的小伙伴儿可以对比来读。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/run-result.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/exports-info.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/dll-load-info.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/callstack-and-exception-info.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/exception-address.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-pnode.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-this-content.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_type_in_vs.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/attach-noninvasive.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/attach-already-being-debugged-process-failed-tip.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/find_s_manager_address_by_windbg.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_in_windbg.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/compare-two-map.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-inherit.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/find-the-culprit.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/iterator_debug_level.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.503Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/run-result.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/exports-info.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/dll-load-info.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/callstack-and-exception-info.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/exception-address.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-pnode.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-this-content.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_type_in_vs.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/attach-noninvasive.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/attach-already-being-debugged-process-failed-tip.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/find_s_manager_address_by_windbg.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_in_windbg.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/compare-two-map.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-inherit.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/find-the-culprit.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/iterator_debug_level.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | dll 加载失败之 Debug Release 争锋篇">
 <meta name="twitter:description" content="缘起最近，项目里遇到一个 dll 加载不上的问题。实际项目比较复杂，但是解决后，又是这么的简单，合情合理。本文是我使用示例工程模拟的，实际项目中另有玄机，但问题的本质是一样的。本文从行文上与 《调试实战 | dll 加载失败之全局变量初始化篇》  非常相似，示例代码也非常相似（原谅我比较懒），感兴趣的小伙伴儿可以对比来读。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/run-result.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-mixed-configuration/run-result.png">
 
 
 
@@ -369,8 +369,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -472,24 +472,24 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>最近，项目里遇到一个 <code>dll</code> 加载不上的问题。实际项目比较复杂，但是解决后，又是这么的简单，合情合理。本文是我使用示例工程模拟的，实际项目中另有玄机，但问题的本质是一样的。本文从行文上与 <a href="https://bianchengnan.gitee.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" target="_blank" rel="noopener">《调试实战 | dll 加载失败之全局变量初始化篇》</a>  非常相似，示例代码也非常相似（原谅我比较懒），感兴趣的小伙伴儿可以对比来读。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>最近，项目里遇到一个 <code>dll</code> 加载不上的问题。实际项目比较复杂，但是解决后，又是这么的简单，合情合理。本文是我使用示例工程模拟的，实际项目中另有玄机，但问题的本质是一样的。本文从行文上与 <a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" target="_blank" rel="noopener">《调试实战 | dll 加载失败之全局变量初始化篇》</a>  非常相似，示例代码也非常相似（原谅我比较懒），感兴趣的小伙伴儿可以对比来读。</p>
 <a id="more"></a>
 
 
 
 <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>示例代码中一共有四个工程，一个 <code>exe</code>，三个 <code>dll</code>。其中，<code>Base.vcxproj</code> 是封装了公共接口的工程，会生成 <code>Base.dll</code>。<code>Extension1.vcxproj</code> 和 <code>Extension2.vcxproj</code> 非常相似，会分别生成 <code>Extension1.dll</code> 和 <code>Extension2.dll</code>。<code>MixConfiguration.vcxproj</code> 会生成 <code>MixConfiguration.exe</code> ，该 <code>exe</code> 会加载 <code>Extension1.dll</code> 和 <code>Extension2.dll</code> ，并调用它们的导出函数（象征性的调用）。程序运行起来后，发现只有一个 <code>dll</code> 的功能正常，另外一个 <code>dll</code> 的功能执行不正常。如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/run-result.png" alt="run-result"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/run-result.png" alt="run-result"></p>
 <p>已经通过 <code>dumpbin</code> 确认两个 <code>dll</code> 都有名为 <code>GetCallCount</code> 的函数。但是只有一个调用成功了，另外一个却调用失败。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/exports-info.png" alt="exports-info"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/exports-info.png" alt="exports-info"></p>
 <p>使用 <code>process explorer</code> 观察 <code>dll</code> 加载情况，发现只加载了一个 <code>dll</code>，没发现另外一个 <code>dll</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/dll-load-info.png" alt="dll-load-info"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/dll-load-info.png" alt="dll-load-info"></p>
 <p>与上一个问题一样，如果用 <code>procmon</code> 观察整个加载过程，看到的都是 <code>Success</code>。这里不截图了。直接上调试器。</p>
 <h2 id="上调试器"><a href="#上调试器" class="headerlink" title="上调试器"></a>上调试器</h2><p>直接在 <code>vs</code> 中按 <code>F5</code> 启动，果然中断到 <code>vs</code> 中了。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/callstack-and-exception-info.png" alt="callstack-and-exception-info"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/callstack-and-exception-info.png" alt="callstack-and-exception-info"></p>
 <p>从上图右侧部分，可以看到完整的调用栈。</p>
 <p>简单介绍下相关代码。在 <code>MixConfiguration\Entry.cpp</code> 的第 <code>15</code> 行调用了<code>auto hDll2 = LoadLibraryA(&quot;Extension2.dll&quot;);</code> 加载对应的模块。在 <code>Extension2\Extension2.cpp</code> 的第 <code>22</code> 行定义了全局变量 <code>CTest2 g_t2</code>，问题就出在这个全局变量的初始化代码中。</p>
 <p>从上图左侧部分可知，错误代码是 <code>0xc0000005</code>，内存访问异常。访问的地址是 <code>0x0000000D</code>，对应的指令地址是 <code>008B7F34</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/exception-address.png" alt="exception-address"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/exception-address.png" alt="exception-address"></p>
 <p>从上图可以看出，确实是挂在了 <code>008B7F34  movsx ecx,byte ptr [eax]</code>。因为 <code>eax</code> 的值是 <code>0xD</code>，我们需要查明 <code>eax</code> 的值为什么是 <code>0xD</code>。相信很多小伙伴都知道，<code>eax</code> 用来保存函数调用的返回值。我们可以把注意力集中到 <code>0x008B7F2c</code> 处的 <code>Call</code> 指令了，调用的是 <code>_Isnil()</code> 成员函数。</p>
 <p>查看 <code>vs</code> 提供的源码，如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">char</span>&amp; _Isnil(_Nodeptr _Pnode)</span><br><span class="line">&#123;<span class="comment">// return reference to nil flag in node</span></span><br><span class="line">  <span class="keyword">return</span> ((<span class="keyword">char</span>&amp;)_Pnode-&gt;_Isnil);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -497,7 +497,7 @@
 <p>发现 <code>_Isnil</code> 内部简单的返回了 <code>_Pnode</code> 的 <code>_Isnil</code> 成员。</p>
 <p><strong>务必注意：</strong> 这里返回的是 <code>char&amp;</code>，返回的是引用！相当于返回的是 <code>_Pnode-&gt;_Isnil</code> 的地址！</p>
 <p>可以在 <code>Watch</code> 窗口查看传递给 <code>_Isnil()</code> 的参数 <code>_Pnode</code> ，如下：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-pnode.png" alt="watch-pnode"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-pnode.png" alt="watch-pnode"></p>
 <p>可以看到 <code>_Pnode</code> 的值是 <code>0</code>，类型是 <code>std::_Tree_node&lt;...&gt;</code>。</p>
 <p> <code>std::_Tree_node</code> 的定义如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> _<span class="title">Value_type</span>,	<span class="title">class</span> _<span class="title">Voidptr</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> _<span class="title">Tree_node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  _Voidptr _Left;     <span class="comment">// offset: 0x0</span></span><br><span class="line">  _Voidptr _Parent;   <span class="comment">// offset: 0x4</span></span><br><span class="line">  _Voidptr _Right;    <span class="comment">// offset: 0x8</span></span><br><span class="line">  <span class="keyword">char</span> _Color;        <span class="comment">// offset: 0xC</span></span><br><span class="line">  <span class="keyword">char</span> _Isnil;        <span class="comment">// offset: 0xD</span></span><br><span class="line">  _Value_type _Myval; <span class="comment">// offset: 0x10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  _Tree_node&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> _Tree_node&amp;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -505,27 +505,27 @@
 <p>从 <code>_Tree_node</code> 的定义可知， <code>_Isnil</code> 的偏移是 <code>0xD</code> （一般，<code>32</code> 位的程序指针占 <code>4</code> 字节，如果是 <code>64</code> 位，那么占 <code>8</code> 字节）。</p>
 <p>综上，地址 <code>008B7F2C</code> 处的 <code>call</code> 指令反回 <code>0xD</code> 合情合理。<code>008B7F34</code> 处的指令 <code>movsx ecx,byte ptr [eax]</code> 把返回值保存到 <code>ecx</code> 处，但是因为 <code>eax</code> 的值是 <code>0xD</code>，正常情况下访问 <code>0x0000000D</code> 处的值当然会挂掉了。</p>
 <p>至此，我们知道了崩溃的直接原因——访问非法地址。但是根本原因是什么呢？为什么 <code>_Pnode</code> 是 <code>0</code> 呢？</p>
-<p><code>_Pnode</code> 的值来自 <code>_Nodeptr _Pnode = _Root();</code>。根据<a href="https://bianchengnan.gitee.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" target="_blank" rel="noopener">《调试实战 —— dll 加载失败之全局变量初始化篇》</a> 分析的结果， <code>_Root()</code> 函数相当于 <code>&amp;(this-&gt;_Myhead-&gt;_Parent)</code>。赋值给 <code>_Pnode</code> 后，<code>_Pnode</code> 的值等于 <code>this-&gt;_Myhead-&gt;_Parent</code> 的值。我们需要观察下 <code>this</code> 的值。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-this-content.png" alt="watch-this-content"></p>
+<p><code>_Pnode</code> 的值来自 <code>_Nodeptr _Pnode = _Root();</code>。根据<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" target="_blank" rel="noopener">《调试实战 —— dll 加载失败之全局变量初始化篇》</a> 分析的结果， <code>_Root()</code> 函数相当于 <code>&amp;(this-&gt;_Myhead-&gt;_Parent)</code>。赋值给 <code>_Pnode</code> 后，<code>_Pnode</code> 的值等于 <code>this-&gt;_Myhead-&gt;_Parent</code> 的值。我们需要观察下 <code>this</code> 的值。</p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-this-content.png" alt="watch-this-content"></p>
 <p>我们发现 <code>_Parent</code> 的值确实是 <code>0</code>。难道也像上次一样，是没初始化导致的？但是其它成员明明有值，跟上次的情况有些不同。我们需要进一步分析 <code>this</code> 值的来源。</p>
 <h2 id="继续深入"><a href="#继续深入" class="headerlink" title="继续深入"></a>继续深入</h2><p>查看调用栈，我们发现，<code>this</code> 来自 <code>CTest2</code> 的构造函数里调用的 <code>CObjectManager::GetMap()</code>，这个函数是 <code>Base.dll</code> 的导出函数，返回了一个 <code>GetMap()</code> 中定义的静态变量 <code>s_manager</code>，应该不是初始化顺序的问题了，因为当我们第一次调用 <code>GetMap()</code> 的时候，其内部定义的静态变量会被初始化。那还会是什么问题呢？</p>
 <p>想在 <code>vs</code> 中观察下 <code>s_manager</code> 的值，试了几种方式，都不行。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_type_in_vs.png" alt="watch-s_manager_type_in_vs"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_type_in_vs.png" alt="watch-s_manager_type_in_vs"></p>
 <p>无奈，继续请 <code>windbg</code> 出场。</p>
 <h2 id="windbg-出场"><a href="#windbg-出场" class="headerlink" title="windbg 出场"></a>windbg 出场</h2><p>打开 <code>windbg</code>，附加到进程，注意一定要勾选 <code>Noninvasive</code> 选项，因为目标进程正在被 <code>vs</code> 调试。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/attach-noninvasive.png" alt="attach-noninvasive"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/attach-noninvasive.png" alt="attach-noninvasive"></p>
 <p>如果没勾选 <code>Noninvasive</code> 选项，会报下图中的错误。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/attach-already-being-debugged-process-failed-tip.png" alt="attach-already-being-debugged-process-failed-tip"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/attach-already-being-debugged-process-failed-tip.png" alt="attach-already-being-debugged-process-failed-tip"></p>
 <p>成功附加后，我们先通过 <code>x Base!*GetMap*</code> 查找到 <code>GetMap</code> 的地址，然后使用 <code>u 004B5830 L20</code> 查看对应的反汇编并查找 <code>s_manager</code> 的地址，发现对应的地址是 <code>004c431c</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/find_s_manager_address_by_windbg.png" alt="find_s_manager_address_by_windbg"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/find_s_manager_address_by_windbg.png" alt="find_s_manager_address_by_windbg"></p>
 <p>我们不能直接 <code>dt s_manager</code>，但是可以 <code>dt 004c431c</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_in_windbg.png" alt="watch-s_manager_in_windbg"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-s_manager_in_windbg.png" alt="watch-s_manager_in_windbg"></p>
 <p>观察出问题的 <code>map</code> 对象。对比看下两者有什么不同，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/compare-two-map.png" alt="compare-two-map"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/compare-two-map.png" alt="compare-two-map"></p>
 <p>注意看上图红色高亮部分，在 <code>Base.dll</code> 中的定义是带 <code>_Myproxy</code> 的，<code>_Myhead</code> 的偏移是 <code>4</code>，而在 <code>Extension2.dll</code> 中，并没有 <code>_Myproxy</code>，自然而然的，<code>_Myhead</code> 的偏移是 <code>0</code>。这是两个不同的 <code>map</code> 类型！</p>
 <p>至此，问题已经明确了，<code>s_manager</code> 在两个模块眼中不一样，注意观察上图中地址（黄色高亮部分）都是 <code>0x004c431c</code>。接下来的工作就是找出为什么 <code>s_manager</code>  在 <code>Base.dll</code> 和 <code>Extension2.dll</code> 中不一样。</p>
 <h2 id="追本溯源"><a href="#追本溯源" class="headerlink" title="追本溯源"></a>追本溯源</h2><p>在 <code>vs</code> 中观察继承关系，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/watch-inherit.png" alt="watch-inherit"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/watch-inherit.png" alt="watch-inherit"></p>
 <p>从上图可知：<code>_Tree</code> 继承自 <code>_Tree_comp</code>，<code>Tree_comp</code> 继承自 <code>_Tree_buy</code>， <code>_Tree_buy</code> 继承自 <code>_Tree_alloc</code>，<code>_Tree_alloc</code> 又继承自 <code>_Tree_val</code>， <code>_Tree_val</code> 又继承自 <code>_Container_base</code>。而 <code>map</code> 继承自 <code>_Tree</code>。</p>
 <p>这里我们只需要关注 <code>_Tree_val</code> 和 <code>_Container_base</code>。</p>
 <p> <code>_Tree_val</code> 定义如下（删除了无关信息）：</p>
@@ -544,9 +544,9 @@
 
 <p>也就是说，<code>_ITERATOR_DEBUG_LEVEL</code> 不同的时候，<code>map</code> 占用的内存是不一样的。我在项目中遇到的正是这个问题。</p>
 <h2 id="水落石出"><a href="#水落石出" class="headerlink" title="水落石出"></a>水落石出</h2><p>知道 <code>_ITERATOR_DEBUG_LEVEL</code> 会导致 <code>map</code> 的内存结构不一样，我们还需要进一步查找是哪里导致了 <code>_ITERATOR_DEBUG_LEVEL</code> 的值不一样。在整个解决方案搜索 <code>_ITERATOR_DEBUG_LEVEL</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/find-the-culprit.png" alt="find-the-culprit"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/find-the-culprit.png" alt="find-the-culprit"></p>
 <p>发现，<code>Extension2.vcxproj</code> 中的 <code>stdafx.h</code> 中定义了 <code>#define _ITERATOR_DEBUG_LEVEL 0</code>。如果没有显式定义，该宏的值受 <code>_HAS_ITERATOR_DEBUGGING</code> 影响。一般在 <code>Debug</code> 下，<code>_ITERATOR_DEBUG_LEVEL</code> 的值是 <code>2</code>。可以参考<code>yvals.h</code> 中的定义，截图如下：</p>
-<p><img src="http://resources.bianchengnan.tech/debugging-dll-load-failure-caused-by-mixed-configuration/iterator_debug_level.png" alt="iterator_debug_level"></p>
+<p><img src="/articles/debugging-dll-load-failure-caused-by-mixed-configuration/iterator_debug_level.png" alt="iterator_debug_level"></p>
 <p>至此，我们搞清了整个事情的来龙去脉。总结一下：</p>
 <p>由于两个工程的 <code>_ITERATOR_DEBUG_LEVEL</code> 不一样，导致 <code>map</code> 的根基类（ <code>_Container_base</code> ）不一样，从而导致了两个工程眼中的 <code>map</code> 不一样，尤其是 <code>_Myhead</code> 的偏移不一样。间接导致了全局变量 <code>g_t2</code> 在初始化时崩溃，进而导致了对应的 <code>dll</code> 加载失败。</p>
 <h2 id="动手实战"><a href="#动手实战" class="headerlink" title="动手实战"></a>动手实战</h2><p>强烈建议你也动手实战一番，毕竟纸上来的终觉浅。如果你也想动手实战，可以直接下载我保存好的转储文件和对应的调试符号，直接使用 <code>windbg</code> 分析。</p>
@@ -1111,6 +1111,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1199,7 +1205,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

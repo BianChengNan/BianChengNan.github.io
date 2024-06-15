@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，项目代码再次出现了栈溢出问题。这次的栈溢出跟上次有点不同，调用栈不深，而且报错的时候函数代码还没开始执行。是不是有点“诡异”？一起来看看这次是什么原因导致的吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-interesting-stackoverflow/stackoverflow.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-interesting-stackoverflow/stackoverflow.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-interesting-stackoverflow/alloca_probe.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-interesting-stackoverflow/__alloca_probe_chkstk.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-interesting-stackoverflow/_chkstk_asm_locations.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/another-interesting-stackoverflow/chkstk_content.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.283Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/stackoverflow.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/stackoverflow.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/alloca_probe.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/__alloca_probe_chkstk.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/_chkstk_asm_locations.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/chkstk_content.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.362Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈又溢出了">
 <meta name="twitter:description" content="缘起最近，项目代码再次出现了栈溢出问题。这次的栈溢出跟上次有点不同，调用栈不深，而且报错的时候函数代码还没开始执行。是不是有点“诡异”？一起来看看这次是什么原因导致的吧。">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/another-interesting-stackoverflow/stackoverflow.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/stackoverflow.png">
 
 
 
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -456,8 +456,8 @@
 
 
 
-<h2 id="“诡异”-的栈溢出"><a href="#“诡异”-的栈溢出" class="headerlink" title="“诡异” 的栈溢出"></a>“诡异” 的栈溢出</h2><p>运行程序后，异常发生了。对于程序崩溃，早就见怪不怪了。重启程序，附加调试器，再次执行相同的功能，果然中断到调试器中。有了上次的经验（没仔细看错误提示导致懵逼了很久，<a href="https://bianchengnan.gitee.io/articles/interesting-exception-0xc00000fd/" target="_blank" rel="noopener">文章在这里</a>），仔细检查了错误码，又是 <code>0xC00000FD, stackoverflow</code>。在 <code>vs2013</code> 中按 <code>ctrl + alt + c</code> 查看调用栈，发现调用栈并不深，没有递归调用的迹象。仔细看报错的位置，居然没有执行到任何代码。下图是我用测试代码截的图：</p>
-<p><img src="http://resources.bianchengnan.tech/another-interesting-stackoverflow/stackoverflow.png" alt="stackoverflow"></p>
+<h2 id="“诡异”-的栈溢出"><a href="#“诡异”-的栈溢出" class="headerlink" title="“诡异” 的栈溢出"></a>“诡异” 的栈溢出</h2><p>运行程序后，异常发生了。对于程序崩溃，早就见怪不怪了。重启程序，附加调试器，再次执行相同的功能，果然中断到调试器中。有了上次的经验（没仔细看错误提示导致懵逼了很久，<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/" target="_blank" rel="noopener">文章在这里</a>），仔细检查了错误码，又是 <code>0xC00000FD, stackoverflow</code>。在 <code>vs2013</code> 中按 <code>ctrl + alt + c</code> 查看调用栈，发现调用栈并不深，没有递归调用的迹象。仔细看报错的位置，居然没有执行到任何代码。下图是我用测试代码截的图：</p>
+<p><img src="/articles/another-interesting-stackoverflow/stackoverflow.png" alt="stackoverflow"></p>
 <p>函数调用的时候，会把参数、局部变量、返回地址等信息都存储在栈上，而栈空间默认只有 <code>1 MB</code>，如果调用栈帧太多，那么可能会用光这 <code>1 MB</code>，从而导致 <code>stack overflow</code> 。</p>
 <blockquote>
 <p><em>小贴士：这里的 <code>1 MB</code> 不太精确，实际可用的栈空间比 <code>1 MB</code> 小，最后一个页面永远是不可用的。为了描述简单而且好记就这么描述了。</em></p>
@@ -467,16 +467,16 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BigData</span> &#123;</span> <span class="keyword">char</span> data[<span class="number">409600</span>]; <span class="comment">/* 400KB */</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Use</span><span class="params">(BigData* pData)</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">"%c"</span>, pData[<span class="number">0</span>]); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CorrpuptStackEasyly</span><span class="params">(<span class="keyword">int</span> argc)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (argc == <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        BigData data;</span><br><span class="line">        Use(&amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (argc == <span class="number">3</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        BigData data;</span><br><span class="line">        Use(&amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        BigData data;</span><br><span class="line">        Use(&amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    CorrpuptStackEasyly(argc);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>BigData</code> 大概占用 <code>400 KB</code>，如果猜想（三个 <code>BigData</code> 类型的局部变量会占用 <code>1.2 MB</code> 左右的空间）是正确的，那么这个函数应该会爆栈。编译运行，果真和猜想的一样——爆栈了！</p>
-<p><img src="http://resources.bianchengnan.tech/another-interesting-stackoverflow/stackoverflow.png" alt="stackoverflow"></p>
+<p><img src="/articles/another-interesting-stackoverflow/stackoverflow.png" alt="stackoverflow"></p>
 <p>查看函数 <code>CorrpuptStackEasyly</code> 对应的反汇编，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/another-interesting-stackoverflow/alloca_probe.png" alt="alloca_probe"></p>
+<p><img src="/articles/another-interesting-stackoverflow/alloca_probe.png" alt="alloca_probe"></p>
 <p><code>0x12C0DC</code> 转换成十进制是 <code>1229020</code> 大概是 <code>1.2 MB</code>。<code>__alloca_probe</code> 是编译器生成的函数，内部直接跳转到 <code>_chkstk</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/another-interesting-stackoverflow/__alloca_probe_chkstk.png" alt="__alloca_probe_chkstk"></p>
+<p><img src="/articles/another-interesting-stackoverflow/__alloca_probe_chkstk.png" alt="__alloca_probe_chkstk"></p>
 <h2 id="chkstk"><a href="#chkstk" class="headerlink" title="_chkstk"></a>_chkstk</h2><p>从名字可以很容易的猜出 <code>_chkstk</code>  是用来检查栈的。当函数中包含超大局部变量（大于等于一个页面， <code>4 KB</code>）时，编译器会在函数头部插入一段检查栈是否够用的代码。</p>
 <p><code>_chkstk</code> 虽然是汇编代码写的，但是内部逻辑并不复杂，而且在安装 <code>vs</code> 的时候提供了带注释的源码，可读性极强。我机器上同时安装了 <code>vs2010</code> 和 <code>vs2013</code>，可以在下图中的几个位置找到 <code>_chkstk</code> 对应的汇编代码文件 <code>chkstk.asm</code>，如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/another-interesting-stackoverflow/_chkstk_asm_locations.png" alt="_chkstk_asm_locations"></p>
+<p><img src="/articles/another-interesting-stackoverflow/_chkstk_asm_locations.png" alt="_chkstk_asm_locations"></p>
 <p>因为这个函数超级精炼，有效汇编代码不到 <code>20</code> 行，这里截图放上来，感兴趣的小伙伴儿可以读一读：</p>
-<p><img src="http://resources.bianchengnan.tech/another-interesting-stackoverflow/chkstk_content.png" alt="chkstk_content"></p>
+<p><img src="/articles/another-interesting-stackoverflow/chkstk_content.png" alt="chkstk_content"></p>
 <p>稍微解释几个关键点：</p>
 <ol>
 <li><p><code>EAX</code> 记录了需要检查的栈大小，外部调用的时候需要设置好。</p>
@@ -1047,6 +1047,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1135,7 +1141,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

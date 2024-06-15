@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起磁盘已经全面爆红很久了，使用 dism++ 清理了几次，依然很紧张。终于，昨天在编译程序的时候又因为磁盘空间不足失败了！是可忍熟不可忍。必须安排！">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/wxwork-disk.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/feedback-to-wxwork.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/uninstall-reserved-files.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/vs-plugins.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/va_x_intall_path.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/project-cache.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:43.614Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/wxwork-disk.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/feedback-to-wxwork.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/uninstall-reserved-files.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/vs-plugins.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/va_x_intall_path.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/project-cache.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.412Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谁是磁盘空间占用大户？">
 <meta name="twitter:description" content="缘起磁盘已经全面爆红很久了，使用 dism++ 清理了几次，依然很紧张。终于，昨天在编译程序的时候又因为磁盘空间不足失败了！是可忍熟不可忍。必须安排！">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/wxwork-disk.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/wxwork-disk.png">
 
 
 
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:43+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -465,17 +465,17 @@
 </blockquote>
 <h2 id="检查结果"><a href="#检查结果" class="headerlink" title="检查结果"></a>检查结果</h2><p>检测结果里有两个数据比较显眼：一个是企业微信，一个是 <code>vs</code> 的某个插件。</p>
 <p>企业微信的安装目录居然占用了 <code>6.7GB</code>。你没看错，是安装目录，不是接收文件的缓存目录。</p>
-<p><img src="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/wxwork-disk.png" alt="wxwork-disk"></p>
+<p><img src="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/wxwork-disk.png" alt="wxwork-disk"></p>
 <p>从上图可以猜测，每一个子目录对应着一个版本，粗略看下来已经有 <code>10</code> 个版本了。可以想象，如果后续还有新版本而且更新行为不做调整的话，占用的磁盘空间会越来越大。不知道猜的对不对，反正给官方提了一个意见后就卸载了。</p>
-<p><img src="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/feedback-to-wxwork.png" alt="feedback-to-wxwork"></p>
+<p><img src="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/feedback-to-wxwork.png" alt="feedback-to-wxwork"></p>
 <p>没想到，卸载后占用的磁盘空间并没有明显变化，到安装目录一看，还残留了很多文件。这应该是一个卸载逻辑缺陷。没办法，手动清除吧，希望官方能优化一下。</p>
-<p><img src="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/uninstall-reserved-files.png" alt="卸载后残留的文件"></p>
+<p><img src="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/uninstall-reserved-files.png" alt="卸载后残留的文件"></p>
 <p>看完企业微信，再来看看 <code>vs</code> 插件目录。居然占用了 <code>12.8GB</code>。而且这只是其中一个插件占用的空间大小。</p>
-<p><img src="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/vs-plugins.png" alt="vs-plugins"></p>
+<p><img src="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/vs-plugins.png" alt="vs-plugins"></p>
 <p>这到底是哪个插件呢？就是大名鼎鼎的 <code>Visual AssistX</code>，我怎么知道的？点进去查看这个目录下的文件，根据文件名猜的。</p>
-<p><img src="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/va_x_intall_path.png" alt="va_x_intall_path"></p>
+<p><img src="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/va_x_intall_path.png" alt="va_x_intall_path"></p>
 <p>占用这么大磁盘空间，都缓存了什么文件呢？随便打开其中一个目录查看一下：</p>
-<p><img src="http://resources.bianchengnan.tech/findout-who-is-eating-disk-with-the-help-of-spacesniffer/project-cache.png" alt="project-cache"></p>
+<p><img src="/articles/findout-who-is-eating-disk-with-the-help-of-spacesniffer/project-cache.png" alt="project-cache"></p>
 <p>从名字猜测，应该是工程文件的缓存。看来用久了，确实会产生不少缓存文件。删除<code>C:\Users\bcn\AppData\Local\Microsoft\VisualStudio\12.0\Extensions\fpfxnnug.ato\Data</code> 即可。</p>
 <p>整理一番后，<code>C</code> 盘有了 <code>28GB</code> 的空间！不错。</p>
 <p>你的磁盘上都有哪些可以删除的垃圾文件呢？快用 <code>spacesniffer</code> 看看吧！</p>
@@ -836,6 +836,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -924,7 +930,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

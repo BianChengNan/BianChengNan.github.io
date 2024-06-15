@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一段时间，有网友遇到一个奇怪的问题，说他机器上的 vs2019 编译 C++ 工程报错。我当时一听就有两个怀疑：  工程设置不对。 vs2019 没装好。  因为新建一个最简单的工程，编译也报一样的错误，所以可以排除工程设置的问题了。那只有可能是 vs2019 的问题了。但是具体是哪里的问题呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/Error-MSB8037-Missing-SDK-10.0.18362.0.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/project-property-sdk-version.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/everything-search-result.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/filter-result.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/troubleshoot-missing-sdk-10.0.18362.0-screen-record.gif">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.265Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-error-msb8037-missing-sdk/Error-MSB8037-Missing-SDK-10.0.18362.0.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-error-msb8037-missing-sdk/project-property-sdk-version.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-error-msb8037-missing-sdk/everything-search-result.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-error-msb8037-missing-sdk/filter-result.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-error-msb8037-missing-sdk/troubleshoot-missing-sdk-10.0.18362.0-screen-record.gif">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.518Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 帮 vs2019 找回丢失的 SDK">
 <meta name="twitter:description" content="缘起前一段时间，有网友遇到一个奇怪的问题，说他机器上的 vs2019 编译 C++ 工程报错。我当时一听就有两个怀疑：  工程设置不对。 vs2019 没装好。  因为新建一个最简单的工程，编译也报一样的错误，所以可以排除工程设置的问题了。那只有可能是 vs2019 的问题了。但是具体是哪里的问题呢？">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/Error-MSB8037-Missing-SDK-10.0.18362.0.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-error-msb8037-missing-sdk/Error-MSB8037-Missing-SDK-10.0.18362.0.png">
 
 
 
@@ -358,8 +358,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -465,11 +465,11 @@
 <p>根据链接里的提示，做过尝试，没能解决问题。后来在我们沟通的过程中，他自己解决了问题，这不就是大名鼎鼎的橡皮鸭调试法吗？当他的问题解决后，我特意在本地重现了整个过程，做了一些调查，整理成本文，分享给大家。</p>
 <h2 id="编译受阻"><a href="#编译受阻" class="headerlink" title="编译受阻"></a>编译受阻</h2><p>我用 <code>vs2019</code> 新建了一个最简单的 <code>Hello world</code> 工程，编译，报错如下：</p>
 <p><code>Error    MSB8037    The Windows SDK version 10.0.18362.0 for Desktop C++ x86 Apps was not found. Install the required version of Windows SDK or change the SDK version in the project property pages or by right-clicking the solution and selecting &quot;Retarget solution&quot;.</code></p>
-<p>更直观的报错截图如下：<br><img src="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/Error-MSB8037-Missing-SDK-10.0.18362.0.png" alt="Error-MSB8037-Missing-SDK-10.0.18362.0"></p>
+<p>更直观的报错截图如下：<br><img src="/articles/troubleshoot-vs-error-msb8037-missing-sdk/Error-MSB8037-Missing-SDK-10.0.18362.0.png" alt="Error-MSB8037-Missing-SDK-10.0.18362.0"></p>
 <h2 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h2><p>既然提示找不到对应版本的 <code>SDK</code>，那么先到工程属性里看一下对应的配置。在工程上，<code>右键</code> -&gt; <code>属性</code> 。在工程属性对话框中选择 <code>Configuration Properties</code> 下的 <code>General</code> 。在右侧查看 <code>Windows SDK Version</code> 的值，确实是 <code>10.0.18362.0</code>，如下图。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/project-property-sdk-version.png" alt="工程 SDK Version 配置"></p>
+<p><img src="/articles/troubleshoot-vs-error-msb8037-missing-sdk/project-property-sdk-version.png" alt="工程 SDK Version 配置"></p>
 <p>本地搜一下<code>10.0.18362.0</code>，看看本地是否存在相关的路径。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/everything-search-result.png" alt="everything 搜索结果"></p>
+<p><img src="/articles/troubleshoot-vs-error-msb8037-missing-sdk/everything-search-result.png" alt="everything 搜索结果"></p>
 <p>本地也存在相关路径。能想到的可以怀疑的地方都排除了。接下来请出我们的老朋友 —— <code>process monitor</code> 。</p>
 <h2 id="深入调查"><a href="#深入调查" class="headerlink" title="深入调查"></a>深入调查</h2><p>打开 <code>process monitor</code>，开启监视，在 <code>vs</code> 中开始编译，问题重现后，停止监视。</p>
 <p>下面就要进行最重要的步骤了—— 过滤。</p>
@@ -478,10 +478,10 @@
 <p>一般操作结果是成功的事件对我们帮助不大，所以首先过滤掉 <code>Result</code> 是 <code>SUCCESS</code> 的事件。</p>
 <p>既然提示的是找不到 <code>10.0.18362.0</code> 版本的 <code>SDK</code> ，相关错误应该和 <code>10.0.18362.0</code> 有关，所以只保留 <code>Path</code> 中包含 <code>10.0.18362.0</code> 的记录。</p>
 <p>没想到，效果这么好，只有六条。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/filter-result.png" alt="filter-result"></p>
+<p><img src="/articles/troubleshoot-vs-error-msb8037-missing-sdk/filter-result.png" alt="filter-result"></p>
 <p>其中，有两条是注册表中找不到 <code>HKLM\Software\WOW6432Node\Microsoft\Microsoft SDKs\Windows\v10.0.18362.0</code>（这个注册表项不是必须存在的，在能正常编译的机器上也可能找不到），最后一条是找不到文件 <code>C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\sdkddkver.h</code>。看来，应该是我本地少了这个文件。因为我故意把这个文件重名了，改回来，重新编译，搞定。</p>
 <p>具体调查过程请参考下面的屏幕录像。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-error-msb8037-missing-sdk/troubleshoot-missing-sdk-10.0.18362.0-screen-record.gif" alt="troubleshoot-missing-sdk-10.0.18362.0-screen-record"></p>
+<p><img src="/articles/troubleshoot-vs-error-msb8037-missing-sdk/troubleshoot-missing-sdk-10.0.18362.0-screen-record.gif" alt="troubleshoot-missing-sdk-10.0.18362.0-screen-record"></p>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>跟这位网友沟通的整个过程特别顺畅，省心。他已经根据线索在网上搜索了相关资料，自己摸索了一番。怀疑哪里有问题，立刻能查看相关的配置进行排查。最后，在沟通的过程中，他自己就把问题解决了。原来，他在前几天把一些文件的位置给改了，改回来就好了。后来聊天得知，他才大二，后生可畏！</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在帮网友解决问题的过程中，我扮演的角色其实类似 “橡皮鸭”。也希望大家遇到问题时，把问题描述给周围的人，也许自己就知道问题出在哪了。屡试不爽！</p>
 
@@ -936,6 +936,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1024,7 +1030,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

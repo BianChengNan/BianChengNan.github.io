@@ -96,21 +96,21 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在前面两篇文章中（这里，这里）总结了使用 windbg 和 IDA 找出 cvtres.exe 报错的根本原因，并把一些细节问题弄清楚了。但是还剩下一个小细节没有深究 —— 如果启动 cvtres.exe 的时候没有指定全路径，windbg 会报系统找不到指定的文件的错误。当时只是根据经验判断需要使用完整路径，但是为什么只使用文件名不行呢？今天就把这个问题也格尽。   说明： 写完本文，我犹豫">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/windbg-cannot-start-cvtres-error.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-path-variable.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/use-cdb-debugging-windbg-with-gflags.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/cdb-auto-attach-to-windbg.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-create-cvtres-call-stack.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/run-createprocess-and-view-return-value-and-last-error.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-wt-createprocessinternalw.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-cvtres-in-process-monitor.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/interesting-file-access-pattern.png">
-<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/auto-display-param-and-callstack.png">
-<meta property="og:updated_time" content="2024-05-26T00:12:44.257Z">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/windbg-cannot-start-cvtres-error.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-path-variable.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/use-cdb-debugging-windbg-with-gflags.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/cdb-auto-attach-to-windbg.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-create-cvtres-call-stack.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/run-createprocess-and-view-return-value-and-last-error.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-wt-createprocessinternalw.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-cvtres-in-process-monitor.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/interesting-file-access-pattern.png">
+<meta property="og:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/auto-display-param-and-callstack.png">
+<meta property="og:updated_time" content="2024-06-15T03:51:31.516Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 使用 IDA 和 windbg 调试 LNK1123 转换到 COFF 期间失败：文件无效或损坏（下）">
 <meta name="twitter:description" content="前言在前面两篇文章中（这里，这里）总结了使用 windbg 和 IDA 找出 cvtres.exe 报错的根本原因，并把一些细节问题弄清楚了。但是还剩下一个小细节没有深究 —— 如果启动 cvtres.exe 的时候没有指定全路径，windbg 会报系统找不到指定的文件的错误。当时只是根据经验判断需要使用完整路径，但是为什么只使用文件名不行呢？今天就把这个问题也格尽。   说明： 写完本文，我犹豫">
-<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/windbg-cannot-start-cvtres-error.png">
+<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/windbg-cannot-start-cvtres-error.png">
 
 
 
@@ -363,8 +363,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-05-26T08:12:44+08:00">
-                2024-05-26
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:51:31+08:00">
+                2024-06-15
               </time>
             
           </span>
@@ -455,7 +455,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面两篇文章中（<a href="https://bianchengnan.gitee.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part1/" target="_blank" rel="noopener">这里</a>，<a href="https://bianchengnan.gitee.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/" target="_blank" rel="noopener">这里</a>）总结了使用 <code>windbg</code> 和 <code>IDA</code> 找出 <code>cvtres.exe</code> 报错的根本原因，并把一些细节问题弄清楚了。但是还剩下一个小细节没有深究 —— 如果启动 <code>cvtres.exe</code> 的时候没有指定全路径，<code>windbg</code> 会报系统找不到指定的文件的错误。当时只是根据经验判断需要使用完整路径，但是为什么只使用文件名不行呢？今天就把这个问题也格尽。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面两篇文章中（<a href="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part1/" target="_blank" rel="noopener">这里</a>，<a href="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/" target="_blank" rel="noopener">这里</a>）总结了使用 <code>windbg</code> 和 <code>IDA</code> 找出 <code>cvtres.exe</code> 报错的根本原因，并把一些细节问题弄清楚了。但是还剩下一个小细节没有深究 —— 如果启动 <code>cvtres.exe</code> 的时候没有指定全路径，<code>windbg</code> 会报系统找不到指定的文件的错误。当时只是根据经验判断需要使用完整路径，但是为什么只使用文件名不行呢？今天就把这个问题也格尽。</p>
 <blockquote>
 <p> <strong>说明：</strong> 写完本文，我犹豫了很久要不要发表出来。因为这个问题其实很简单（在设置 <code>PATH</code> 环境变量时，路径多加了双引号）。但是当时的我真的是当局者迷，完全没意识到这个问题，导致花费了很长时间。<code>process monitor</code>，<code>gflag</code>，<code>IDA</code>，<code>windbg</code>，轮番上场，甚至都调试起 <code>windbg</code> 来了（嗯，你没看错，不是用 <code>windbg</code> 调试，而是调试 <code>windbg</code>），好一阵忙活，中间还走了很多弯路（自以为是的在错误的函数中下断）。最后幡然醒悟，原来真理就在那躺着，静静的等着被发现。</p>
 <p> 之所以决定发出来有几点原因：</p>
@@ -471,10 +471,10 @@
 
 
 <h2 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h2><p>相信小伙伴儿们都已经知道可以通过 <code>gflags</code> 设置 <code>Image File Execution Option</code> 来让指定程序启动时自动中断到调试器。但是当启动 <code>cvtres.exe</code> 的时候，如果只指定文件名，<code>windbg</code> 会报错。报错截图如下：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/windbg-cannot-start-cvtres-error.png" alt="windbg-cannot-start-cvtres-error"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/windbg-cannot-start-cvtres-error.png" alt="windbg-cannot-start-cvtres-error"></p>
 <p>猜测应该是 <code>windbg</code> 在创建进程的时候根据文件名不能找到相应的应用程序。</p>
 <p>我依稀记得创建进程时，<code>CreateProcess()</code> 会到 <code>PATH</code> 环境变量指定的路径中查找文件。所以我在脚本开始的地方把 <code>cvtres.exe</code> 所在的路径添加到 <code>PATH</code> 环境变量。使用 <code>process explorer</code> 查看 <code>windbg</code> 对应的 <code>PATH</code> 环境变量的值，发现 <code>PATH</code> 环境变量已经包含了 <code>cvtres.exe</code> 所在的路径。因为 <code>PATH</code> 环境变量太长了，我把它拷贝到文件中并省略了大部分：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-path-variable.png" alt="view-windbg-path-variable"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-path-variable.png" alt="view-windbg-path-variable"></p>
 <blockquote>
 <p><strong>提示：</strong> 注意上图中高亮部分。一切皆因它而起。</p>
 </blockquote>
@@ -482,10 +482,10 @@
 <h2 id="螳螂捕蝉，黄雀在后"><a href="#螳螂捕蝉，黄雀在后" class="headerlink" title="螳螂捕蝉，黄雀在后"></a>螳螂捕蝉，黄雀在后</h2><p>还记得我们是怎么调试 <code>cvtres.exe</code> 的吗？可以用同样的方法调试 <code>windbg</code> —— 通过 <code>gflags</code> 为 <code>windbg</code> 设置 <code>Image File Execution Option</code>。</p>
 <p>但是有一个细节需要注意：<code>Debugger</code> 字段需要写一个其它调试器的路径。</p>
 <p><code>cdb</code> 与 <code>windbg</code> 同源，大多数命令与 <code>windbg</code> 一样，是一个非常合适的调试器。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/use-cdb-debugging-windbg-with-gflags.png" alt="use-cdb-debugging-windbg-with-gflags"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/use-cdb-debugging-windbg-with-gflags.png" alt="use-cdb-debugging-windbg-with-gflags"></p>
 <p>按上图设置后，<code>windbg.exe</code> 在启动时会自动中断到 <code>cdb.exe</code> 中。</p>
 <p>双击启动脚本，<code>cvtres.exe</code> 会自动中断到 <code>windbg</code> 中，而 <code>windbg</code> 会自动中断到 <code>cdb</code> 中。下图是 <code>windbg</code> 中断到 <code>cdb</code> 中的截图。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/cdb-auto-attach-to-windbg.png" alt="cdb-auto-attach-to-windbg"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/cdb-auto-attach-to-windbg.png" alt="cdb-auto-attach-to-windbg"></p>
 <blockquote>
 <p><strong>小提示：</strong> 可以使用 <code>|</code> 命令查看正在被调试的进程模块名。非常实用的小技巧。</p>
 </blockquote>
@@ -494,28 +494,28 @@
 <p>按照上面的理论，在 <code>cdb</code> 中输入 <code>x *!*CreateProcess*</code> 查看相关函数，发现了一堆相关函数。想着最终肯定会调用 <code>ntdll</code> 模块中的函数，于是在 <code>cdb</code> 中输入 <code>bp ntdll!NtCreateProcessEx</code>，然后执行 <code>g</code> 命令重新运行 <code>windbg</code>。 但是居然没断下来。难道 <code>windbg</code> 不是通过 <code>NtCreateProcessEx()</code> 启动新进程的吗？还是在调用 <code>NtCreateProcessEx()</code> 之前就检查到异常返回了？</p>
 <h2 id="对比正常流程"><a href="#对比正常流程" class="headerlink" title="对比正常流程"></a>对比正常流程</h2><p>通过全路径启动 <code>cvtres.exe</code> 的时候，<code>windbg</code> 可以正常启动对应的程序。可以对比查看正常情况下  <code>windbg</code> 调用的是哪些函数。</p>
 <p>通过 <code>process monitor</code> 监听相关事件，只查看进程相关的事件，可以看到启动 <code>cvtres.exe</code> 时的调用栈，如下图所示：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-create-cvtres-call-stack.png" alt="view-windbg-create-cvtres-call-stack"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-windbg-create-cvtres-call-stack.png" alt="view-windbg-create-cvtres-call-stack"></p>
 <p>看来 <code>windbg</code> 是通过 <code>kernelbase!CreateProcessW()</code> 启动进程的，该函数内部最终会调用 <code>ntdll!NtCreateUserProcess()</code>。看来，前面草率了，在错误的函数中设置了断点。赶紧在 <code>ntdll!NtCreateUserProcess()</code> 处下断点。您猜怎么着？还是没断下来！！！</p>
 <p>看来，应该是在前面就出错了。尝试在 <code>kernelbase!CreateProcessW()</code> 中设置断点，再试试运气。</p>
 <h2 id="重新下断"><a href="#重新下断" class="headerlink" title="重新下断"></a>重新下断</h2><p>在 <code>kernelbase!CreateProcessW()</code> 中设置断点，再次运行程序，这次终于断下来了。执行 <code>gu</code> 退出 <code>kernelbase!CreateProcessW()</code> ，然后查看返回值，也就是查看 <code>eax</code> 的值，发现 <code>eax</code> 的值是 <code>0</code>，根据 <a href="https://docs.microsoft.com/zh-cn/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw" target="_blank" rel="noopener">msdn CreateProcess 文档</a> 中的描述可知，返回 <code>0</code> 表示出错了。执行 <code>!gle</code> 查看错误码，发现 <code>Last Error</code> 的值是 <code>2</code>，也就是 <strong>ERROR_PATH_NOT_FOUND</strong>。<a href="https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-" target="_blank" rel="noopener">System Error Codes (0-499)</a>  中对应的描述如下：<code>The system cannot find the file specified.</code>，翻译过来就是 <strong>系统找不到指定的文件</strong>，与 <code>windbg</code> 的错误提示完全吻合。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/run-createprocess-and-view-return-value-and-last-error.png" alt="run-createprocess-and-view-return-value-and-last-error"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/run-createprocess-and-view-return-value-and-last-error.png" alt="run-createprocess-and-view-return-value-and-last-error"></p>
 <p>看来问题出在 <code>kernelbase!CreateProcessW()</code> 函数内部 ，用 <code>IDA</code> 看了下 <code>kernelbase!CreateProcessW()</code>  的反汇编代码，发现该函数只是直接调用了 <code>kernelbase!CreateProcessInternalW()</code>。而 <code>kernelbase!CreateProcessInternalW()</code> 的反汇编代码超级多，即使用 <code>IDA</code> 的 <code>F5</code> 得到的伪代码都非常多，实在没耐心看完。那该怎么办呢？脑子中突然想起一个很久之前就知道但是一直没真正使用过的命令 —— <code>wt</code>。</p>
 <h2 id="wt-立功了"><a href="#wt-立功了" class="headerlink" title="wt 立功了"></a>wt 立功了</h2><p>重新运行程序，当 <code>windbg</code> 中断到 <code>cdb</code> 后，输入 <code>bp kernelbase!CreateProcessInternalW</code> 设置好断点，输入 <code>g</code> 重新运行 <code>windbg</code>。中断下来后，输入 <code>wt -l1</code> 只追踪一层调用。</p>
 <blockquote>
 <p><strong>提示：</strong> 因为 <code>wt</code> 的输出结果很可能会有很多，所以最好先执行 <code>.logopen d:\windbg.txt</code> 来打开日志文件，追踪完成后再执行 <code>.logclose</code> 关闭日志文件，这样就可以直接查看日志文件中的追踪结果了。</p>
 </blockquote>
 <p>查看日志文件中的调用记录，很快就发现了让我头脑瞬间清醒的几个函数调用。一个是 <code>SearchPathW</code> 一个是 <code>RtlSetLastWin32Error</code>。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-wt-createprocessinternalw.png" alt="view-wt-createprocessinternalw"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-wt-createprocessinternalw.png" alt="view-wt-createprocessinternalw"></p>
 <p>一看到 <code>RtlSetLastWin32Error</code>，瞬间清醒了。<code>GetLastError</code> 取到的值一定是有人设置上去的，可以直接对这个函数设置条件断点，应该很快就能定位到关键调用栈。</p>
 <p>一看到 <code>SearchPathW</code>，立刻就联想到很可能是在通过 <code>PATH</code> 环境变量在找文件。后悔最开始的时候没用 <code>process monitor</code> 观察一下文件访问失败的记录。</p>
 <p>再次运行程序，使用 <code>process monitor</code> 观察一下文件访问情况。看到下图的访问记录（红色高亮的路径，居然带着双引号），我瞬间就明白了，一定是我设置的 <code>PATH</code> 环境变量出问题了，之前的猜想错了。</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-cvtres-in-process-monitor.png" alt="view-cvtres-in-process-monitor"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/view-cvtres-in-process-monitor.png" alt="view-cvtres-in-process-monitor"></p>
 <h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p>既然是指定的路径出问题了（不能带双引号），修改脚本内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set path=%path%;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\</span><br><span class="line">cvtres.exe /machine:x86 /nologo /out:&quot;d:\test-rc-compile-error\test.tmp&quot; /readonly 1.res 2.res 3.res 4.res 5.res</span><br></pre></td></tr></table></figure>
 
 <p>再次运行脚本，果然一切正常了。</p>
 <h2 id="有趣的访问方式"><a href="#有趣的访问方式" class="headerlink" title="有趣的访问方式"></a>有趣的访问方式</h2><p>当我在 <code>process monitor</code> 中修改过滤条件后，我还看到了下图的访问记录：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/interesting-file-access-pattern.png" alt="interesting-file-access-pattern"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/interesting-file-access-pattern.png" alt="interesting-file-access-pattern"></p>
 <p>有没有发现什么规律？注意对照脚本代码看，每次访问失败后都会多取一部分再次进行尝试。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cvtres.exe /machine:x86 /nologo /out:&quot;d:\test-rc-compile-error\test.tmp&quot; /readonly 1.res 2.res 3.res 4.res 5.res</span><br></pre></td></tr></table></figure>
 
@@ -529,7 +529,7 @@
 <p><code>/cA0</code> 表示显示指定显示列宽为 <code>0xA0</code>，如果不指定，则按默认列宽进行显示。</p>
 <p><code>LA0</code> 表示只显示前 <code>0xA0</code> 个字符。</p>
 <p>运行结果如下图：</p>
-<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/auto-display-param-and-callstack.png" alt="auto-display-param-and-callstack"></p>
+<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part3/auto-display-param-and-callstack.png" alt="auto-display-param-and-callstack"></p>
 <h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>其实这个问题本来应该很快就能解决的。</p>
 <p>首先，在调试之前就应该使用 <code>process monitor</code> 查看文件访问事件。只不过当时脑子不清醒，只是用 <code>process monitor</code> 查看了进程创建事件，没有什么发现就开始调试了，太草率了。</p>
 <p>其次，当时陷入了思维误区 —— 想当然的认为带空格的路径一定要加上双引号。整个排查过程中都没有怀疑是多加了双引号导致的问题。反过头来看这个问题，觉得自己太傻了，查看 <code>PATH</code> 环境变量的时候，非常明显可以发现其它带空格的路径并没有使用双引号，但是我自己添加的路径却带了双引号。</p>
@@ -1098,6 +1098,12 @@
   
     
   
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1186,7 +1192,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
