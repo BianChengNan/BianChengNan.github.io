@@ -92,28 +92,28 @@
 <meta name="keywords" content="调试,debug,dump,windbg,stack,递归,栈">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 记一次有教益的递归栈查看（续）">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上篇文章中介绍了在 windbg 中如何查看非常深的调用栈 —— 使用 kN 命令指定栈帧数。kN 虽好，但最多只能查看 0xffff 个栈帧。如果栈帧数量比 0xffff 还多，该如何查看呢？本文将介绍几种查看方法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-failed-after-kframes-set-to-0x7fffffff.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-memory-usage-kframe-0x10000000.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps-manual-reconstruct-callstack.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-callstack-in-vs.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-command-help.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/output-of-wrong-stackptr-k-command.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-start-at-specific-address.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-ebp-by-dps.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0x009ef908-0x100.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-rsp-by-dps.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0000002a337ffbd0-0x100.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.958Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-failed-after-kframes-set-to-0x7fffffff.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-memory-usage-kframe-0x10000000.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-dps-manual-reconstruct-callstack.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-callstack-in-vs.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-command-help.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/output-of-wrong-stackptr-k-command.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/windbg-k-start-at-specific-address.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-ebp-by-dps.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0x009ef908-0x100.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/view-rsp-by-dps.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/k-0000002a337ffbd0-0x100.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.818Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的递归栈查看（续）">
 <meta name="twitter:description" content="缘起在上篇文章中介绍了在 windbg 中如何查看非常深的调用栈 —— 使用 kN 命令指定栈帧数。kN 虽好，但最多只能查看 0xffff 个栈帧。如果栈帧数量比 0xffff 还多，该如何查看呢？本文将介绍几种查看方法。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/try-to-find-max-kframes-number.png">
 
 
 
@@ -143,7 +143,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -320,7 +320,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -366,7 +366,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -458,7 +458,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上篇<a href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/" target="_blank" rel="noopener">文章</a>中介绍了在 <code>windbg</code> 中如何查看非常深的调用栈 —— 使用 <code>kN</code> 命令指定栈帧数。<code>kN</code> 虽好，但最多只能查看 <code>0xffff</code> 个栈帧。如果栈帧数量比 <code>0xffff</code> 还多，该如何查看呢？本文将介绍几种查看方法。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上篇<a href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack/">文章</a>中介绍了在 <code>windbg</code> 中如何查看非常深的调用栈 —— 使用 <code>kN</code> 命令指定栈帧数。<code>kN</code> 虽好，但最多只能查看 <code>0xffff</code> 个栈帧。如果栈帧数量比 <code>0xffff</code> 还多，该如何查看呢？本文将介绍几种查看方法。</p>
 <a id="more"></a>
 
 
@@ -611,7 +611,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/" title="调试实战 | 记一次有教益的递归栈查看（续）">https://blog.bianchengnan.tech/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/</a>
+    <a href="https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/" title="调试实战 | 记一次有教益的递归栈查看（续）">https://bianchengnan.github.io/articles/how-to-view-startup-function-from-a-deep-recursive-stack-continue/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

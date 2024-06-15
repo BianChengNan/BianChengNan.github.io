@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,异常,stackoverflow,vs,_chkstk,栈溢出,优化,optimization,">
+  <meta name="keywords" content="原,总结,调试,vs,异常,stackoverflow,_chkstk,栈溢出,优化,optimization,">
 
 
 
@@ -89,31 +89,31 @@
 
 
 <meta name="description" content="缘起我在《栈又溢出了》 一文中记录了一个奇怪的栈溢出问题。虽然解决了，但是总感觉哪里不太合理。我想，vs 一定有一个合理的设置。一起折腾起来吧！">
-<meta name="keywords" content="原,总结,调试,异常,stackoverflow,vs,_chkstk,栈溢出,优化,optimization">
+<meta name="keywords" content="原,总结,调试,vs,异常,stackoverflow,_chkstk,栈溢出,优化,optimization">
 <meta property="og:type" content="article">
 <meta property="og:title" content="栈局部变量优化探究，意外发现了 vs 的一个 bug ？">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起我在《栈又溢出了》 一文中记录了一个奇怪的栈溢出问题。虽然解决了，但是总感觉哪里不太合理。我想，vs 一定有一个合理的设置。一起折腾起来吧！">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/release-stack-usage.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/compare-debug-release-configuration.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/optimization-options.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/ZI-Zi-option.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/filter-in-all-options.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/debug-stack-usage-with-o2.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/release-stackoverflow.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/msdn-o2.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/debug-compile-option-with-og.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/msdn-og.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/all-compile-options.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/strange_chkstk_value_in_vs2013.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/higher-compiler-compile-result.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:43.004Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/release-stack-usage.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/compare-debug-release-configuration.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/optimization-options.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/ZI-Zi-option.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/filter-in-all-options.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/debug-stack-usage-with-o2.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/release-stackoverflow.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/msdn-o2.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/debug-compile-option-with-og.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/msdn-og.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/all-compile-options.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/strange_chkstk_value_in_vs2013.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/higher-compiler-compile-result.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.865Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈局部变量优化探究，意外发现了 vs 的一个 bug ？">
 <meta name="twitter:description" content="缘起我在《栈又溢出了》 一文中记录了一个奇怪的栈溢出问题。虽然解决了，但是总感觉哪里不太合理。我想，vs 一定有一个合理的设置。一起折腾起来吧！">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/release-stack-usage.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/release-stack-usage.png">
 
 
 
@@ -143,7 +143,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -320,7 +320,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -366,7 +366,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -458,7 +458,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/" target="_blank" rel="noopener">《栈又溢出了》</a> 一文中记录了一个奇怪的栈溢出问题。虽然解决了，但是总感觉哪里不太合理。我想，<code>vs</code> 一定有一个合理的设置。一起折腾起来吧！</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/">《栈又溢出了》</a> 一文中记录了一个奇怪的栈溢出问题。虽然解决了，但是总感觉哪里不太合理。我想，<code>vs</code> 一定有一个合理的设置。一起折腾起来吧！</p>
 <a id="more"></a>
 
 
@@ -536,7 +536,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/" title="栈局部变量优化探究，意外发现了 vs 的一个 bug ？">https://blog.bianchengnan.tech/articles/stack-variable-usage-optimization-investigation/</a>
+    <a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/" title="栈局部变量优化探究，意外发现了 vs 的一个 bug ？">https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -561,11 +561,11 @@
           
             <a href="/tags/调试/" rel="tag"><i class="fa fa-tag"></i> 调试</a>
           
+            <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
+          
             <a href="/tags/异常/" rel="tag"><i class="fa fa-tag"></i> 异常</a>
           
             <a href="/tags/stackoverflow/" rel="tag"><i class="fa fa-tag"></i> stackoverflow</a>
-          
-            <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
           
             <a href="/tags/chkstk/" rel="tag"><i class="fa fa-tag"></i> _chkstk</a>
           

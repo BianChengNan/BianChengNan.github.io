@@ -92,25 +92,25 @@
 <meta name="keywords" content="原,调试,vs,c++,debug,crash,stack,dynamic_cast,delete">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基础知识 | c++ 有趣的动态转换之 delete 崩溃探究兼谈基类虚析构的重要性">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在《基础知识 | 有趣的动态转换》 这篇文章中，运行 测试代码3 会崩溃。本文试图揭示崩溃的原因。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/view-CBase-CDerived-vtable-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/CBase-CDerived-vtable.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/delete-pBaseA-result.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/disassembly-code-of-delete-pBaseA.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/NewB-vector-deleting-destructor.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/manually-call-destructor.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/disassembly-code-of-manually-call-destructor-and-delete.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/delete-non-virtual-destructor-base-class-pointer.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/delete-non-virtual-destructor-base-class-pointer-result.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/disassembly-code-of-delete-non-virtual-destructor-base-class-pointer.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.962Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/view-CBase-CDerived-vtable-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/CBase-CDerived-vtable.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/delete-pBaseA-result.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/disassembly-code-of-delete-pBaseA.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/NewB-vector-deleting-destructor.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/manually-call-destructor.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/disassembly-code-of-manually-call-destructor-and-delete.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/delete-non-virtual-destructor-base-class-pointer.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/delete-non-virtual-destructor-base-class-pointer-result.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/disassembly-code-of-delete-non-virtual-destructor-base-class-pointer.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.822Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基础知识 | c++ 有趣的动态转换之 delete 崩溃探究兼谈基类虚析构的重要性">
 <meta name="twitter:description" content="前言在《基础知识 | 有趣的动态转换》 这篇文章中，运行 测试代码3 会崩溃。本文试图揭示崩溃的原因。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/view-CBase-CDerived-vtable-in-ida.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/view-CBase-CDerived-vtable-in-ida.png">
 
 
 
@@ -140,7 +140,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -317,7 +317,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -363,7 +363,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -455,12 +455,12 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在<a href="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/" target="_blank" rel="noopener">《基础知识 | 有趣的动态转换》</a> 这篇文章中，运行 <code>测试代码3</code> 会崩溃。本文试图揭示崩溃的原因。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在<a href="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/">《基础知识 | 有趣的动态转换》</a> 这篇文章中，运行 <code>测试代码3</code> 会崩溃。本文试图揭示崩溃的原因。</p>
 <a id="more"></a>
 
 
 
-<h2 id="错误更正"><a href="#错误更正" class="headerlink" title="错误更正"></a>错误更正</h2><p>在开始之前，需要更正<a href="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/" target="_blank" rel="noopener">《基础知识 | C++ 虚函数简介》</a>中的一个错误。关于 <code>CBase</code> 和 <code>CDerived</code> 的虚表内容，析构函数的位置并不是直接存储了虚函数的地址，而是存储了一段编译器生成的函数，该函数内部会调用对应的析构函数。</p>
+<h2 id="错误更正"><a href="#错误更正" class="headerlink" title="错误更正"></a>错误更正</h2><p>在开始之前，需要更正<a href="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/">《基础知识 | C++ 虚函数简介》</a>中的一个错误。关于 <code>CBase</code> 和 <code>CDerived</code> 的虚表内容，析构函数的位置并不是直接存储了虚函数的地址，而是存储了一段编译器生成的函数，该函数内部会调用对应的析构函数。</p>
 <p><img src="/articles/interesting-cpp-dynamic-cast-delete-part/view-CBase-CDerived-vtable-in-ida.png" alt="view-CBase-CDerived-vtable-in-ida"></p>
 <p>所以正确的虚表应该是下面这样的：</p>
 <p><img src="/articles/interesting-cpp-dynamic-cast-delete-part/CBase-CDerived-vtable.png" alt="CBase-CDerived-vtable"></p>
@@ -534,7 +534,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/" title="基础知识 | c++ 有趣的动态转换之 delete 崩溃探究兼谈基类虚析构的重要性">https://blog.bianchengnan.tech/articles/interesting-cpp-dynamic-cast-delete-part/</a>
+    <a href="https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/" title="基础知识 | c++ 有趣的动态转换之 delete 崩溃探究兼谈基类虚析构的重要性">https://bianchengnan.github.io/articles/interesting-cpp-dynamic-cast-delete-part/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

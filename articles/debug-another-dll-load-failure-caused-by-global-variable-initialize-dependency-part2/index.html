@@ -92,19 +92,19 @@
 <meta name="keywords" content="原">
 <meta property="og:type" content="article">
 <meta property="og:title" content="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上篇文章中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考《调试实战 | dll 加载失败之全局变量初始化篇》 和 《调试实战 | 全局变量初始化顺序探究》。 但是代码里还有一处非常隐蔽的 bug，今天继续介绍一下这个问题及对应的解决方法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Caddress-00007ffbdd9812e4.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cview-s_init_callbacks.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Ccompare-callstacks-after-reload-dll3-symbol.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.905Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Caddress-00007ffbdd9812e4.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cview-s_init_callbacks.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Ccompare-callstacks-after-reload-dll3-symbol.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.770Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
 <meta name="twitter:description" content="缘起在上篇文章中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考《调试实战 | dll 加载失败之全局变量初始化篇》 和 《调试实战 | 全局变量初始化顺序探究》。 但是代码里还有一处非常隐蔽的 bug，今天继续介绍一下这个问题及对应的解决方法。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png">
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -311,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -357,7 +357,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -449,7 +449,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在<a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1" target="_blank" rel="noopener">上篇文章</a>中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" target="_blank" rel="noopener">《调试实战 | dll 加载失败之全局变量初始化篇》</a> 和 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/" target="_blank" rel="noopener">《调试实战 | 全局变量初始化顺序探究》</a>。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在<a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1">上篇文章</a>中，解决了由于全局变量初始化顺序不对导致的崩溃问题。感兴趣的小伙伴儿可以参考<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/">《调试实战 | dll 加载失败之全局变量初始化篇》</a> 和 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/">《调试实战 | 全局变量初始化顺序探究》</a>。</p>
 <p>但是代码里还有一处非常隐蔽的 <code>bug</code>，今天继续介绍一下这个问题及对应的解决方法。</p>
 <a id="more"></a>
 
@@ -458,7 +458,7 @@
 <h2 id="示例程序"><a href="#示例程序" class="headerlink" title="示例程序"></a>示例程序</h2><p>在上篇文章初始版本的代码基础上，修改 <code>LoadDlls</code> 工程中的 <code>main()</code> 函数代码，使其加载 <code>dll1.dll</code> 和 <code>dll2.dll</code>（上篇文章中只加载了 <code>dll1.dll</code>）。修改后的关键代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[+] load plugin start."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* plugins[] = &#123; <span class="string">"dll1.dll"</span>, <span class="string">"dll2.dll"</span>, <span class="comment">/*"dll3.dll",*/</span> <span class="literal">nullptr</span> &#125;; <span class="comment">//&lt;---- 只修改了这里</span></span><br><span class="line">    <span class="keyword">auto</span> loaded_module_map = LoadPlugins(plugins);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[+] load plugin done, press any key to init plugins."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line"></span><br><span class="line">    InitPlugins(loaded_module_map);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="直接运行崩溃了"><a href="#直接运行崩溃了" class="headerlink" title="直接运行崩溃了"></a>直接运行崩溃了</h2><p>运行完 <code>LoadPlugins()</code> 后，点击任意按键继续运行，会继续执行 <code>InitPlugins()</code>，程序会在此函数中崩溃。因为我设置 <code>procdump</code> 为 <code>JIT</code> 调试器（具体设置方法可以参考<a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">这篇文章</a>），程序崩溃后会自动保存崩溃转储文件。</p>
+<h2 id="直接运行崩溃了"><a href="#直接运行崩溃了" class="headerlink" title="直接运行崩溃了"></a>直接运行崩溃了</h2><p>运行完 <code>LoadPlugins()</code> 后，点击任意按键继续运行，会继续执行 <code>InitPlugins()</code>，程序会在此函数中崩溃。因为我设置 <code>procdump</code> 为 <code>JIT</code> 调试器（具体设置方法可以参考<a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/">这篇文章</a>），程序崩溃后会自动保存崩溃转储文件。</p>
 <p>用 <code>windbg</code> 打开转储文件，无脑点击 <code>!analyze -v</code>，让 <code>windbg</code> 帮我们自动分析，分析结果如下图：</p>
 <p><img src="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2%5Cexception-when-excute-from-unloaded-dll3.png" alt="exception-when-excute-from-unloaded-dll3"></p>
 <p>从上图中的<strong>调用栈</strong>基本可以确定在执行 <code>dll3.dll</code> 中的代码时发生了异常。</p>
@@ -480,7 +480,7 @@
 <p>根据源码可知，<code>dll3.dll</code> 在加载的时候还会自动调用 <code>RegisterCallback()</code>，相关代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BEGIN_AUTO_RUN</span><br><span class="line">RegisterCallback(<span class="string">"dll3"</span>, Dll3Callback);</span><br><span class="line">END_AUTO_RUN</span><br></pre></td></tr></table></figure>
 
-<p>因为调用 <code>RegisterCallback()</code> 的时候发生了异常（在<a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1" target="_blank" rel="noopener">上篇文章</a>中已经分析过了），导致 <code>dll3.dll</code> 加载失败，<code>dll3.dll</code> 会被自动<strong>卸载</strong> 。但是通过 <code>RegisterInitCallback()</code> 注册的回调函数已经保存在了 <code>dll2!s_init_callbacks</code> 中，没有被清除。</p>
+<p>因为调用 <code>RegisterCallback()</code> 的时候发生了异常（在<a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1">上篇文章</a>中已经分析过了），导致 <code>dll3.dll</code> 加载失败，<code>dll3.dll</code> 会被自动<strong>卸载</strong> 。但是通过 <code>RegisterInitCallback()</code> 注册的回调函数已经保存在了 <code>dll2!s_init_callbacks</code> 中，没有被清除。</p>
 <p>当后面调用 <code>dll2!Init()</code> 时，会调用 <code>dll3.dll</code> 注册到  <code>dll2!s_init_callbacks</code> 中的函数（<code>Dll3InitCallback</code>），因为 <code>dll3.dll</code> 已经被卸载了，对应的函数地址也无效了，也就会发生上文中的异常。</p>
 <h2 id="深入思考"><a href="#深入思考" class="headerlink" title="深入思考"></a>深入思考</h2><p>如果在 <code>LoadDlls.exe</code> 中也显式加载了 <code>dll3.dll</code>，还会不会崩溃呢？答案是<strong>可能崩溃，也可能不崩溃</strong>。</p>
 <p>因为 <code>RegisterInitCallback()</code>内部更新数据时使用的是 <code>map.insert()</code>，这会导致一个问题 —— 如果 <code>map</code> 中已经存在相同的 <code>key</code>，那么 <code>insert()</code> 会失败，不会更新数据。</p>
@@ -527,7 +527,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/</a>
+    <a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

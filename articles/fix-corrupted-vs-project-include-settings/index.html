@@ -92,24 +92,24 @@
 <meta name="keywords" content="原,排错,调试vs,bcg,include path">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | 修复被破坏的 vs 工程设置">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前几天打开工作项目进行编译，没想到居然报错，明明前一天编译还正常的。简单排查后，临时修复了问题。但是今天新建工程时居然还有相同的问题，是可忍熟不可忍？本文记录了排查过程，希望对各位小伙伴儿有帮助。话不多说，上菜。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/search-sdk-ddk.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/inspect-project-property.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/inspect-macro-value.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/search-bcg-keyword-in-vcxproj.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/imported-props-in-vcxproj.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/search-bcgpro-by-filelocator.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/modified-user-props.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.945Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/search-sdk-ddk.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/inspect-project-property.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/inspect-macro-value.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/search-bcg-keyword-in-vcxproj.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/imported-props-in-vcxproj.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/search-bcgpro-by-filelocator.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/modified-user-props.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 修复被破坏的 vs 工程设置">
 <meta name="twitter:description" content="缘起前几天打开工作项目进行编译，没想到居然报错，明明前一天编译还正常的。简单排查后，临时修复了问题。但是今天新建工程时居然还有相同的问题，是可忍熟不可忍？本文记录了排查过程，希望对各位小伙伴儿有帮助。话不多说，上菜。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/compile-error-c1083-missing-SDKDDKVer.png">
 
 
 
@@ -139,7 +139,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -362,7 +362,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -524,7 +524,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/" title="排错实战 | 修复被破坏的 vs 工程设置">https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings/</a>
+    <a href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/" title="排错实战 | 修复被破坏的 vs 工程设置">https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

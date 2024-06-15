@@ -92,18 +92,18 @@
 <meta name="keywords" content="原,总结,工具,调试,vs,dotNET,part4,regex,正则表达式,dnspy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="性能优化 | 记一次 .NET 程序的性能优化实战（4）—— .NET 源码查看及使用 vs 调试">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在前面三篇文章中应该已经把 .NET 中正则表达式相关的问题”格尽”了。感兴趣的小伙伴儿可以参考 part1，part2 和 part3。 由于篇幅原因，在前面的文章中并没有介绍如何下载 .NET 源码，如何调试 .NET 源码。本文会简单介绍如何下载 .NET 源码，如何在线浏览 .NET 源码，如何使用 vs 调试 .NET 源码。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/dot-net-reference-source-website.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/set-symbol-path-in-vs.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/debug-dot-net-frame-source-setting.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:43.003Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/dot-net-reference-source-website.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/set-symbol-path-in-vs.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/debug-dot-net-frame-source-setting.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化 | 记一次 .NET 程序的性能优化实战（4）—— .NET 源码查看及使用 vs 调试">
 <meta name="twitter:description" content="前言在前面三篇文章中应该已经把 .NET 中正则表达式相关的问题”格尽”了。感兴趣的小伙伴儿可以参考 part1，part2 和 part3。 由于篇幅原因，在前面的文章中并没有介绍如何下载 .NET 源码，如何调试 .NET 源码。本文会简单介绍如何下载 .NET 源码，如何在线浏览 .NET 源码，如何使用 vs 调试 .NET 源码。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/dot-net-reference-source-website.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/dot-net-reference-source-website.png">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -310,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -356,7 +356,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -448,7 +448,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面三篇文章中应该已经把 <code>.NET</code> 中正则表达式相关的问题”格尽”了。感兴趣的小伙伴儿可以参考 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/" target="_blank" rel="noopener">part1</a>，<a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/" target="_blank" rel="noopener">part2</a> 和 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/" target="_blank" rel="noopener">part3</a>。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在前面三篇文章中应该已经把 <code>.NET</code> 中正则表达式相关的问题”格尽”了。感兴趣的小伙伴儿可以参考 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part1-findout-the-slowest-function-using-process-explorer/">part1</a>，<a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/">part2</a> 和 <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part3-debug-regex-implementation-using-dot-net-source-code/">part3</a>。</p>
 <p>由于篇幅原因，在前面的文章中并没有介绍如何下载 <code>.NET</code> 源码，如何调试 <code>.NET</code> 源码。本文会简单介绍如何下载 <code>.NET</code> 源码，如何在线浏览 <code>.NET</code> 源码，如何使用 <code>vs</code> 调试 <code>.NET</code> 源码。</p>
 <a id="more"></a>
 
@@ -526,7 +526,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/" title="性能优化 | 记一次 .NET 程序的性能优化实战（4）—— .NET 源码查看及使用 vs 调试">https://blog.bianchengnan.tech/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/</a>
+    <a href="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/" title="性能优化 | 记一次 .NET 程序的性能优化实战（4）—— .NET 源码查看及使用 vs 调试">https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part4-download-dot-net-source-code-and-setup-debug-in-vs/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

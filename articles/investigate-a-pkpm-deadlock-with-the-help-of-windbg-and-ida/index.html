@@ -92,34 +92,34 @@
 <meta name="keywords" content="原,总结,调试,dump,windbg,IDA,转储,hang,事后分析,逆向">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sleepconditionvariablecs-on-ui-thread.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sendmessage-on-work-thread.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/deadlock-origin.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-frame-5-on-ui-thread.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handlepaint-function-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-sub_7FEDAC749A0-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendToWorkThread-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-MakeMobileDgnRPCMessage-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendAsyncToWorkThread-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handleRpcMessage-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-7.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-function.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/get-module-start-address-and-function-offset.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/rebase-program-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-work-thread-runthread-in-ida.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/search-rpcmsg-object-in-windbg.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-queue-manger-in-windbg.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/matched-search-result.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.970Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sleepconditionvariablecs-on-ui-thread.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sendmessage-on-work-thread.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/deadlock-origin.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-frame-5-on-ui-thread.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handlepaint-function-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-sub_7FEDAC749A0-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendToWorkThread-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-MakeMobileDgnRPCMessage-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendAsyncToWorkThread-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handleRpcMessage-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-7.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-function.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/get-module-start-address-and-function-offset.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/rebase-program-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-work-thread-runthread-in-ida.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/search-rpcmsg-object-in-windbg.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-queue-manger-in-windbg.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/matched-search-result.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.830Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">
 <meta name="twitter:description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
 
 
 
@@ -149,7 +149,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -326,7 +326,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -372,7 +372,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -584,7 +584,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/" title="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">https://blog.bianchengnan.tech/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/</a>
+    <a href="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/" title="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

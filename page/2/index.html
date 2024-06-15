@@ -89,10 +89,10 @@
 
 
 <meta name="description" content="Coding is hard, you can make it easy!">
-<meta name="keywords" content="blog,博客,dev,BianchengNan,bcn">
+<meta name="keywords" content="blog,博客,dev,github">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BianChengNan&#39;s Blog">
-<meta property="og:url" content="https://blog.bianchengnan.tech/page/2/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/page/2/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="Coding is hard, you can make it easy!">
 <meta property="og:locale" content="zh-Hans">
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/page/2/">
+  <link rel="canonical" href="https://bianchengnan.github.io/page/2/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -354,7 +354,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -507,7 +507,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -555,7 +555,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -654,7 +654,7 @@
 
       
         
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/" target="_blank" rel="noopener">《栈大小可以怎么改？》</a>、<a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/" target="_blank" rel="noopener">《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》</a>、<a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/" target="_blank" rel="noopener">《栈又溢出了》</a>、<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/" target="_blank" rel="noopener">《有趣的异常》</a>。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 <code>PE</code> 头中的字段判断，因为在创建线程的时候可以指定线程栈大小。<code>TEB</code> 中的 <code>StackLimit</code> 是真正的栈底吗？带着这些疑问一起来刨根问底吧~</p>
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/">《栈大小可以怎么改？》</a>、<a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/">《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》</a>、<a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/">《栈又溢出了》</a>、<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/">《有趣的异常》</a>。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 <code>PE</code> 头中的字段判断，因为在创建线程的时候可以指定线程栈大小。<code>TEB</code> 中的 <code>StackLimit</code> 是真正的栈底吗？带着这些疑问一起来刨根问底吧~</p>
 <blockquote>
 <p><strong>友情提示</strong>：结论在文章末尾。</p>
 </blockquote>
@@ -713,7 +713,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/troubleshoot-crash-after-tidy-dialog-control-id/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/troubleshoot-crash-after-tidy-dialog-control-id/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -761,7 +761,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -905,7 +905,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-find-registered-message-name/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-find-registered-message-name/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -953,7 +953,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -1097,7 +1097,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/troubleshoot-LNK2001-unresovled-external-symbol-error/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -1145,7 +1145,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -1294,7 +1294,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -1342,7 +1342,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -1430,7 +1430,7 @@
 
       
         
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
 <p>相信各位小伙伴儿应该听过下面这种说法：<code>32</code> 位进程有 <code>4GB</code> 的虚拟内存，其中低 <code>2GB</code> 是用户空间，应用程序可以访问，高 <code>2GB</code> 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 <code>/3GB</code> 的情况下，用户空间可以提升至 <code>3GB</code>，内核空间被压缩到 <code>1GB</code>。</p>
 <p>这也是我学到的关于 <code>32</code> 位进程虚拟内存相关的知识，但是上述描述不够准确。比如，开启了 <code>/3GB</code>，进程用户空间就一定可以提升至 <code>3GB</code> 吗？在 <code>64</code> 位系统上，上述说法还成立吗？</p>
 <p>带着上述疑问，我翻看了微软官方文档，本文尽可能全面的总结进程的虚拟内存空间划分。因为能力有限，本文只涉及 <code>x86/x64</code> 平台，不涉及 <code>ARM</code> 平台。</p>
@@ -1489,7 +1489,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -1537,7 +1537,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -1682,7 +1682,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/crazy-vs2022-allocate-memory-failed-part2/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -1730,7 +1730,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -1818,7 +1818,7 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前一阵子遇到了 <code>vs2022</code> 卡死的问题，在上一篇<a href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/" target="_blank" rel="noopener">文章</a>中重点分析了崩溃的原因 —— 当 <code>vs2022</code> 尝试分配 <code>923MB</code> 的内存时，物理内存+页文件大小不足以满足这次分配请求，于是抛出异常。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前一阵子遇到了 <code>vs2022</code> 卡死的问题，在上一篇<a href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/">文章</a>中重点分析了崩溃的原因 —— 当 <code>vs2022</code> 尝试分配 <code>923MB</code> 的内存时，物理内存+页文件大小不足以满足这次分配请求，于是抛出异常。</p>
 <p>本篇文章将重点挖掘一下 <code>vs2022</code> 在崩溃之前已经分配的内容。</p>
 <blockquote>
 <p><strong>说明：</strong> 本文很早就写了草稿，一直没时间整理发布，Finally~</p>
@@ -1878,7 +1878,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/crazy-vs2022-allocate-memory-failed-part1/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -1926,7 +1926,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -2073,7 +2073,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -2121,7 +2121,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -2209,7 +2209,7 @@
 
       
         
-          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>曾经在 <code>2022</code> 年分析过一个崩溃转储，文章在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">这里</a>。在那个案例中，堆空间大小将近 <code>4GB</code>。根据上次的结论，这应该是一个运行在 <code>64</code> 位系统下的 <code>32</code> 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 <code>32</code> 位的还是 <code>64</code> 位的？如果是 <code>32</code> 位进程，怎么判断是运行在 <code>32</code> 位系统上还是运行在 <code>64</code> 位系统上呢？</p>
+          <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>曾经在 <code>2022</code> 年分析过一个崩溃转储，文章在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">这里</a>。在那个案例中，堆空间大小将近 <code>4GB</code>。根据上次的结论，这应该是一个运行在 <code>64</code> 位系统下的 <code>32</code> 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 <code>32</code> 位的还是 <code>64</code> 位的？如果是 <code>32</code> 位进程，怎么判断是运行在 <code>32</code> 位系统上还是运行在 <code>64</code> 位系统上呢？</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/#more" rel="contents">

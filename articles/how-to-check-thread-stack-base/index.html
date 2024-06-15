@@ -92,22 +92,22 @@
 <meta name="keywords" content="原,总结,调试,windbg,转储,stack,vmmap">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何确定线程栈的基址？">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 《栈大小可以怎么改？》、《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》、《栈又溢出了》、《有趣的异常》。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 P">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/calculate-current-thread-stack-size.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/view-stack-size-in-vmmap.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/search-MiCheckForUserStackOverflow.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-description.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-key-flow.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/view-stack-base-and-stack-size.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.951Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/calculate-current-thread-stack-size.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-stack-size-in-vmmap.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/search-MiCheckForUserStackOverflow.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-description.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-key-flow.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-stack-base-and-stack-size.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.811Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何确定线程栈的基址？">
 <meta name="twitter:description" content="缘起很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 《栈大小可以怎么改？》、《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》、《栈又溢出了》、《有趣的异常》。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 P">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -314,7 +314,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -360,7 +360,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -463,7 +463,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/" target="_blank" rel="noopener">《栈大小可以怎么改？》</a>、<a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/" target="_blank" rel="noopener">《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》</a>、<a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/" target="_blank" rel="noopener">《栈又溢出了》</a>、<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/" target="_blank" rel="noopener">《有趣的异常》</a>。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 <code>PE</code> 头中的字段判断，因为在创建线程的时候可以指定线程栈大小。<code>TEB</code> 中的 <code>StackLimit</code> 是真正的栈底吗？带着这些疑问一起来刨根问底吧~</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/">《栈大小可以怎么改？》</a>、<a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/">《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》</a>、<a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/">《栈又溢出了》</a>、<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/">《有趣的异常》</a>。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 <code>PE</code> 头中的字段判断，因为在创建线程的时候可以指定线程栈大小。<code>TEB</code> 中的 <code>StackLimit</code> 是真正的栈底吗？带着这些疑问一起来刨根问底吧~</p>
 <blockquote>
 <p><strong>友情提示</strong>：结论在文章末尾。</p>
 </blockquote>
@@ -540,7 +540,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/" title="如何确定线程栈的基址？">https://blog.bianchengnan.tech/articles/how-to-check-thread-stack-base/</a>
+    <a href="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/" title="如何确定线程栈的基址？">https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

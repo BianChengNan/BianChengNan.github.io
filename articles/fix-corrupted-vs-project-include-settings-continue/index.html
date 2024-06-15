@@ -92,24 +92,24 @@
 <meta name="keywords" content="原,vs,排错,调试vs,bcg,include path">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | 修复被破坏的 vs 工程设置（续）">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上一篇文章——《修复被破坏的 vs 工程设置》中，我分享了修复被破坏的 vs 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/vs-project-include-path.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/search-result-of-WindowsSDK_IncludePath.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/modify-IncludePath-value-in-toolset.props.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/inspect-modified-include-path-in-vs.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/search-WindowsSDK_IncludePath-in-file.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/clear-WindowsSDK_IncludePath-in-Windows.props.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/modified_include_path_value_in_vs.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/set-incluepath-environment-variable.gif">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.943Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/vs-project-include-path.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/search-result-of-WindowsSDK_IncludePath.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/modify-IncludePath-value-in-toolset.props.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/inspect-modified-include-path-in-vs.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/search-WindowsSDK_IncludePath-in-file.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/clear-WindowsSDK_IncludePath-in-Windows.props.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/modified_include_path_value_in_vs.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/set-incluepath-environment-variable.gif">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 修复被破坏的 vs 工程设置（续）">
 <meta name="twitter:description" content="缘起在上一篇文章——《修复被破坏的 vs 工程设置》中，我分享了修复被破坏的 vs 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/Microsoft.Cpp.Win32.user.props.png">
 
 
 
@@ -139,7 +139,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -362,7 +362,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -454,7 +454,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上一篇文章——<a href="https://bianchengnan.github.io/articles/fix-corruptted-vs-project-include-settings/" target="_blank" rel="noopener">《修复被破坏的 vs 工程设置》</a>中，我分享了修复被破坏的 <code>vs</code> 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上一篇文章——<a href="https://bianchengnan.github.io/articles/fix-corruptted-vs-project-include-settings/">《修复被破坏的 vs 工程设置》</a>中，我分享了修复被破坏的 <code>vs</code> 工程设置的实战。本以为圆满解决了问题，没想到另有玄机。所以又来分享一篇刨根问底的文章。</p>
 <a id="more"></a>
 
 <h2 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a>查看文件</h2><p>打开 <code>Microsoft.Cpp.Win32.user.props</code> 一看，里面并没有任何有用的内容！如下图：</p>
@@ -518,7 +518,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/" title="排错实战 | 修复被破坏的 vs 工程设置（续）">https://blog.bianchengnan.tech/articles/fix-corrupted-vs-project-include-settings-continue/</a>
+    <a href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/" title="排错实战 | 修复被破坏的 vs 工程设置（续）">https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

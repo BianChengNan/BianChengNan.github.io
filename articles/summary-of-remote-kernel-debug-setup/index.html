@@ -92,19 +92,19 @@
 <meta name="keywords" content="原,调试,debug,dump,转储,kernel dump,kernel debug,remote kernel debug">
 <meta property="og:type" content="article">
 <meta property="og:title" content="双机内核调试 101">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="标题中的 101 请参阅 wikipedia 101。 前言我们在上一篇文章——本地内核调试环境搭建，就这么简单！中总结了本地内核调试的开启方法。本地内核调试有很多限制（比如，不能执行 .crash 来让系统蓝屏，不能执行 .dump 保存转储，不能下断点 ……），双机内核调试完全没有这方面的限制，可以说是真正意义上的内核调试。 双机内核调试主要分两种情况：  被调试系统运行在虚拟机中。 被调试系">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-setting-net.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-com.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-by-pipe.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/check-kernel-debug-setting.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:43.010Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-setting-net.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-com.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-by-pipe.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/check-kernel-debug-setting.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.870Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="双机内核调试 101">
 <meta name="twitter:description" content="标题中的 101 请参阅 wikipedia 101。 前言我们在上一篇文章——本地内核调试环境搭建，就这么简单！中总结了本地内核调试的开启方法。本地内核调试有很多限制（比如，不能执行 .crash 来让系统蓝屏，不能执行 .dump 保存转储，不能下断点 ……），双机内核调试完全没有这方面的限制，可以说是真正意义上的内核调试。 双机内核调试主要分两种情况：  被调试系统运行在虚拟机中。 被调试系">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-setting-net.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/windbg-kernel-debug-setting-net.png">
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -311,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -357,7 +357,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -450,7 +450,7 @@
 
       
         <p>标题中的 <code>101</code> 请参阅 <a href="https://en.wikipedia.org/wiki/101_(topic)" target="_blank" rel="noopener">wikipedia 101</a>。</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们在上一篇文章——<a href="https://bianchengnan.github.io/articles/summary-of-local-kernel-debug-setup/" target="_blank" rel="noopener">本地内核调试环境搭建，就这么简单！</a>中总结了本地内核调试的开启方法。本地内核调试有很多限制（比如，不能执行 <code>.crash</code> 来让系统蓝屏，不能执行 <code>.dump</code> 保存转储，不能下断点 ……），双机内核调试完全没有这方面的限制，可以说是真正意义上的内核调试。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们在上一篇文章——<a href="https://bianchengnan.github.io/articles/summary-of-local-kernel-debug-setup/">本地内核调试环境搭建，就这么简单！</a>中总结了本地内核调试的开启方法。本地内核调试有很多限制（比如，不能执行 <code>.crash</code> 来让系统蓝屏，不能执行 <code>.dump</code> 保存转储，不能下断点 ……），双机内核调试完全没有这方面的限制，可以说是真正意义上的内核调试。</p>
 <p>双机内核调试主要分两种情况：</p>
 <ol>
 <li>被调试系统运行在虚拟机中。</li>
@@ -579,7 +579,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/" title="双机内核调试 101">https://blog.bianchengnan.tech/articles/summary-of-remote-kernel-debug-setup/</a>
+    <a href="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/" title="双机内核调试 101">https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

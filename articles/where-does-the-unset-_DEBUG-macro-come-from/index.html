@@ -92,25 +92,25 @@
 <meta name="keywords" content="原,vs,排错,_DEBUG">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | 神秘的 _DEBUG 宏从何处来？">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上一篇文章 《调试实战 | dll 加载失败之Debug Release争锋篇》中，由于两个工程中的 _ITERATOR_DEBUG_LEVEL 不同，导致了对同一个 map 的解析不同，从而导致了崩溃。在示例代码中，我是手动更改的该宏的值，在实际工程中，却另有玄机。在上文中故意省略了这部分内容的介绍。现把实际工程的问题在本文中做个相对详细的梳理总结。 先剧透一下：实际工程中的问题是因为一个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/delete-_debug-macro.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-result.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG-macro-in-props.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/build-with-msbuild.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-with-cl.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/compare-cl-param.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/mdd-option-msdn.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/set-mdd-option-in-vs.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:43.064Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/delete-_debug-macro.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-result.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG-macro-in-props.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/build-with-msbuild.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-with-cl.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/compare-cl-param.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/mdd-option-msdn.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/set-mdd-option-in-vs.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.951Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 神秘的 _DEBUG 宏从何处来？">
 <meta name="twitter:description" content="缘起在上一篇文章 《调试实战 | dll 加载失败之Debug Release争锋篇》中，由于两个工程中的 _ITERATOR_DEBUG_LEVEL 不同，导致了对同一个 map 的解析不同，从而导致了崩溃。在示例代码中，我是手动更改的该宏的值，在实际工程中，却另有玄机。在上文中故意省略了这部分内容的介绍。现把实际工程的问题在本文中做个相对详细的梳理总结。 先剧透一下：实际工程中的问题是因为一个">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
 
 
 
@@ -140,7 +140,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -317,7 +317,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -363,7 +363,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -466,7 +466,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上一篇文章 《<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-mixed-configuration/" target="_blank" rel="noopener">调试实战 | dll 加载失败之Debug Release争锋篇</a>》中，由于两个工程中的 <code>_ITERATOR_DEBUG_LEVEL</code> 不同，导致了对同一个 <code>map</code> 的解析不同，从而导致了崩溃。在示例代码中，我是手动更改的该宏的值，在实际工程中，却另有玄机。在上文中故意省略了这部分内容的介绍。现把实际工程的问题在本文中做个相对详细的梳理总结。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在上一篇文章 《<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-mixed-configuration/">调试实战 | dll 加载失败之Debug Release争锋篇</a>》中，由于两个工程中的 <code>_ITERATOR_DEBUG_LEVEL</code> 不同，导致了对同一个 <code>map</code> 的解析不同，从而导致了崩溃。在示例代码中，我是手动更改的该宏的值，在实际工程中，却另有玄机。在上文中故意省略了这部分内容的介绍。现把实际工程的问题在本文中做个相对详细的梳理总结。</p>
 <p>先剧透一下：实际工程中的问题是因为一个工程中定义了 <code>_DEBUG</code> 宏，另外一个工程里没定义。但是我已经核对过，两个工程都没定义 <code>_DEBUG</code> 宏。其中一个工程的 <code>_DEBUG</code> 宏是从哪儿来的呢？</p>
 <a id="more"></a>
 
@@ -493,7 +493,7 @@
 <p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG.png" alt="search-_DEBUG"></p>
 <p>难道写死在 <code>cl.exe</code> 中了？有点儿不可思议。（文中暗表，确实写死在 <code>cl.exe</code> 中了。）</p>
 <p>顺着这条路已经找不到更多有价值的线索了，需要换个思路了。</p>
-<h2 id="换个思路"><a href="#换个思路" class="headerlink" title="换个思路"></a>换个思路</h2><p>会不会是 <code>vs</code> 在编译的时候，根据某些条件自动添加的？为了排除这种情况，直接使用 <code>msbuild.exe</code> 进行构建操作（在 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/" target="_blank" rel="noopener">《调试实战 | 全局变量初始化顺序探究》</a>里已经介绍过了）。</p>
+<h2 id="换个思路"><a href="#换个思路" class="headerlink" title="换个思路"></a>换个思路</h2><p>会不会是 <code>vs</code> 在编译的时候，根据某些条件自动添加的？为了排除这种情况，直接使用 <code>msbuild.exe</code> 进行构建操作（在 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/">《调试实战 | 全局变量初始化顺序探究》</a>里已经介绍过了）。</p>
 <p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/build-with-msbuild.png" alt="build-with-msbuild"></p>
 <p>可以发现，直接使用 <code>msbuild.exe</code> 编译也会定义 <code>_DEBUG</code> 宏。可以把 <code>vs</code> 从怀疑名单中划掉了。</p>
 <p>注意看传递给 <code>cl.exe</code> 的参数（上图黄色高亮部分）中也没有 <code>_DEBUG</code> 宏的踪影。</p>
@@ -550,7 +550,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/" title="排错实战 | 神秘的 _DEBUG 宏从何处来？">https://blog.bianchengnan.tech/articles/where-does-the-unset-_DEBUG-macro-come-from/</a>
+    <a href="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/" title="排错实战 | 神秘的 _DEBUG 宏从何处来？">https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

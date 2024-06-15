@@ -92,23 +92,23 @@
 <meta name="keywords" content="原,调试,vs,排错,sdk">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | WindowsSdkDir 从何处来？">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在《修复被破坏的 vs 工程设置》和《修复被破坏的 vs 工程设置（续）》这两篇文章中，分享了调查 VS 包含路径错误的问题，感兴趣的小伙伴儿可以查看。依稀记得在 2013 年的时候调查过类似的问题。前一阵子没翻到，这两天在翻笔记的时候居然意外的找到了。特整理分享给大家。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/view-all-macros.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/view-windowssdk.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/search-using-findstr.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/search-result.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/view-vcvars.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/value_under_hklm.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/value_under_hkcu.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/watch-using-procmon.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:43.065Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-all-macros.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-windowssdk.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/search-using-findstr.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/search-result.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-vcvars.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/value_under_hklm.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/value_under_hkcu.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/watch-using-procmon.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.953Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | WindowsSdkDir 从何处来？">
 <meta name="twitter:description" content="缘起在《修复被破坏的 vs 工程设置》和《修复被破坏的 vs 工程设置（续）》这两篇文章中，分享了调查 VS 包含路径错误的问题，感兴趣的小伙伴儿可以查看。依稀记得在 2013 年的时候调查过类似的问题。前一阵子没翻到，这两天在翻笔记的时候居然意外的找到了。特整理分享给大家。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/view-all-macros.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-all-macros.png">
 
 
 
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -361,7 +361,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -453,7 +453,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在《<a href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/" target="_blank" rel="noopener">修复被破坏的 vs 工程设置</a>》和《<a href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/" target="_blank" rel="noopener">修复被破坏的 vs 工程设置（续）</a>》这两篇文章中，分享了调查 <code>VS</code> 包含路径错误的问题，感兴趣的小伙伴儿可以查看。依稀记得在 <code>2013</code> 年的时候调查过类似的问题。前一阵子没翻到，这两天在翻笔记的时候居然意外的找到了。特整理分享给大家。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>在《<a href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings/">修复被破坏的 vs 工程设置</a>》和《<a href="https://bianchengnan.github.io/articles/fix-corrupted-vs-project-include-settings-continue/">修复被破坏的 vs 工程设置（续）</a>》这两篇文章中，分享了调查 <code>VS</code> 包含路径错误的问题，感兴趣的小伙伴儿可以查看。依稀记得在 <code>2013</code> 年的时候调查过类似的问题。前一阵子没翻到，这两天在翻笔记的时候居然意外的找到了。特整理分享给大家。</p>
 <a id="more"></a>
 
 
@@ -513,7 +513,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/" title="排错实战 | WindowsSdkDir 从何处来？">https://blog.bianchengnan.tech/articles/where-does-WindowsSdkDir-come-from/</a>
+    <a href="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/" title="排错实战 | WindowsSdkDir 从何处来？">https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

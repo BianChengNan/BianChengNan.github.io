@@ -92,26 +92,26 @@
 <meta name="keywords" content="原,总结,调试,windbg,内存碎片,dmp,heap,堆">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 记一次有教益的内存碎片转储文件分析">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言其实，这篇文章早在 2021 年就完成了初稿，后面一直没来得及完善（各种加班各种忙），所以一直没来得及整理发布。而且，我从这个案例里学到的东西太多了，很多内容并没有体现在本篇文章中，后续有机会一定会再写文章分享。话不多说，一起来看正文吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/append-string-call-stack.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/heap-s.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-free-heap-entry-in-segment.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/same-address-showup-twice.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-heap-help.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-all-free-heap-entry.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-flags-and-virtualmemorythreshold.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-0x12345678.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-summary.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-largest-free-region-in-process.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.883Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/append-string-call-stack.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/heap-s.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-free-heap-entry-in-segment.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/same-address-showup-twice.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-heap-help.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-all-free-heap-entry.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-flags-and-virtualmemorythreshold.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-0x12345678.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/address-summary.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/view-largest-free-region-in-process.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.751Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的内存碎片转储文件分析">
 <meta name="twitter:description" content="前言其实，这篇文章早在 2021 年就完成了初稿，后面一直没来得及完善（各种加班各种忙），所以一直没来得及整理发布。而且，我从这个案例里学到的东西太多了，很多内容并没有体现在本篇文章中，后续有机会一定会再写文章分享。话不多说，一起来看正文吧。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/windbg-analyze-v-callstack.png">
 
 
 
@@ -141,7 +141,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -318,7 +318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -364,7 +364,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -659,7 +659,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" title="调试实战 | 记一次有教益的内存碎片转储文件分析">https://blog.bianchengnan.tech/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/</a>
+    <a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" title="调试实战 | 记一次有教益的内存碎片转储文件分析">https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

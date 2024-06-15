@@ -92,25 +92,25 @@
 <meta name="keywords" content="原,总结,调试,异常,debug,dump,转储文件,part2,exception">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 从转储文件找出抛出的异常 —— 实战">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起我在上一篇文章中介绍了定位抛出异常的理论知识，本文会通过几个实例介绍各种情况下的定位方法。有调试符号如何定位？没有调试符号如何定位？32 位程序如何定位？64 位程序又该如何定位？ 其实，32 位程序和 64 位程序定位过程大同小异，只不过在解析过程中需要注意，很多关键字段在 64 位程序中是偏移，需要加上模块基址得到虚拟地址后才能使用，而在 32 位程序中对应的字段就是虚拟地址，可以直接使用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-address-of-EHParameters.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-ThrowInfo-imagebase.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-throwinfo.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-CatchableTypeArray.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-CatchableType.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-TypeDescriptor.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-exception-type-32-bit.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-exception-type-by-dt-r3.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-exception-object-vtable.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/dps-result-no-symbol.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.992Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-address-of-EHParameters.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-ThrowInfo-imagebase.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-throwinfo.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-CatchableTypeArray.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-CatchableType.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-TypeDescriptor.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-exception-type-32-bit.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-exception-type-by-dt-r3.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-exception-object-vtable.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/dps-result-no-symbol.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.852Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 从转储文件找出抛出的异常 —— 实战">
 <meta name="twitter:description" content="缘起我在上一篇文章中介绍了定位抛出异常的理论知识，本文会通过几个实例介绍各种情况下的定位方法。有调试符号如何定位？没有调试符号如何定位？32 位程序如何定位？64 位程序又该如何定位？ 其实，32 位程序和 64 位程序定位过程大同小异，只不过在解析过程中需要注意，很多关键字段在 64 位程序中是偏移，需要加上模块基址得到虚拟地址后才能使用，而在 32 位程序中对应的字段就是虚拟地址，可以直接使用">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/view-address-of-EHParameters.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/view-address-of-EHParameters.png">
 
 
 
@@ -140,7 +140,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -317,7 +317,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -363,7 +363,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -455,7 +455,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part1/" target="_blank" rel="noopener">上一篇文章</a>中介绍了定位抛出异常的理论知识，本文会通过几个实例介绍各种情况下的定位方法。有调试符号如何定位？没有调试符号如何定位？<code>32</code> 位程序如何定位？<code>64</code> 位程序又该如何定位？</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part1/">上一篇文章</a>中介绍了定位抛出异常的理论知识，本文会通过几个实例介绍各种情况下的定位方法。有调试符号如何定位？没有调试符号如何定位？<code>32</code> 位程序如何定位？<code>64</code> 位程序又该如何定位？</p>
 <p>其实，<code>32</code> 位程序和 <code>64</code> 位程序定位过程大同小异，只不过在解析过程中需要注意，很多关键字段在 <code>64</code> 位程序中是偏移，需要加上模块基址得到虚拟地址后才能使用，而在 <code>32</code> 位程序中对应的字段就是虚拟地址，可以直接使用。</p>
 <p>没有调试符号的时候定位异常类型会比较困难，需要根据上一篇文章中总结的步骤一步步的找到异常类型。有调试符号的情况会比较容易，有很多简便的查看方法。</p>
 <p>一起来实战吧！</p>
@@ -557,7 +557,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/" title="调试实战 | 从转储文件找出抛出的异常 —— 实战">https://blog.bianchengnan.tech/articles/search-throwing-exception-from-dump-file-part2/</a>
+    <a href="https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/" title="调试实战 | 从转储文件找出抛出的异常 —— 实战">https://bianchengnan.github.io/articles/search-throwing-exception-from-dump-file-part2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

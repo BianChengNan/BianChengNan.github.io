@@ -92,27 +92,27 @@
 <meta name="keywords" content="原,总结,调试,process explorer,c#,dotnet,perfview">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 谁在偷偷占用我的文件？原来是我自己">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起之前基于 .net 官方提供的 FileSystemWatcher 写了一个文件变化监听工具，具体参考这篇文章 。主要解决了以下三个问题：  事件触发时，文件可能还不能被访问。 如果监听选项设置的过多，有可能会多次触发文件变化事件。 监听过滤器不够灵活，我没找到同时监听多种特定文件类型的方法（比如，同时只监听 .docx 和 .bmp 文件）。  为了解决问题1，我在调用用户注册的回调函数前，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/wrong-result.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/debug-output.gif">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/file-is-being-used-by-another-process-exception.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/search-testimage1.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-collect.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/collect-event-with-perfview.gif">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-left-expand.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/filter-result.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/call-stack.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/go-to-source.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.939Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/wrong-result.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/debug-output.gif">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/file-is-being-used-by-another-process-exception.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/search-testimage1.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-collect.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/collect-event-with-perfview.gif">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-left-expand.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/filter-result.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/call-stack.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/go-to-source.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 谁在偷偷占用我的文件？原来是我自己">
 <meta name="twitter:description" content="缘起之前基于 .net 官方提供的 FileSystemWatcher 写了一个文件变化监听工具，具体参考这篇文章 。主要解决了以下三个问题：  事件触发时，文件可能还不能被访问。 如果监听选项设置的过多，有可能会多次触发文件变化事件。 监听过滤器不够灵活，我没找到同时监听多种特定文件类型的方法（比如，同时只监听 .docx 和 .bmp 文件）。  为了解决问题1，我在调用用户注册的回调函数前，">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
 
 
 
@@ -142,7 +142,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -319,7 +319,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -365,7 +365,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -457,7 +457,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>之前基于 <code>.net</code> 官方提供的 <code>FileSystemWatcher</code> 写了一个文件变化监听工具，具体参考<a href="https://bianchengnan.github.io/articles/A-better-file-system-wacher-based-on-dotnet-FileSystemWatcher/" target="_blank" rel="noopener">这篇文章</a> 。主要解决了以下三个问题：</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>之前基于 <code>.net</code> 官方提供的 <code>FileSystemWatcher</code> 写了一个文件变化监听工具，具体参考<a href="https://bianchengnan.github.io/articles/A-better-file-system-wacher-based-on-dotnet-FileSystemWatcher/">这篇文章</a> 。主要解决了以下三个问题：</p>
 <ol>
 <li>事件触发时，文件可能还不能被访问。</li>
 <li>如果监听选项设置的过多，有可能会多次触发文件变化事件。</li>
@@ -525,7 +525,7 @@
 <p>试想，如果下次收到同一个文件变化的通知，<code>WaitUntilCanAccess()</code> 内部会使用 <code>File.Open()</code> 尝试打开这个文件，而这个文件已经被打开了，是不是有可能触发文件被占用的异常呢？确实有可能会，也可能不会！</p>
 <p>文件打开后没关闭，再次尝试打开时<strong>不一定</strong>会触发异常，比如两次都是通过 <code>File.Open(e.FullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);</code> 打开文件，第二次是可以顺利打开文件的。</p>
 <p>那么什么情况下会触发文件被占用的异常呢？</p>
-<h2 id="深入分析"><a href="#深入分析" class="headerlink" title="深入分析"></a>深入分析</h2><p>关于<code>FileAcess</code> 和 <code>FileShare</code> 的关系，请参考我总结的这篇文章 —— <a href="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/" target="_blank" rel="noopener">《开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系》</a>。</p>
+<h2 id="深入分析"><a href="#深入分析" class="headerlink" title="深入分析"></a>深入分析</h2><p>关于<code>FileAcess</code> 和 <code>FileShare</code> 的关系，请参考我总结的这篇文章 —— <a href="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/">《开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系》</a>。</p>
 <p>简单来说就是：后续的<strong>访问权限</strong>与先前的<strong>共享权限</strong>不能冲突。后续的<strong>共享权限</strong>与先前的<strong>访问权限</strong>不能冲突。</p>
 <p>检查一下 <code>线程ID</code> 为 <code>10164</code> 的线程打开文件时指定的 <code>ShareAccess</code>，是 <code>ShareAccess.Read</code>，如下图：</p>
 <p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png" alt="fileIO-Create-on-callback"></p>
@@ -606,7 +606,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/" title="调试实战 | 谁在偷偷占用我的文件？原来是我自己">https://blog.bianchengnan.tech/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/</a>
+    <a href="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/" title="调试实战 | 谁在偷偷占用我的文件？原来是我自己">https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

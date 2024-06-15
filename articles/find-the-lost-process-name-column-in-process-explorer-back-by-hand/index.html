@@ -92,22 +92,22 @@
 <meta name="keywords" content="原,总结,工具,排错,troubleshoot,sysinternals,process explorer,spyxx,UIA,MSAA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排错实战 | 徒手帮 process explorer 找回丢失的进程列">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起目前开发是在华为云桌面里进行的，在远端机器上装了 v15.05 版（很老的版本了）的 process explorer。但是今天打开 process explorer 后，Process Name 列消失不见了。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/missing-process-name-column.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/view-column.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/can-not-show-process-name-column.gif">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/view-window-by-spyxx.gif">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/setting-reg-key.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/process-explorer-normal-status.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/drag-to-adjust-column.gif">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.932Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/missing-process-name-column.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/view-column.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/can-not-show-process-name-column.gif">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/view-window-by-spyxx.gif">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/setting-reg-key.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/process-explorer-normal-status.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/drag-to-adjust-column.gif">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.793Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 徒手帮 process explorer 找回丢失的进程列">
 <meta name="twitter:description" content="缘起目前开发是在华为云桌面里进行的，在远端机器上装了 v15.05 版（很老的版本了）的 process explorer。但是今天打开 process explorer 后，Process Name 列消失不见了。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/missing-process-name-column.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/missing-process-name-column.png">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -314,7 +314,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -360,7 +360,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -475,7 +475,7 @@
 <p>看来工具是用不上了，只能手工排查了。</p>
 </li>
 </ul>
-<h2 id="徒手排查"><a href="#徒手排查" class="headerlink" title="徒手排查"></a>徒手排查</h2><p>之前解决过 <code>Sysinternals</code> 系列软件中的 <code>Autorun</code> 不显示的问题，记录在文章 <a href="https://bianchengnan.github.io/articles/troubleshoot-autoruns-can-not-showup/" target="_blank" rel="noopener">1分钟解救 run 不出来的 Autoruns</a> 中了，感兴趣的小伙伴儿可以读一下。根据上次的经验，<code>Sysinternals</code> 系列工具的配置应该都记录在注册表中了，而且存储在 <code>HKEY_CURRENT_USER</code> 下（很好的设计，只针对当前用户有效，而且设置的时候不需要管理员权限）。于是打开 <code>Registry Workshop</code>，浏览到 <code>process explorer</code> 保存配置的位置——</p>
+<h2 id="徒手排查"><a href="#徒手排查" class="headerlink" title="徒手排查"></a>徒手排查</h2><p>之前解决过 <code>Sysinternals</code> 系列软件中的 <code>Autorun</code> 不显示的问题，记录在文章 <a href="https://bianchengnan.github.io/articles/troubleshoot-autoruns-can-not-showup/">1分钟解救 run 不出来的 Autoruns</a> 中了，感兴趣的小伙伴儿可以读一下。根据上次的经验，<code>Sysinternals</code> 系列工具的配置应该都记录在注册表中了，而且存储在 <code>HKEY_CURRENT_USER</code> 下（很好的设计，只针对当前用户有效，而且设置的时候不需要管理员权限）。于是打开 <code>Registry Workshop</code>，浏览到 <code>process explorer</code> 保存配置的位置——</p>
 <p><code>HKEY_CURRENT_USER\Software\Sysinternals\Process Explorer</code>。</p>
 <p><img src="/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/setting-reg-key.png" alt="setting-reg-key"></p>
 <p>快速翻看右侧的注册表项。其中的 <code>ProcessImageColumnWidth</code> 引起了我的注意，这个名字起的太形象了，而且值还是 <code>0</code>，很有可能是关键设置。果断关闭 <code>process explorer</code>（这个是常识了，先关闭程序，再改配置），然后修改 <code>ProcessImageColumnWidth</code>  的值为 <code>100</code>，重新启动 <code>process explorer</code>。果然丢失的 <code>Process Name</code> 列又显示出来了。</p>
@@ -520,7 +520,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/" title="排错实战 | 徒手帮 process explorer 找回丢失的进程列">https://blog.bianchengnan.tech/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/</a>
+    <a href="https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/" title="排错实战 | 徒手帮 process explorer 找回丢失的进程列">https://bianchengnan.github.io/articles/find-the-lost-process-name-column-in-process-explorer-back-by-hand/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,异常,stackoverflow,vs,thread,PE,reactos,">
+  <meta name="keywords" content="原,总结,调试,vs,异常,stackoverflow,thread,PE,reactos,">
 
 
 
@@ -89,20 +89,20 @@
 
 
 <meta name="description" content="缘起前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 这里、 这里 和 这里。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！ 开源 就是增大栈尺寸。节流 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。">
-<meta name="keywords" content="原,总结,调试,异常,stackoverflow,vs,thread,PE,reactos">
+<meta name="keywords" content="原,总结,调试,vs,异常,stackoverflow,thread,PE,reactos">
 <meta property="og:type" content="article">
 <meta property="og:title" content="栈大小可以怎么改？">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 这里、 这里 和 这里。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！ 开源 就是增大栈尺寸。节流 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.965Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.825Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈大小可以怎么改？">
 <meta name="twitter:description" content="缘起前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 这里、 这里 和 这里。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！ 开源 就是增大栈尺寸。节流 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -355,7 +355,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -447,7 +447,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd" target="_blank" rel="noopener">这里</a>、 <a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/" target="_blank" rel="noopener">这里</a> 和 <a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/" target="_blank" rel="noopener">这里</a>。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd">这里</a>、 <a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/">这里</a> 和 <a href="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/">这里</a>。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！</p>
 <p><strong>开源</strong> 就是增大栈尺寸。<strong>节流</strong> 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。</p>
 <a id="more"></a>
 
@@ -511,7 +511,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/" title="栈大小可以怎么改？">https://blog.bianchengnan.tech/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/</a>
+    <a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/" title="栈大小可以怎么改？">https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -536,11 +536,11 @@
           
             <a href="/tags/调试/" rel="tag"><i class="fa fa-tag"></i> 调试</a>
           
+            <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
+          
             <a href="/tags/异常/" rel="tag"><i class="fa fa-tag"></i> 异常</a>
           
             <a href="/tags/stackoverflow/" rel="tag"><i class="fa fa-tag"></i> stackoverflow</a>
-          
-            <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
           
             <a href="/tags/thread/" rel="tag"><i class="fa fa-tag"></i> thread</a>
           

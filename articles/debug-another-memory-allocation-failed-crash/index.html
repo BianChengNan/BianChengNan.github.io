@@ -92,23 +92,23 @@
 <meta name="keywords" content="原,调试,dump,windbg,转储,内存碎片">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 调试一个由内存分配失败导致的崩溃">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一阵子，朋友开发的 QT 程序遇到了一个崩溃问题，抓了 dump 。我跟着一起分析的。最后发现是由于内存分配失败导致的。 一起来练习一下排查思路吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/analyze-v.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-callstack.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-meaningful-callstack.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-frame-03.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/search-free-region-larger-than-0n302630400.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/address-summary.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/view-pe-header-with-dh.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/set-large-address-aware-in-vs.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.909Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/analyze-v.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/view-callstack.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/view-meaningful-callstack.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/view-frame-03.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/search-free-region-larger-than-0n302630400.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/address-summary.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/view-pe-header-with-dh.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/set-large-address-aware-in-vs.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.772Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 调试一个由内存分配失败导致的崩溃">
 <meta name="twitter:description" content="缘起前一阵子，朋友开发的 QT 程序遇到了一个崩溃问题，抓了 dump 。我跟着一起分析的。最后发现是由于内存分配失败导致的。 一起来练习一下排查思路吧。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/analyze-v.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/analyze-v.png">
 
 
 
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -361,7 +361,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -470,7 +470,7 @@
 <p>查看栈帧 <code>03</code> 对应的代码，可以发现是在通过 <code>file-&gt;readAll()</code> 读取整个文件的内容。</p>
 <p><img src="/articles/debug-another-memory-allocation-failed-crash/view-frame-03.png" alt="view-frame-03"></p>
 <p>根据代码逻辑及函数局部变量的值，可以确定要读取的文件大小大概是 <code>288.6MB</code>。</p>
-<h2 id="空闲空间够大吗？"><a href="#空闲空间够大吗？" class="headerlink" title="空闲空间够大吗？"></a>空闲空间够大吗？</h2><p>相比于之前分析空闲内存空间是否足够的办法（感兴趣的小伙伴儿可以点击 <a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">这里</a> 查看），我们可以使用更高级的命令进行查找。命令如下：</p>
+<h2 id="空闲空间够大吗？"><a href="#空闲空间够大吗？" class="headerlink" title="空闲空间够大吗？"></a>空闲空间够大吗？</h2><p>相比于之前分析空闲内存空间是否足够的办法（感兴趣的小伙伴儿可以点击 <a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">这里</a> 查看），我们可以使用更高级的命令进行查找。命令如下：</p>
 <p><code>!address -f:Free -c:&quot;.if ( %3 &gt;= 0n302630400) {.echo %1 %2 %3}&quot;</code></p>
 <p>执行后可以发现，输出结果是空，如果减小 <code>0n302630400</code> 为 <code>0n102630400</code>，可以发现有两条记录。说明命令是有效的，而且进程中已经没有一块空闲地址空间可以满足本次分配请求。</p>
 <p><img src="/articles/debug-another-memory-allocation-failed-crash/search-free-region-larger-than-0n302630400.png" alt="search-free-region-larger-than-0n302630400"></p>
@@ -527,7 +527,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/" title="调试实战 | 调试一个由内存分配失败导致的崩溃">https://blog.bianchengnan.tech/articles/debug-another-memory-allocation-failed-crash/</a>
+    <a href="https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/" title="调试实战 | 调试一个由内存分配失败导致的崩溃">https://bianchengnan.github.io/articles/debug-another-memory-allocation-failed-crash/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

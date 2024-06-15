@@ -92,23 +92,23 @@
 <meta name="keywords" content="原,总结,调试,wow64,x64,虚拟内存,x86">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个 32 位程序的用户空间区域可以有多大？">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起我在《调试实战 | 记一次有教益的内存碎片转储文件分析》中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 32 位的，但是在查看堆空间大小的时候，居然有将近 4GB。 相信各位小伙伴儿应该听过下面这种说法：32 位进程有 4GB 的虚拟内存，其中低 2GB 是用户空间，应用程序可以访问，高 2GB 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 /3GB">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/enable-large-address-aware-flag.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-set-large-address-aware-option.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-modify-pe-header-to-support-large-address.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-disabled-32-bit-system.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-32-bit-system.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-on-64bit-system.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.948Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/enable-large-address-aware-flag.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-set-large-address-aware-option.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/manually-modify-pe-header-to-support-large-address.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-disabled-32-bit-system.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-32-bit-system.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-4gt-enabled-userva-2.5gb-32-bit-system.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/highest-available-address-on-64bit-system.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.809Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个 32 位程序的用户空间区域可以有多大？">
 <meta name="twitter:description" content="缘起我在《调试实战 | 记一次有教益的内存碎片转储文件分析》中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 32 位的，但是在查看堆空间大小的时候，居然有将近 4GB。 相信各位小伙伴儿应该听过下面这种说法：32 位进程有 4GB 的虚拟内存，其中低 2GB 是用户空间，应用程序可以访问，高 2GB 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 /3GB">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/memory-and-address-space-limits.png">
 
 
 
@@ -138,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -361,7 +361,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -453,7 +453,7 @@
       
 
       
-        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/" target="_blank" rel="noopener">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
+        <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>我在<a href="https://bianchengnan.github.io/articles/analyze-a-crash-dump-and-find-the-root-cause-memory-fragmentation/">《调试实战 | 记一次有教益的内存碎片转储文件分析》</a>中分析了一个由于内存碎片导致的崩溃转储。发现一个很“奇怪”的现象——程序是 <code>32</code> 位的，但是在查看堆空间大小的时候，居然有将近 <code>4GB</code>。</p>
 <p>相信各位小伙伴儿应该听过下面这种说法：<code>32</code> 位进程有 <code>4GB</code> 的虚拟内存，其中低 <code>2GB</code> 是用户空间，应用程序可以访问，高 <code>2GB</code> 是内核空间，应用程序不能访问，但是内核可以访问。在系统开启 <code>/3GB</code> 的情况下，用户空间可以提升至 <code>3GB</code>，内核空间被压缩到 <code>1GB</code>。</p>
 <p>这也是我学到的关于 <code>32</code> 位进程虚拟内存相关的知识，但是上述描述不够准确。比如，开启了 <code>/3GB</code>，进程用户空间就一定可以提升至 <code>3GB</code> 吗？在 <code>64</code> 位系统上，上述说法还成立吗？</p>
 <p>带着上述疑问，我翻看了微软官方文档，本文尽可能全面的总结进程的虚拟内存空间划分。因为能力有限，本文只涉及 <code>x86/x64</code> 平台，不涉及 <code>ARM</code> 平台。</p>
@@ -599,7 +599,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/" title="一个 32 位程序的用户空间区域可以有多大？">https://blog.bianchengnan.tech/articles/how-many-virtual-memory-a-32bit-program-can-use/</a>
+    <a href="https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/" title="一个 32 位程序的用户空间区域可以有多大？">https://bianchengnan.github.io/articles/how-many-virtual-memory-a-32bit-program-can-use/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

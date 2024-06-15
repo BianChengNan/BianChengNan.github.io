@@ -92,19 +92,19 @@
 <meta name="keywords" content="调试,异常,debug,dump,windbg,wow64,32,EXCEPTION_RECORD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何快速从 32 位转储文件中找到异常发生时的线程上下文">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在上一篇文章中介绍了如何在 64 位进程的转储文件中查找异常上下文的方法 —— KiUserExceptionDispatcher() 函数对应栈帧的 Child-SP 的值保存了异常发生时的线程上下文。 本文将介绍如何在 32 位进程及 wow64 进程的转储文件中查找异常上下文的方法，并且会先介绍几个跟异常分发相关的函数和结构体。如果忘记了结论，可以根据函数参数手动逆向查找验证。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-32.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-wow64.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-wow64.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.933Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-32.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-wow64.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/verify-exception-info-wow64.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何快速从 32 位转储文件中找到异常发生时的线程上下文">
 <meta name="twitter:description" content="前言在上一篇文章中介绍了如何在 64 位进程的转储文件中查找异常上下文的方法 —— KiUserExceptionDispatcher() 函数对应栈帧的 Child-SP 的值保存了异常发生时的线程上下文。 本文将介绍如何在 32 位进程及 wow64 进程的转储文件中查找异常上下文的方法，并且会先介绍几个跟异常分发相关的函数和结构体。如果忘记了结论，可以根据函数参数手动逆向查找验证。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/view-exception-callstack-32.png">
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -311,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -357,7 +357,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -449,7 +449,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇<a href="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump/" target="_blank" rel="noopener">文章</a>中介绍了如何在 <code>64</code> 位进程的转储文件中查找异常上下文的方法 —— <code>KiUserExceptionDispatcher()</code> 函数对应栈帧的 <code>Child-SP</code> 的值保存了异常发生时的线程上下文。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇<a href="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump/">文章</a>中介绍了如何在 <code>64</code> 位进程的转储文件中查找异常上下文的方法 —— <code>KiUserExceptionDispatcher()</code> 函数对应栈帧的 <code>Child-SP</code> 的值保存了异常发生时的线程上下文。</p>
 <p>本文将介绍如何在 <code>32</code> 位进程及 <code>wow64</code> 进程的转储文件中查找异常上下文的方法，并且会先介绍几个跟异常分发相关的函数和结构体。如果忘记了结论，可以根据函数参数手动逆向查找验证。</p>
 <a id="more"></a>
 
@@ -535,7 +535,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/" title="如何快速从 32 位转储文件中找到异常发生时的线程上下文">https://blog.bianchengnan.tech/articles/find-the-right-exception-context-in-x64-dump-continue/</a>
+    <a href="https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/" title="如何快速从 32 位转储文件中找到异常发生时的线程上下文">https://bianchengnan.github.io/articles/find-the-right-exception-context-in-x64-dump-continue/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

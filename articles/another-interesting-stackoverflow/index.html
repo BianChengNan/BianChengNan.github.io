@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,异常,stackoverflow,vs,_chkstk,栈溢出,">
+  <meta name="keywords" content="原,总结,调试,vs,异常,stackoverflow,_chkstk,栈溢出,">
 
 
 
@@ -89,24 +89,24 @@
 
 
 <meta name="description" content="缘起最近，项目代码再次出现了栈溢出问题。这次的栈溢出跟上次有点不同，调用栈不深，而且报错的时候函数代码还没开始执行。是不是有点“诡异”？一起来看看这次是什么原因导致的吧。">
-<meta name="keywords" content="原,总结,调试,异常,stackoverflow,vs,_chkstk,栈溢出">
+<meta name="keywords" content="原,总结,调试,vs,异常,stackoverflow,_chkstk,栈溢出">
 <meta property="og:type" content="article">
 <meta property="og:title" content="栈又溢出了">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，项目代码再次出现了栈溢出问题。这次的栈溢出跟上次有点不同，调用栈不深，而且报错的时候函数代码还没开始执行。是不是有点“诡异”？一起来看看这次是什么原因导致的吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/stackoverflow.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/stackoverflow.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/alloca_probe.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/__alloca_probe_chkstk.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/_chkstk_asm_locations.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/chkstk_content.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.886Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/stackoverflow.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/stackoverflow.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/alloca_probe.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/__alloca_probe_chkstk.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/_chkstk_asm_locations.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/chkstk_content.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈又溢出了">
 <meta name="twitter:description" content="缘起最近，项目代码再次出现了栈溢出问题。这次的栈溢出跟上次有点不同，调用栈不深，而且报错的时候函数代码还没开始执行。是不是有点“诡异”？一起来看看这次是什么原因导致的吧。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/stackoverflow.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/stackoverflow.png">
 
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -359,7 +359,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -456,7 +456,7 @@
 
 
 
-<h2 id="“诡异”-的栈溢出"><a href="#“诡异”-的栈溢出" class="headerlink" title="“诡异” 的栈溢出"></a>“诡异” 的栈溢出</h2><p>运行程序后，异常发生了。对于程序崩溃，早就见怪不怪了。重启程序，附加调试器，再次执行相同的功能，果然中断到调试器中。有了上次的经验（没仔细看错误提示导致懵逼了很久，<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/" target="_blank" rel="noopener">文章在这里</a>），仔细检查了错误码，又是 <code>0xC00000FD, stackoverflow</code>。在 <code>vs2013</code> 中按 <code>ctrl + alt + c</code> 查看调用栈，发现调用栈并不深，没有递归调用的迹象。仔细看报错的位置，居然没有执行到任何代码。下图是我用测试代码截的图：</p>
+<h2 id="“诡异”-的栈溢出"><a href="#“诡异”-的栈溢出" class="headerlink" title="“诡异” 的栈溢出"></a>“诡异” 的栈溢出</h2><p>运行程序后，异常发生了。对于程序崩溃，早就见怪不怪了。重启程序，附加调试器，再次执行相同的功能，果然中断到调试器中。有了上次的经验（没仔细看错误提示导致懵逼了很久，<a href="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd/">文章在这里</a>），仔细检查了错误码，又是 <code>0xC00000FD, stackoverflow</code>。在 <code>vs2013</code> 中按 <code>ctrl + alt + c</code> 查看调用栈，发现调用栈并不深，没有递归调用的迹象。仔细看报错的位置，居然没有执行到任何代码。下图是我用测试代码截的图：</p>
 <p><img src="/articles/another-interesting-stackoverflow/stackoverflow.png" alt="stackoverflow"></p>
 <p>函数调用的时候，会把参数、局部变量、返回地址等信息都存储在栈上，而栈空间默认只有 <code>1 MB</code>，如果调用栈帧太多，那么可能会用光这 <code>1 MB</code>，从而导致 <code>stack overflow</code> 。</p>
 <blockquote>
@@ -535,7 +535,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/" title="栈又溢出了">https://blog.bianchengnan.tech/articles/another-interesting-stackoverflow/</a>
+    <a href="https://bianchengnan.github.io/articles/another-interesting-stackoverflow/" title="栈又溢出了">https://bianchengnan.github.io/articles/another-interesting-stackoverflow/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -560,11 +560,11 @@
           
             <a href="/tags/调试/" rel="tag"><i class="fa fa-tag"></i> 调试</a>
           
+            <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
+          
             <a href="/tags/异常/" rel="tag"><i class="fa fa-tag"></i> 异常</a>
           
             <a href="/tags/stackoverflow/" rel="tag"><i class="fa fa-tag"></i> stackoverflow</a>
-          
-            <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
           
             <a href="/tags/chkstk/" rel="tag"><i class="fa fa-tag"></i> _chkstk</a>
           

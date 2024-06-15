@@ -92,18 +92,18 @@
 <meta name="keywords" content="开发,win10,xp,权限,基础知识,CreateFile">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言前一阵子，我在编写文件变化监控程序的时候遇到了文件被占用的问题。很早之前写过一篇关于 CreateFile 函数的 dwDesiredAccess 和 dwShareMode 参数的笔记。我发现之前的理解不够全面、准确。为了更好的理解这两个参数的作用，我搜索了大量资料，编写了测试程序及测试脚本，参考了 xp 源码，终于搞清楚这两个参数的作用。简而言之，需要遵循以下两个规则： 规则 1：后续的访">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/open-result-3.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/open-result-4.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.987Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-3.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-4.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.847Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系">
 <meta name="twitter:description" content="前言前一阵子，我在编写文件变化监控程序的时候遇到了文件被占用的问题。很早之前写过一篇关于 CreateFile 函数的 dwDesiredAccess 和 dwShareMode 参数的笔记。我发现之前的理解不够全面、准确。为了更好的理解这两个参数的作用，我搜索了大量资料，编写了测试程序及测试脚本，参考了 xp 源码，终于搞清楚这两个参数的作用。简而言之，需要遵循以下两个规则： 规则 1：后续的访">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -310,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -356,7 +356,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -770,7 +770,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/" title="开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系">https://blog.bianchengnan.tech/articles/review-CreateFile-DesireAccess-ShareMode/</a>
+    <a href="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/" title="开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系">https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

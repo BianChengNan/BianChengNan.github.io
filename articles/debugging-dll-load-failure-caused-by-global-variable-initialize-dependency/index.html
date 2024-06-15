@@ -92,31 +92,31 @@
 <meta name="keywords" content="原,调试,vs,debug,windbg,崩溃,crash,全局变量,dll">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | dll 加载失败之全局变量初始化篇">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言最近项目里总是遇到 dll 加载不上的问题，原因各种各样。今天先总结一个虽然不是项目中实际遇到的问题，但是却非常经典的问题。其它几种问题，后续慢慢总结。 示例代码包含一个 exe 工程，两个 dll 工程。 exe 会加载两个 dll 并调用它们的导出函数（GetCallCount），结果只有一个 dll 的导出函数被成功调用。会是什么原因呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dumpbin-exports.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/loaded_dll.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/procmon-trace.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/exception-and-call-stack.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/invalid-eax.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/watch-this-value.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/__DllMainCRTStartup-call-_CRT_INIT.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/crt_init.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/_initterm.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/set-breakpoint-by-bm.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/single-step-to-initterm.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll2-dps-0x001f6000-0x001f6250.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll1-dps-0x10026000-0x10026250.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/difference-of-project1-2.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/success.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.918Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dumpbin-exports.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/loaded_dll.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/procmon-trace.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/exception-and-call-stack.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/invalid-eax.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/watch-this-value.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/__DllMainCRTStartup-call-_CRT_INIT.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/crt_init.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/_initterm.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/set-breakpoint-by-bm.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/single-step-to-initterm.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll2-dps-0x001f6000-0x001f6250.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/dll1-dps-0x10026000-0x10026250.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/difference-of-project1-2.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/success.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | dll 加载失败之全局变量初始化篇">
 <meta name="twitter:description" content="前言最近项目里总是遇到 dll 加载不上的问题，原因各种各样。今天先总结一个虽然不是项目中实际遇到的问题，但是却非常经典的问题。其它几种问题，后续慢慢总结。 示例代码包含一个 exe 工程，两个 dll 工程。 exe 会加载两个 dll 并调用它们的导出函数（GetCallCount），结果只有一个 dll 的导出函数被成功调用。会是什么原因呢？">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/run_result.png">
 
 
 
@@ -146,7 +146,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -323,7 +323,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -369,7 +369,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -599,7 +599,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" title="调试实战 | dll 加载失败之全局变量初始化篇">https://blog.bianchengnan.tech/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/</a>
+    <a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" title="调试实战 | dll 加载失败之全局变量初始化篇">https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

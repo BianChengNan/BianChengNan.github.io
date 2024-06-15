@@ -92,17 +92,17 @@
 <meta name="keywords" content="原">
 <meta property="og:type" content="article">
 <meta property="og:title" content="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近又遇到了一个程序功能不正常的问题，深入调查后发现与全局变量初始化顺序有非常大的关系，只不过这次更加隐蔽。 之前总结了两篇与全局变量初始化顺序有关的文章，感兴趣的小伙伴儿可以参考《调试实战 | dll 加载失败之全局变量初始化篇》 和 《调试实战 | 全局变量初始化顺序探究》。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1%5Cexception-break-to-windbg.png">
-<meta property="og:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1%5Cview-s_callbacks.png">
-<meta property="og:updated_time" content="2024-06-15T03:54:42.904Z">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1%5Cexception-break-to-windbg.png">
+<meta property="og:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1%5Cview-s_callbacks.png">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">
 <meta name="twitter:description" content="缘起最近又遇到了一个程序功能不正常的问题，深入调查后发现与全局变量初始化顺序有非常大的关系，只不过这次更加隐蔽。 之前总结了两篇与全局变量初始化顺序有关的文章，感兴趣的小伙伴儿可以参考《调试实战 | dll 加载失败之全局变量初始化篇》 和 《调试实战 | 全局变量初始化顺序探究》。">
-<meta name="twitter:image" content="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1%5Cexception-break-to-windbg.png">
+<meta name="twitter:image" content="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/D:%5Chexo-blog%5Csource_posts%5Cdebug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1%5Cexception-break-to-windbg.png">
 
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -309,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -355,7 +355,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:42+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -448,7 +448,7 @@
 
       
         <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>最近又遇到了一个程序功能不正常的问题，深入调查后发现与全局变量初始化顺序有非常大的关系，只不过这次更加隐蔽。</p>
-<p>之前总结了两篇与全局变量初始化顺序有关的文章，感兴趣的小伙伴儿可以参考<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/" target="_blank" rel="noopener">《调试实战 | dll 加载失败之全局变量初始化篇》</a> 和 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/" target="_blank" rel="noopener">《调试实战 | 全局变量初始化顺序探究》</a>。</p>
+<p>之前总结了两篇与全局变量初始化顺序有关的文章，感兴趣的小伙伴儿可以参考<a href="https://bianchengnan.github.io/articles/debugging-dll-load-failure-caused-by-global-variable-initialize-dependency/">《调试实战 | dll 加载失败之全局变量初始化篇》</a> 和 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/">《调试实战 | 全局变量初始化顺序探究》</a>。</p>
 <a id="more"></a>
 
 
@@ -575,7 +575,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">https://blog.bianchengnan.tech/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/</a>
+    <a href="https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency">https://bianchengnan.github.io/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>

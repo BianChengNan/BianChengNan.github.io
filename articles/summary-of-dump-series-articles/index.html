@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,debug,dump,转储,kernel debug,summary,BSOD,蓝屏,win10,">
+  <meta name="keywords" content="原,总结,调试,debug,dump,转储,summary,kernel debug,BSOD,蓝屏,win10,">
 
 
 
@@ -89,14 +89,14 @@
 
 
 <meta name="description" content="前言本来只想发布一篇使用 livekd 抓取系统转储文件的总结，没想到一下子扩展出了这么多篇。转储系列文章终于告一段落了。今天对转储系列文章做个总结。">
-<meta name="keywords" content="原,总结,调试,debug,dump,转储,kernel debug,summary,BSOD,蓝屏,win10">
+<meta name="keywords" content="原,总结,调试,debug,dump,转储,summary,kernel debug,BSOD,蓝屏,win10">
 <meta property="og:type" content="article">
 <meta property="og:title" content="转储系列文章总结">
-<meta property="og:url" content="https://blog.bianchengnan.tech/articles/summary-of-dump-series-articles/index.html">
+<meta property="og:url" content="https://bianchengnan.github.io/articles/summary-of-dump-series-articles/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言本来只想发布一篇使用 livekd 抓取系统转储文件的总结，没想到一下子扩展出了这么多篇。转储系列文章终于告一段落了。今天对转储系列文章做个总结。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2024-06-15T03:54:43.007Z">
+<meta property="og:updated_time" content="2024-06-15T04:15:42.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="转储系列文章总结">
 <meta name="twitter:description" content="前言本来只想发布一篇使用 livekd 抓取系统转储文件的总结，没想到一下子扩展出了这么多篇。转储系列文章终于告一段落了。今天对转储系列文章做个总结。">
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.bianchengnan.tech/articles/summary-of-dump-series-articles/">
+  <link rel="canonical" href="https://bianchengnan.github.io/articles/summary-of-dump-series-articles/">
 
 
 <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.bianchengnan.tech/articles/summary-of-dump-series-articles/">
+    <link itemprop="mainEntityOfPage" href="https://bianchengnan.github.io/articles/summary-of-dump-series-articles/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BianChengNan">
@@ -352,7 +352,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T11:54:43+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
                 2024-06-15
               </time>
             
@@ -449,7 +449,7 @@
 
 
 
-<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>在转储系列文章的开篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/" target="_blank" rel="noopener">《转储文件知多少》</a> 里主要介绍了什么是转储文件（<strong>转储文件是进程某一时刻的快照</strong>），什么时候需要转储文件，及简要介绍了需要抓取转储文件的四大情形（按照我自己的理解分的）。这里摘录一下之前文章的内容，后续文章都是按照这个思路展开的。</p>
+<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>在转储系列文章的开篇 —— <a href="https://bianchengnan.github.io/articles/something-you-should-know-about-process-dump/">《转储文件知多少》</a> 里主要介绍了什么是转储文件（<strong>转储文件是进程某一时刻的快照</strong>），什么时候需要转储文件，及简要介绍了需要抓取转储文件的四大情形（按照我自己的理解分的）。这里摘录一下之前文章的内容，后续文章都是按照这个思路展开的。</p>
 <blockquote>
 <ol>
 <li>在<strong>任意时刻</strong>抓取 <code>dump</code>，不必等待进程出现异常后再抓取。<br> 有时候我们想知道进程在某一时刻的状态（比如，程序不响应了），我们可以抓个 <code>dump</code> 分析下原因。</li>
@@ -460,19 +460,19 @@
 </blockquote>
 <p>其中，前三类都是针对单个应用程序的，主要包含以下几篇文章：</p>
 <ul>
-<li><a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/" target="_blank" rel="noopener">《你需要知道的 N 种抓取 dump 的工具》</a> ：主要介绍了几种可以抓取应用程序转储文件的工具，尤其是 <code>procdump</code> 抓取转储文件的各种方法。</li>
-<li><a href="https://bianchengnan.github.io/articles/little-problem-about-dump-file/" target="_blank" rel="noopener">《你生成的转储文件有问题吗？》</a>：介绍了某些情况下生成的转储文件会“有问题”。生成的转储文件中如果包含 <code>Wow64</code> 子系统的信息时，我们需要使用 <code>wow64exts!sw</code> 命令或者 <code>.effmach</code>命令切换模式。 </li>
-<li><a href="https://bianchengnan.github.io/articles/little-problem-about-dump-file/" target="_blank" rel="noopener">《你需要了解的JIT Debugging》</a> ：介绍了 <code>JIT Debugging</code> 及相关的关键注册表项 —— <code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug</code> 和 <code>HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\AeDebug</code>。</li>
-<li><a href="https://bianchengnan.github.io/articles/brief-introduction-to-jit-debug-info/" target="_blank" rel="noopener">《JIT Debug Info 简介》</a> ：介绍了 <code>JIT Debug Info</code> 的重要性，我们可以在 <code>windbg</code> 通过 <code>.jdinfo</code> 命令使用保存的 <code>JIT Debug Info</code>。 </li>
-<li><a href="https://bianchengnan.github.io/articles/how-to-dump-our-own-process/" target="_blank" rel="noopener">《向大厂看齐！为自己的程序增加自动转储的功能！》</a> ：简单介绍了如何像大厂那样为自己的程序增加自动转储的功能。首先，简单介绍了保存转储文件的关键函数—— <code>MiniDumpWriteDump()</code> 的参数。然后介绍了几个很棒的开源框架，可以帮助我们快速为自己的程序添加自动转储的功能。</li>
+<li><a href="https://bianchengnan.github.io/articles/process-dump-tools-you-should-know/">《你需要知道的 N 种抓取 dump 的工具》</a> ：主要介绍了几种可以抓取应用程序转储文件的工具，尤其是 <code>procdump</code> 抓取转储文件的各种方法。</li>
+<li><a href="https://bianchengnan.github.io/articles/little-problem-about-dump-file/">《你生成的转储文件有问题吗？》</a>：介绍了某些情况下生成的转储文件会“有问题”。生成的转储文件中如果包含 <code>Wow64</code> 子系统的信息时，我们需要使用 <code>wow64exts!sw</code> 命令或者 <code>.effmach</code>命令切换模式。 </li>
+<li><a href="https://bianchengnan.github.io/articles/little-problem-about-dump-file/">《你需要了解的JIT Debugging》</a> ：介绍了 <code>JIT Debugging</code> 及相关的关键注册表项 —— <code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug</code> 和 <code>HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\AeDebug</code>。</li>
+<li><a href="https://bianchengnan.github.io/articles/brief-introduction-to-jit-debug-info/">《JIT Debug Info 简介》</a> ：介绍了 <code>JIT Debug Info</code> 的重要性，我们可以在 <code>windbg</code> 通过 <code>.jdinfo</code> 命令使用保存的 <code>JIT Debug Info</code>。 </li>
+<li><a href="https://bianchengnan.github.io/articles/how-to-dump-our-own-process/">《向大厂看齐！为自己的程序增加自动转储的功能！》</a> ：简单介绍了如何像大厂那样为自己的程序增加自动转储的功能。首先，简单介绍了保存转储文件的关键函数—— <code>MiniDumpWriteDump()</code> 的参数。然后介绍了几个很棒的开源框架，可以帮助我们快速为自己的程序添加自动转储的功能。</li>
 </ul>
 <p>第四类是关于系统转储文件的抓取方法的，主要包含以下几篇文章：</p>
 <ul>
-<li><p><a href="https://bianchengnan.github.io/articles/kernel-mode-dump-begins/" target="_blank" rel="noopener">《内核转储，开抓啦！》</a>：是内核转储文件系列文章的开篇。总结了几种内核转储文件的抓取方法，并简要介绍了一个可以让系统在蓝屏时自动保存转储文件的设置。后续的文章针对每种抓取方法做了一个相对详细的介绍。</p>
+<li><p><a href="https://bianchengnan.github.io/articles/kernel-mode-dump-begins/">《内核转储，开抓啦！》</a>：是内核转储文件系列文章的开篇。总结了几种内核转储文件的抓取方法，并简要介绍了一个可以让系统在蓝屏时自动保存转储文件的设置。后续的文章针对每种抓取方法做了一个相对详细的介绍。</p>
 </li>
-<li><p><a href="https://bianchengnan.github.io/articles/kernel-memory-dump-setting/" target="_blank" rel="noopener">《蓝屏（BSOD）转储设置，看本文就够了！》</a>：比较详细的介绍了蓝屏转储设置的各个选项的作用及在注册表中的存储位置。同时参照微软官方文档总结了各种类型的转储文件。</p>
+<li><p><a href="https://bianchengnan.github.io/articles/kernel-memory-dump-setting/">《蓝屏（BSOD）转储设置，看本文就够了！》</a>：比较详细的介绍了蓝屏转储设置的各个选项的作用及在注册表中的存储位置。同时参照微软官方文档总结了各种类型的转储文件。</p>
 </li>
-<li><p><a href="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/" target="_blank" rel="noopener">《系统蓝屏的几种姿势，确定不了解下么？》</a>：介绍了几种可以使系统蓝屏的方法。</p>
+<li><p><a href="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/">《系统蓝屏的几种姿势，确定不了解下么？》</a>：介绍了几种可以使系统蓝屏的方法。</p>
 <ul>
 <li>通过结束系统关键进程来使系统蓝屏的方法比较暴力，而且 <code>win10</code> 对系统关键进程有保护，不能轻易杀死。但是我们可以使用 <code>RtlSetProcessIsCritical</code> 把指定的进程设置为系统关键进程，然后杀掉。我觉得这个思路真是太巧妙了。</li>
 <li>通过快捷键 <code>RCtrl + Scroll Lock + Scroll Lock</code> 来使系统蓝屏的方法不需要借助任何工具，但是需要提前做好设置。</li>
@@ -480,11 +480,11 @@
 <li>通过 <code>NotMyFault</code> 工具使系统蓝屏比较简单。而且我自己的机器上总会安装 <code>sysinternal</code> 工具集，所以对我来说，使用 <code>NotMyFault</code> 非常方便。</li>
 </ul>
 </li>
-<li><p><a href="https://bianchengnan.github.io/articles/summary-of-local-kernel-debug-setup/" target="_blank" rel="noopener">《本地内核调试环境搭建，就这么简单！》</a>：简单介绍了在 <code>Vista</code> 及后续操作系统中开启本地内核调试的方法。开启本地内核调试后，以管理员权限运行 <code>windbg -kl</code> 即可连接到内核进行调试，但是本地内核调试有很多限制。如果开启了内核调试，按 <code>PrtSc</code>（如果与 <code>SysRq</code> 是同一个键的话）会使系统挂起，需要在另外一台机器上使用内核调试器连接到当前机器，让挂起的系统重新运行起来。</p>
+<li><p><a href="https://bianchengnan.github.io/articles/summary-of-local-kernel-debug-setup/">《本地内核调试环境搭建，就这么简单！》</a>：简单介绍了在 <code>Vista</code> 及后续操作系统中开启本地内核调试的方法。开启本地内核调试后，以管理员权限运行 <code>windbg -kl</code> 即可连接到内核进行调试，但是本地内核调试有很多限制。如果开启了内核调试，按 <code>PrtSc</code>（如果与 <code>SysRq</code> 是同一个键的话）会使系统挂起，需要在另外一台机器上使用内核调试器连接到当前机器，让挂起的系统重新运行起来。</p>
 </li>
-<li><p><a href="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/" target="_blank" rel="noopener">《双机内核调试 101》</a> ：简单的介绍了各种连接方式在被调试系统中的设置方法。</p>
+<li><p><a href="https://bianchengnan.github.io/articles/summary-of-remote-kernel-debug-setup/">《双机内核调试 101》</a> ：简单的介绍了各种连接方式在被调试系统中的设置方法。</p>
 </li>
-<li><p><a href="https://bianchengnan.github.io/articles/vmware-virtualkd-windbg-win10-kernel-debug-setup-step-by-step/" target="_blank" rel="noopener">《使用 VMware + win10 + VirtualKD + windbg 从零搭建双机内核调试环境》</a> ：较为详细的介绍了使用 <code>VMWare</code> 在 <code>win10</code> 下进行双机内核调试的环境搭建方法。以 <code>虚拟串口</code> 和 <code>VirtualKD</code> 两种方式进行了演示。</p>
+<li><p><a href="https://bianchengnan.github.io/articles/vmware-virtualkd-windbg-win10-kernel-debug-setup-step-by-step/">《使用 VMware + win10 + VirtualKD + windbg 从零搭建双机内核调试环境》</a> ：较为详细的介绍了使用 <code>VMWare</code> 在 <code>win10</code> 下进行双机内核调试的环境搭建方法。以 <code>虚拟串口</code> 和 <code>VirtualKD</code> 两种方式进行了演示。</p>
 </li>
 <li><p><a href="http://bianchengnan.gitee.io/articles/vmware-vs2019-win10-kernel-debug-setup-step-by-step/" target="_blank" rel="noopener">《使用 VMware + win10 + vs2019 从零搭建双机内核调试环境》</a>：以视频的形式演示了如何使用 <code>vs2019</code> 进行双机内核调试。</p>
 </li>
@@ -521,7 +521,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://blog.bianchengnan.tech/articles/summary-of-dump-series-articles/" title="转储系列文章总结">https://blog.bianchengnan.tech/articles/summary-of-dump-series-articles/</a>
+    <a href="https://bianchengnan.github.io/articles/summary-of-dump-series-articles/" title="转储系列文章总结">https://bianchengnan.github.io/articles/summary-of-dump-series-articles/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -552,9 +552,9 @@
           
             <a href="/tags/转储/" rel="tag"><i class="fa fa-tag"></i> 转储</a>
           
-            <a href="/tags/kernel-debug/" rel="tag"><i class="fa fa-tag"></i> kernel debug</a>
-          
             <a href="/tags/summary/" rel="tag"><i class="fa fa-tag"></i> summary</a>
+          
+            <a href="/tags/kernel-debug/" rel="tag"><i class="fa fa-tag"></i> kernel debug</a>
           
             <a href="/tags/BSOD/" rel="tag"><i class="fa fa-tag"></i> BSOD</a>
           
