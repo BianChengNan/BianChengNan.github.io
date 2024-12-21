@@ -96,20 +96,20 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言相信，绝大多数小伙伴儿编译 C++ 或者其它语言的程序都遇到过编译错误。今天简单总结一下如何使用错误列表（Error List）和输出窗口（Output）排查编译 C++ 代码产生的编译错误。简单的错误，通过错误列表就可以搞定，但是一些复杂的错误，只通过错误列表很可能是无法解决的，需要借助输出窗口的帮助。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/show-error-list-when-compile-fail-setting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/Error-List-Introduction.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/Error-List-Filter-Demo.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/error-in-header-file.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/jump-to-error-line.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/show-compile-error-in-output-window.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/show-error-in-build-order.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/show-overload-error-in-error-list.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/show-overload-error-in-build-window.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.947Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-error-list-when-compile-fail-setting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/Error-List-Introduction.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/Error-List-Filter-Demo.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/error-in-header-file.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/jump-to-error-line.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-compile-error-in-output-window.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-error-in-build-order.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-overload-error-in-error-list.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-overload-error-in-build-window.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.990Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 善用 vs 中的错误列表和输出窗口，高效查找 C++ 多工程编译错误">
 <meta name="twitter:description" content="前言相信，绝大多数小伙伴儿编译 C++ 或者其它语言的程序都遇到过编译错误。今天简单总结一下如何使用错误列表（Error List）和输出窗口（Output）排查编译 C++ 代码产生的编译错误。简单的错误，通过错误列表就可以搞定，但是一些复杂的错误，只通过错误列表很可能是无法解决的，需要借助输出窗口的帮助。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/vs-error-list-and-output-tricks/show-error-list-when-compile-fail-setting.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-error-list-when-compile-fail-setting.png">
 
 
 
@@ -362,8 +362,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -464,12 +464,12 @@
 <hr>
 <p>我们可以在 <code>View</code> 菜单下找到 <code>Error List</code>，点击即可打开。对应的快捷键是 <code>ctrl + \, e</code> （按住<code>ctrl</code>，然后依次按 <code>\</code> 和 <code>e</code> 即可）。</p>
 <p>如果觉得麻烦，还是希望编译出错时自动打开<strong>错误列表</strong>的话，我们可以在<code>Tools -&gt; Options-&gt; Projects and Solutions -&gt; General</code> 里设置。</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/show-error-list-when-compile-fail-setting.png" alt="show-error-list-when-compile-fail-setting"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-error-list-when-compile-fail-setting.png" alt="show-error-list-when-compile-fail-setting"></p>
 <p>勾选 <code>Always show Error List if build finishes with errors</code>，可以在编译完成后，如果有错误，则会自动弹出 <code>Error List</code> 窗口。</p>
 <p><strong>2. 错误列表界面概览</strong></p>
 <hr>
 <p>我们先通过一张图来了解下错误列表。</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/Error-List-Introduction.png" alt="Error-List-Introduction"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/Error-List-Introduction.png" alt="Error-List-Introduction"></p>
 <p>我们发现有 7 列，每一列都有它的作用。</p>
 <ul>
 <li><p>第 1 列：<code>Category</code>，以图标的形式表示信息的类型。</p>
@@ -510,7 +510,7 @@
 </ul>
 <p>可以在右侧的 <code>Search Error List</code> 编辑框输入过滤的关键字，不过遗憾的是<strong>不支持</strong>模糊匹配和正则匹配。</p>
 <p>下面是我录制的一个基本的过滤示例，大家可以直接感受下。</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/Error-List-Filter-Demo.gif" alt="Error-List-Filter-Demo"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/Error-List-Filter-Demo.gif" alt="Error-List-Filter-Demo"></p>
 <h2 id="输出窗口"><a href="#输出窗口" class="headerlink" title="输出窗口"></a>输出窗口</h2><p>输出窗口不仅可以显示各种调试信息，还可以显示编译的输出信息，比如编译错误、编译警告等。有些编译错误，仅通过<strong>错误列表</strong>不能解决，这时候我们需要借助<strong>输出窗口</strong>的帮助。</p>
 <p><strong>1. 打开方式</strong></p>
 <hr>
@@ -539,19 +539,19 @@
 <h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p><strong>实战1. 查找头文件中的编译错误实战</strong></p>
 <hr>
 <p>下图中的编译错误，全部提示出现在头文件中。</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/error-in-header-file.png" alt="error-in-header-file"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/error-in-header-file.png" alt="error-in-header-file"></p>
 <p>我们双击后会跳转到头文件。</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/jump-to-error-line.png" alt="jump-to-error-line"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/jump-to-error-line.png" alt="jump-to-error-line"></p>
 <p>除了知道错误发生在第 6 行，我们并不能得到更多有用信息了。我们需要找到是哪个源文件包含了这个头文件，到源文件里进一步查找原因。这时候我们需要切换到输出窗口了。</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/show-compile-error-in-output-window.png" alt="在输出窗口显示错误-未排序"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-compile-error-in-output-window.png" alt="在输出窗口显示错误-未排序"></p>
 <p>从上图中我们看不出来到底是哪个源文件包含了出问题的头文件。我们需要切换到 <code>Build Order</code>，如下图：</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/show-error-in-build-order.png" alt="在输出窗口显示错误-排序"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-error-in-build-order.png" alt="在输出窗口显示错误-排序"></p>
 <p>我们发现 <code>MFCApplication2.cpp</code>，<code>MFCActiveXControl1.cpp</code> 和 <code>MFCActiveXControl2.cpp</code> 包含了 <code>d4d.h</code>。我们可以进行下一步的排查了，因为这个问题比较有意思，具体排查过程会单独写一篇文章。</p>
 <p><strong>实战2. 查找名字解析错误实战</strong></p>
 <p>下图是尝试匹配重载函数失败时，错误列表给出的错误提示。</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/show-overload-error-in-error-list.png" alt="错误列表"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-overload-error-in-error-list.png" alt="错误列表"></p>
 <p>从提示中我们得知，在 <code>4</code> 个重载函数中没有一个能匹配给定的两个参数。但是编译器具体尝试匹配了哪些函数呢？我们无法从<strong>错误列表</strong>得知。不过我们可以通过<strong>输出窗口</strong>查看编译器具体尝试匹配了哪些函数，如下图：</p>
-<p><img src="/articles/vs-error-list-and-output-tricks/show-overload-error-in-build-window.png" alt="输出窗口"></p>
+<p><img src="http://resources.bianchengnan.tech/vs-error-list-and-output-tricks/show-overload-error-in-build-window.png" alt="输出窗口"></p>
 <p>我们可以发现，在我们提供的四个重载函数中，没有一个函数可以完全匹配给定的两个参数，编译器就懵逼了，不知道应该选择哪个了，所以就报错了。</p>
 <p>本例只是一个超级简单的例子，并不能很好的突出输出窗口的作用。一般涉及模板的编译错误会有一大串。这时候通过输出窗口查看具体的匹配过程就很重要了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -1021,6 +1021,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1109,7 +1119,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1120,7 +1130,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1131,7 +1141,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

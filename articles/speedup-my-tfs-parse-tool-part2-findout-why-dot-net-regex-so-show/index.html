@@ -96,24 +96,24 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言我在上一篇文章《性能优化 | 记一次 .NET 程序的性能优化实战（1）—— 使用 process explorer 快速定位问题代码》中用 process explorer 定位到了导致程序运行缓慢的原因——使用了 .NET 中的正则表达式。.NET 中的正则表达式真这么慢吗？带着疑问，开始了本次的探索之旅。喜欢刨根问底的小伙伴儿快来一起看看吧！">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-show-relative-view.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/parse-tfs-log-tool-cpu-usage.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/select-parse-tfs-log-tool-in-perfview-cpu-usage-view.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-cpu-stacks-of-parse-tfs-log.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-official-help-document.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/drill-into-matchCollection-get_Count.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack-of-jit-event.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/capture-with-additional-provider.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event-with-etwlogger.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/compare-different-version.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/run-without-compiled-option.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.860Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-show-relative-view.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/parse-tfs-log-tool-cpu-usage.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/select-parse-tfs-log-tool-in-perfview-cpu-usage-view.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-cpu-stacks-of-parse-tfs-log.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-official-help-document.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/drill-into-matchCollection-get_Count.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack-of-jit-event.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/capture-with-additional-provider.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event-with-etwlogger.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/compare-different-version.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/run-without-compiled-option.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.586Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化 | 记一次 .NET 程序的性能优化实战（2）—— 使用 perfview 找出 Regex 慢的根本原因">
 <meta name="twitter:description" content="前言我在上一篇文章《性能优化 | 记一次 .NET 程序的性能优化实战（1）—— 使用 process explorer 快速定位问题代码》中用 process explorer 定位到了导致程序运行缓慢的原因——使用了 .NET 中的正则表达式。.NET 中的正则表达式真这么慢吗？带着疑问，开始了本次的探索之旅。喜欢刨根问底的小伙伴儿快来一起看看吧！">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-show-relative-view.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-show-relative-view.png">
 
 
 
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -515,17 +515,17 @@
 <h2 id="采集性能数据"><a href="#采集性能数据" class="headerlink" title="采集性能数据"></a>采集性能数据</h2><p>运行 <code>PerfView.exe</code>，点击 <code>Collect</code> 菜单，然后点击 <code>Collect</code> 菜单项（会有提升权限的提示），在弹出的采集界面中保持默认设置，点击 <code>Start Collection</code> 按钮即可开始采集。采集开始后，执行 <code>ParseTfsLog.exe -b bug.csv</code>，<code>ParseTfsLog.exe</code> 。程序执行完毕后，在 <code>PerfView</code> 中点击 <code>Stop Collection</code> 即可停止采集。</p>
 <p>耐心等待一会，就可以在 <code>PerfView</code> 主界面的左侧看到刚刚采集到的日志文件了。</p>
 <h2 id="初步分析"><a href="#初步分析" class="headerlink" title="初步分析"></a>初步分析</h2><p>双击日志文件（<code>PerfViewData.etl.zip</code>），可以看到几个视图，如下图所示：</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-show-relative-view.png" alt="perfview-show-relative-view"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-show-relative-view.png" alt="perfview-show-relative-view"></p>
 <p>因为 <code>ParseTfsLog</code> 这个简单的小程序只使用了单线程，在执行过程中基本占满了一个 <code>CPU</code>（运行在 <code>8</code> 核心的机器上，<code>CPU</code> 占用率大概是 <code>12.5%</code>）。</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/parse-tfs-log-tool-cpu-usage.png" alt="parse-tfs-log-tool-cpu-usage"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/parse-tfs-log-tool-cpu-usage.png" alt="parse-tfs-log-tool-cpu-usage"></p>
 <p>根据以上信息，猜测这是一个 <code>CPU</code> 占用率过高的问题，优先关注 <code>CPU</code> 使用率问题，双击 <code>CPU Stacks</code> 视图进行查看。</p>
 <blockquote>
 <p> <strong>说明：</strong> <code>PerfView</code> 中的 <code>CPU Stacks</code> 视图相当于 <code>WPA</code> 中的 <code>CPU Usage (Sample)</code> 视图。记录的是 <code>CPU</code> 采样数据，默认是 <code>1</code> 毫秒采样一次（采样频率最快可以调整到 <code>1/8</code> 毫秒）。也就是一条数据基本上等于 <code>1</code> 毫秒。</p>
 </blockquote>
 <p>在弹出的 <code>Select Process Window</code> 窗口中，列出了系统中所有的进程，可以看到 <code>ParseTfsLog</code> 排在第 <code>1</code> 位。</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/select-parse-tfs-log-tool-in-perfview-cpu-usage-view.png" alt="select-parse-tfs-log-tool-in-perfview-cpu-usage-view"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/select-parse-tfs-log-tool-in-perfview-cpu-usage-view.png" alt="select-parse-tfs-log-tool-in-perfview-cpu-usage-view"></p>
 <p>双击 <code>ParseTfsLog</code> 所在的行，即可查看 <code>ParseTfsLog</code> 进程的事件，如下图：</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-cpu-stacks-of-parse-tfs-log.png" alt="view-cpu-stacks-of-parse-tfs-log"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-cpu-stacks-of-parse-tfs-log.png" alt="view-cpu-stacks-of-parse-tfs-log"></p>
 <p>在开始分析前，先简单介绍一下上图中涉及到的几个关键点，对理解采集到的数据非常有帮助。</p>
 <ul>
 <li><p><code>Start</code> 和 <code>End</code> 表示采集的起始时间和终止时间。如果只关心某一时间段内的数据，可以调整起始时间和终止时间。这两个值可以单独修改其中的一个，也可以通过 <code>Set Time Range (Alt+R)</code> 修改。</p>
@@ -545,13 +545,13 @@
 </ul>
 <blockquote>
 <p><strong>说明：</strong> 每一项都可以通过点击<strong>右侧的问号</strong>查看对应的帮助文档。下图是官方帮助文档中的解释。</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-official-help-document.png" alt="perfview-official-help-document"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/perfview-official-help-document.png" alt="perfview-official-help-document"></p>
 </blockquote>
-<p>简单介绍后，就可以查看数据了。可以看到 <code>MatchCollection.get_Count</code> 占用了绝大部分 <code>CPU</code>（大概 <code>89.7%</code>）。看来正则表达式确实占用了很多时间。时间到底花在哪里了呢？点击 <code>MatchCollection.get_Count</code> 对应的单元格，<strong>右键</strong>，选择 <code>Drill Into (Ctrl+D)</code> 即可查看<code>MatchCollection.get_Count()</code> 函数内部的详细信息了。如下图：<img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/drill-into-matchCollection-get_Count.png" alt="drill-into-matchCollection-get_Count"></p>
+<p>简单介绍后，就可以查看数据了。可以看到 <code>MatchCollection.get_Count</code> 占用了绝大部分 <code>CPU</code>（大概 <code>89.7%</code>）。看来正则表达式确实占用了很多时间。时间到底花在哪里了呢？点击 <code>MatchCollection.get_Count</code> 对应的单元格，<strong>右键</strong>，选择 <code>Drill Into (Ctrl+D)</code> 即可查看<code>MatchCollection.get_Count()</code> 函数内部的详细信息了。如下图：<img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/drill-into-matchCollection-get_Count.png" alt="drill-into-matchCollection-get_Count"></p>
 <p>从上图可知，<code>clrjit!CILJit::compileMethod</code> <strong>居然</strong>占了大部分 <code>CPU</code>（<code>Exc %</code> 是 <code>67.2</code>，<code>Inc %</code> 是 <code>98.6%</code>）。</p>
 <p>除了可以像上面那样查看 <code>MatchCollection.get_Count</code> 的相关信息，还可以通过调用栈来自顶向下的查看相关信息。 </p>
 <h2 id="查看调用栈"><a href="#查看调用栈" class="headerlink" title="查看调用栈"></a>查看调用栈</h2><p>在查看前可以先取消分组（把 <code>GroupPats</code> 设置为 <code>[no grouping]</code> 即可取消分组，非必须，取消分组后可以看到更符合直觉的调用栈），然后选择 <code>CallTree</code> 。逐层点击调用栈进行查看，如下图：</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack.png" alt="view-callstack"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack.png" alt="view-callstack"></p>
 <p>从上图可知，采集到的数据跟实际代码逻辑是完全吻合的。在 <code>Parse()</code> 函数中会不断的调用 <code>ReadOneLogData()</code> 读取提交记录后，调用 <code>ParseTfsLog.ParseOneLog()</code> 对读取到的记录进行解析。<code>ReadOneLogData()</code> 和 <code>ParseTfsLog.ParseOneLog()</code>  内部都会调用 <code>IsSplitter()</code> 判断某一行是否是分隔符。</p>
 <p>看来是 <code>IsSplitter()</code> 函数中的 <code>JIT</code> 相关代码占用了大部分 <code>CPU</code>。</p>
 <p>据我所知，一般一个托管函数只需要执行一次 <code>JIT</code>，下次调用的时候会执行编译好的原生代码。为什么会有这么多时间花在 <code>JIT</code> 上呢？在 <code>JIT</code> 哪些函数呢？</p>
@@ -563,17 +563,17 @@
 <li>点击 <code>Columns To Display</code> 右侧的 <code>Cols</code> 按钮设置需要显示的列，按住 <code>ctrl</code> 或者 <code>shift</code> 选择多列，选好后按回车即可。我选择了三列：<code>MethodNamespace</code>，<code>MethodName</code> 和 <code>*</code>。列宽，列位置等均可手动调整，单击列头可以根据对应的列进行排序。</li>
 </ul>
 <p>过滤后的事件如下图所示：</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event.png" alt="view-filter-event"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event.png" alt="view-filter-event"></p>
 <p>浏览过后发现，很多函数（包括 <code>IsSplitter</code>）都只被 <code>JIT</code> 了一次，符合认知。但是，有一种 <code>JIT</code> 比较特殊 —— <code>MethodNamespace</code> 为 <code>dynamicClass</code> 的 <code>JIT</code> 记录。这种记录对应的 <code>MethodName</code> 也比较有规律 —— 名称+数字。比如，<code>FindFirstChar9</code>，<code>Go9</code>，<code>Go20</code>，<code>Go21</code> 等等。随便选择其中一条记录，在其 <code>Time MSec</code> 列上右键，选择 <code>Open Any Stacks  (Alt+s)</code> 即可查看相关的调用栈。这里只列出 <code>FindFirstChar9</code> 对应的调用栈。如下图：</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack-of-jit-event.png" alt="view-callstack-of-jit-event"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-callstack-of-jit-event.png" alt="view-callstack-of-jit-event"></p>
 <p>浏览了几个函数后，感觉这些函数名好像是根据某些规则自动生成的。猜测是每次循环都会生成一次动态代码。该如何确认这个猜想呢？</p>
 <h2 id="添加自定义-ETW-日志"><a href="#添加自定义-ETW-日志" class="headerlink" title="添加自定义 ETW 日志"></a>添加自定义 ETW 日志</h2><p>在 <code>IsSplitter()</code> 函数内部增加一个自动输出 <code>ETW</code> 日志的功能，通过添加的 <code>using</code> 语句可以在进入函数和退出函数的时候分别输出 <code>ETW</code> 日志（输出日志的逻辑可以参考 <code>AutoScopeLogger</code> 类，这里从略）。修改后的 <code>IsSplitter()</code> 如下：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">IsSplitter</span>(<span class="params"><span class="keyword">string</span> curLine</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">using</span> (<span class="keyword">var</span> autoLogger = <span class="keyword">new</span> AutoScopeLogger(<span class="string">"[IsSplitter]"</span>))</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">var</span> splitterRegex = <span class="keyword">new</span> Regex(<span class="string">@"-&#123;100,&#125;"</span>, RegexOptions.Compiled | RegexOptions.IgnoreCase);</span><br><span class="line">    MatchCollection matches = splitterRegex.Matches(curLine);</span><br><span class="line">    <span class="keyword">return</span> (matches.Count &gt; <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>编译通过后，重新使用 <code>PerfView</code> 采集 <code>ETW</code> 日志。这次需要设置 <code>Additional Provider</code> 为 <code>*EtwLogger:*:*:@StacksEnabled=true</code> 才能采集到新加的日志（<code>@StacksEnabled=true</code> 非必须，但是加上就可以看到调用栈）。这次 <code>PerfView</code> 的相关设置如下图：</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/capture-with-additional-provider.png" alt="capture-with-additional-provider"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/capture-with-additional-provider.png" alt="capture-with-additional-provider"></p>
 <p>采集好日志后再次查看 <code>Events</code>。这次 <code>Event Types</code> 的 <code>Filters</code> 需要改成 <code>jit|Etwlogger</code>，表示只关心  <code>Event Types</code> 中包含 <code>jit</code> 或者 <code>EtwLogger</code> 的  <code>Event</code> 。过滤后的记录下图所示：</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event-with-etwlogger.png" alt="view-filter-event-with-etwlogger"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/view-filter-event-with-etwlogger.png" alt="view-filter-event-with-etwlogger"></p>
 <p>可以发现，基本每个 <code>IsSplitter()</code> 调用都会产生一个以 <code>FindFirstChar</code> 开始的动态函数，有时候也会产生以 <code>Go</code> 开头的动态函数。 </p>
 <p>至此，基本上已经知道程序运行慢的原因了 —— 每次调用 <code>IsSplitter()</code> 都会执行 <code>JIT</code>。但是为什么呢？这就到了我的知识盲区了。只能搜搜看了，在 <code>google</code> 中输入 <code>.net regex slow</code>，出来一堆结果，从里面发现了一个非常有帮助的官方文档 —— <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices" target="_blank" rel="noopener">Best practices for regular expressions in .NET</a>。</p>
 <h2 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h2><p><code>Best practices</code> 翻译成中文就是<strong>最佳实践</strong>，看名字就知道是好资料（不夸大，务实）。文档里提到的一个比较重要的概念：</p>
@@ -624,7 +624,7 @@
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">IsSplitter</span>(<span class="params"><span class="keyword">string</span> curLine</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">using</span> (<span class="keyword">var</span> autoLogger = <span class="keyword">new</span> AutoScopeLogger(<span class="string">"[IsSplitter]"</span>))</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// 修改 splitterRegex 为全局变量</span></span><br><span class="line">    <span class="comment">//var splitterRegex = new Regex(@"-&#123;100,&#125;", RegexOptions.Compiled | RegexOptions.IgnoreCase);</span></span><br><span class="line">    MatchCollection matches = splitterRegex.Matches(curLine);</span><br><span class="line">    <span class="keyword">return</span> (matches.Count &gt; <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>经测试，不使用正则表达式（<code>curLine.Contains()</code>）需要 <code>67ms</code>，使用静态正则表达式的版本需要 <code>67ms</code>，使用全局变量的版本需要 <code>80ms</code>。与未修改的版本（需要 <code>11339ms</code>）相比都有了极大的提高。而且静态正则表达式版本的耗时与字符串查找耗时基本一致。可见，如果正确使用正则表达式，效率还是非常高的。</p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/compare-different-version.png" alt="compare-different-version"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/compare-different-version.png" alt="compare-different-version"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><code>PerfView</code> 绝对是 <code>windows</code> 平台下的性能分析神器，开源免费，绿色免安装，体积小巧，功能强大，既能采集又能分析。尤其适合分析 <code>.NET</code> 程序。</li>
 <li>静态正则表达式可以很好的使用正则表达式引擎的缓存，有效提升正则表达式的效率。</li>
@@ -638,7 +638,7 @@
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">IsSplitter</span>(<span class="params"><span class="keyword">string</span> curLine</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">using</span> (<span class="keyword">var</span> autoLogger = <span class="keyword">new</span> AutoScopeLogger(<span class="string">"[IsSplitter]"</span>))</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">var</span> splitterRegex = <span class="keyword">new</span> Regex(<span class="string">@"-&#123;100,&#125;"</span>, RegexOptions.IgnoreCase);</span><br><span class="line">    MatchCollection matches = splitterRegex.Matches(curLine);</span><br><span class="line">    <span class="keyword">return</span> (matches.Count &gt; <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>您猜耗时多久？与全局变量版本非常接近，大概耗时 <code>79ms</code>。<code>surprise!</code> </p>
-<p><img src="/articles/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/run-without-compiled-option.png" alt="run-without-compiled-option"></p>
+<p><img src="http://resources.bianchengnan.tech/speedup-my-tfs-parse-tool-part2-findout-why-dot-net-regex-so-show/run-without-compiled-option.png" alt="run-without-compiled-option"></p>
 <p>看来还有东西没“格”尽啊！下篇文章再格吧。</p>
 
       
@@ -1022,6 +1022,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1110,7 +1120,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1121,7 +1131,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1132,7 +1142,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

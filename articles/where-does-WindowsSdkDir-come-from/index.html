@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在《修复被破坏的 vs 工程设置》和《修复被破坏的 vs 工程设置（续）》这两篇文章中，分享了调查 VS 包含路径错误的问题，感兴趣的小伙伴儿可以查看。依稀记得在 2013 年的时候调查过类似的问题。前一阵子没翻到，这两天在翻笔记的时候居然意外的找到了。特整理分享给大家。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-all-macros.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-windowssdk.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/search-using-findstr.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/search-result.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-vcvars.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/value_under_hklm.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/value_under_hkcu.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/watch-using-procmon.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.953Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/view-all-macros.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/view-windowssdk.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/search-using-findstr.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/search-result.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/view-vcvars.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/value_under_hklm.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/value_under_hkcu.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/watch-using-procmon.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:51.023Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | WindowsSdkDir 从何处来？">
 <meta name="twitter:description" content="缘起在《修复被破坏的 vs 工程设置》和《修复被破坏的 vs 工程设置（续）》这两篇文章中，分享了调查 VS 包含路径错误的问题，感兴趣的小伙伴儿可以查看。依稀记得在 2013 年的时候调查过类似的问题。前一阵子没翻到，这两天在翻笔记的时候居然意外的找到了。特整理分享给大家。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/where-does-WindowsSdkDir-come-from/view-all-macros.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/view-all-macros.png">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:51+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -460,27 +460,27 @@
 
 <p>依稀记得是编译的时候有问题才调查的。</p>
 <h2 id="查看-WindowsSdkDir"><a href="#查看-WindowsSdkDir" class="headerlink" title="查看 WindowsSdkDir"></a>查看 WindowsSdkDir</h2><p><code>$(WindowsSdkDir)$</code> 可通过工程中的宏来查看。先查看宏，</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/view-all-macros.png" alt="view-all-macros"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/view-all-macros.png" alt="view-all-macros"></p>
 <p>找到 <code>WindowsSdkDir</code>，查看。</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/view-windowssdk.png" alt="watch-windowssdk"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/view-windowssdk.png" alt="watch-windowssdk"></p>
 <blockquote>
 <p>小贴士：可以在上方的搜索框输入关键字进行过滤。</p>
 </blockquote>
 <h2 id="WindowsSdkDir-从何处来"><a href="#WindowsSdkDir-从何处来" class="headerlink" title="WindowsSdkDir 从何处来"></a>WindowsSdkDir 从何处来</h2><p>从上图，我们可以看到 <code>$(WindowsSdkDir)$</code> 的值。但是这个值是从哪里来的呢？</p>
 <p>可以通过各种文件内容搜索工具来搜索，或者更省事的办法是用 <code>win7</code> 自带的 <code>findstr</code> 命令来搜索。</p>
 <p>猜测这个值必然和 <code>vs</code> 有关，所有搜索范围限定为 <code>vs</code> 的安装目录。具体搜索命令如下：</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/search-using-findstr.png" alt="search-using-findstr"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/search-using-findstr.png" alt="search-using-findstr"></p>
 <p>等待搜索结束，就可以到 <code>d:\result.log</code> 里查看搜索结果了。内容如下：</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/search-result.png" alt="search-result"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/search-result.png" alt="search-result"></p>
 <p>用红框选出来的两个地方比较靠谱，属于 <code>vcvars*.bat</code>，这个应该是设置一些环境变量的。查看对应的 <code>vcvars*.bat</code>，如下：</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/view-vcvars.png" alt="view-vcvars"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/view-vcvars.png" alt="view-vcvars"></p>
 <p>从上图可知，会先到注册表中查找，如果没有找到再使用预先指定的值。在注册表中查找的时候，会先到 <code>HKLM</code> 下查找，如果没找到，再到 <code>HKCU</code> 下查找。</p>
 <p><code>HKLM</code> 下的值如下图：</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/value_under_hklm.png" alt="value_under_hklm"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/value_under_hklm.png" alt="value_under_hklm"></p>
 <p><code>HKCU</code> 的值如下图：</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/value_under_hkcu.png" alt="value_under_hkcu"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/value_under_hkcu.png" alt="value_under_hkcu"></p>
 <h2 id="使用-procmon-观察加载过程"><a href="#使用-procmon-观察加载过程" class="headerlink" title="使用 procmon 观察加载过程"></a>使用 procmon 观察加载过程</h2><p>话不多说，直接看图：</p>
-<p><img src="/articles/where-does-WindowsSdkDir-come-from/watch-using-procmon.png" alt="watch-using-procmon"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-WindowsSdkDir-come-from/watch-using-procmon.png" alt="watch-using-procmon"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li>这个调查有年头儿了，没想到还能找到当时的笔记。真的是 好记性不如烂笔头！</li>
 <li>如果没有三方搜索工具（比如，<code>FileLocator</code>），可以试试系统自带的 <code>findstr</code>。</li>
@@ -941,6 +941,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1029,7 +1039,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1040,7 +1050,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1051,7 +1061,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

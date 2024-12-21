@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,调试,debug,windbg,崩溃,crash,COM,">
+  <meta name="keywords" content="原,调试,debug,windbg,crash,崩溃,COM,">
 
 
 
@@ -89,24 +89,24 @@
 
 
 <meta name="description" content="前言这是几年前在项目中遇到的一个崩溃问题，崩溃在了ComFriendlyWaitMtaThreadProc()里，没有源码。耗费了我很大精力，最终通过反汇编并结合原代码才最终搞清楚了事情的来龙去脉。本文的分析还是基于真实项目进行的，中间略去了很多反汇编的分析工作。文末有我整理的测试代码，大家可以实际体验一把TerminateThread()的杀伤力。">
-<meta name="keywords" content="原,调试,debug,windbg,崩溃,crash,COM">
+<meta name="keywords" content="原,调试,debug,windbg,crash,崩溃,COM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 使用 windbg 调试崩溃在 ComFriendlyWaitMtaThreadProc">
 <meta property="og:url" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言这是几年前在项目中遇到的一个崩溃问题，崩溃在了ComFriendlyWaitMtaThreadProc()里，没有源码。耗费了我很大精力，最终通过反汇编并结合原代码才最终搞清楚了事情的来龙去脉。本文的分析还是基于真实项目进行的，中间略去了很多反汇编的分析工作。文末有我整理的测试代码，大家可以实际体验一把TerminateThread()的杀伤力。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/ecxr.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/address-07acf914.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/ub-7303f614-L10.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/k.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-11.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-18.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/ecxr.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/address-07acf914.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/ub-7303f614-L10.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/k.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-11.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-18.png">
 <meta property="og:updated_time" content="2019-11-17T12:42:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 使用 windbg 调试崩溃在 ComFriendlyWaitMtaThreadProc">
 <meta name="twitter:description" content="前言这是几年前在项目中遇到的一个崩溃问题，崩溃在了ComFriendlyWaitMtaThreadProc()里，没有源码。耗费了我很大精力，最终通过反汇编并结合原代码才最终搞清楚了事情的来龙去脉。本文的分析还是基于真实项目进行的，中间略去了很多反汇编的分析工作。文末有我整理的测试代码，大家可以实际体验一把TerminateThread()的杀伤力。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/ecxr.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/ecxr.png">
 
 
 
@@ -469,11 +469,11 @@
 
 <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>大概情况是这样的：程序启动的时候，会通过<code>LoadLibrary()</code>加载插件模块。其中的<code>UIA</code>模块会开启一个工作线程，工作线程会安装<code>UIA</code>相关的钩子来监听<code>UIA</code>事件，程序在退出的时候会调用每个插件模块的导出函数做清理工作，然后调用<code>FreeLibrary()</code>释放这个插件模块。<code>UIA</code>模块的清理函数会通知工作线程退出，工作线程收到退出命令后会卸载相关钩子。清理函数会等待工作线程一段时间，等待超时就通过<code>TerminateThread()</code>强制杀死工作线程。程序退出时偶尔会崩溃在<code>ComFriendlyWaitMtaThreadProc()</code>中。背景介绍完毕，下面开始分析<code>dump</code>文件。</p>
 <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>使用<code>windbg</code>载入<code>dump</code>文件，输入<code>.ecxr</code></p>
-<p><img src="/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/ecxr.png" alt="ecxr"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/ecxr.png" alt="ecxr"></p>
 <p>从输出结果可以看出是访问到无效的地址<code>0x07acf914</code>了，使用命令<code>!address 07acf914</code>查看该地址的信息：</p>
-<p><img src="/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/address-07acf914.png" alt="address-07acf914"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/address-07acf914.png" alt="address-07acf914"></p>
 <p>从输出结果可以看出该地址确实是不可访问的。我们需要看看<code>0x07acf914</code> 是从哪里来的，该值来自<code>edi+4</code>指向的地址所存储的值，那么<code>edi</code>的值是哪里来的呢？让我们看看前几条汇编指令是什么，输入<code>ub 7303f614 L10</code></p>
-<p><img src="/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/ub-7303f614-L10.png" alt="ub-7303f614-L10"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/ub-7303f614-L10.png" alt="ub-7303f614-L10"></p>
 <div class="note info"><p><strong>说明：</strong></p>
 <p><code>7303f614</code>这个地址是我通过<code>7303f611+3</code>算来的（<code>3</code>是地址<code>7303f611</code>对应的指令长度），这样就可以在输出结果中看到导致崩溃的这条指令啦。当然这里输入<code>ub 7303f611</code>也没关系（我们关心的是<code>edi</code>的值是哪里来的），只不过我们看不到<code>7303f611</code>对应的指令了。</p></div> 
 
@@ -481,7 +481,7 @@
 
 <p>我们发现<code>edi</code>的值来自<code>ebp+8</code>对应的地址内容。研究过反汇编的小伙伴儿应该对<code>ebp+n</code>比较敏感，有木有？在<code>windows</code>下，<code>32</code>位进程中，<code>ebp+8</code>指向了调用约定为<code>__stdcall</code>的函数的第一个参数。这里的<code>ebp+8</code>是否指向第一个参数，我们需要通过<code>ComFriendlyWaitMtaThreadProc()</code>的调用约定来判断。</p>
 <p>输入<code>k</code>查看调用栈：   </p>
-<p><img src="/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/k.png" alt="k"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/k.png" alt="k"></p>
 <p>从调用栈可知，<code>ComFriendlyWaitMtaThreadProc()</code>是在新线程中执行的，通过查看<code>CreateThread()</code>的原型我们可以知道 <code>ComFriendlyWaitMtaThreadProc()</code> 原型应该满足<code>typedef DWORD (__stdcall LPTHREAD_START_ROUTINE)(LPVOID lpThreadParameter);</code> 。</p>
 <p><strong>综上可知</strong>，<code>ebp+8</code>确实指向了第一个参数，这个参数指向了一个非法的地址!</p>
 <p>我猜测有如下两种可能：</p>
@@ -493,8 +493,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bu uiautomationcore!ComFriendlyWaitMtaThreadProc</span><br><span class="line">g</span><br></pre></td></tr></table></figure>
 
 <p>断下来后，使用<code>~*k</code>查看所有线程的调用栈，经过排查，<code>11号线程</code>和<code>18号线程</code>最值得怀疑。</p>
-<p><img src="/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-11.png" alt="thread-11"></p>
-<p><img src="/articles/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-18.png" alt="thread-18"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-11.png" alt="thread-11"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-ComFriendlyWaitMtaThreadProc-crash/thread-18.png" alt="thread-18"></p>
 <p><code>18号线程</code>是出问题的线程。</p>
 <p><code>11号线程</code>包含我们自己的代码，而且<code>ComFriendlyWaitForSingleObject()</code>跟<code>ComFriendlyWaitMtaThreadProc()</code>相似度不要太高。</p>
 <p>大胆猜测内部逻辑应该是：函数<code>AddWinEvent()</code>内部会创建一个工作线程，<code>uiautomationcore!ComFriendlyWaitMtaThreadProc()</code>是新线程的入口函数，创建完线程后通过调用<code>ComFriendlyWaitForSingleObject()</code>等待一个内核对象（通过反汇编确认该对象为<code>Event</code>）来等待工作线程结束。理所当然的，<code>uiautomationcore!ComFriendlyWaitMtaThreadProc()</code>结束后应该会激活这个内核对象。</p>
@@ -568,9 +568,9 @@
           
             <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
           
-            <a href="/tags/崩溃/" rel="tag"><i class="fa fa-tag"></i> 崩溃</a>
-          
             <a href="/tags/crash/" rel="tag"><i class="fa fa-tag"></i> crash</a>
+          
+            <a href="/tags/崩溃/" rel="tag"><i class="fa fa-tag"></i> 崩溃</a>
           
             <a href="/tags/COM/" rel="tag"><i class="fa fa-tag"></i> COM</a>
           
@@ -1050,6 +1050,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1145,7 +1167,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1156,7 +1178,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1167,7 +1189,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

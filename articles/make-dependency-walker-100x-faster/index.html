@@ -96,22 +96,22 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，经常需要调查 dll 加载失败的问题。前一阵子刚分享了一篇，感兴趣的小伙伴而可以点击 这里。相信，有 windows 开发经验的小伙伴儿一定听过 Dependency Walker 这款工具，它可是查看模块依赖关系的神兵利器。但是在我的机器上，Dependency Walker 运行的特别慢，经常无响应！慢了这么久，是时候提提速了。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/hang-dependency-walker.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/view-hang-dependency-walker.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/filter-in-procmon.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/filtered-dll-file-event.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/filtered-api-ms-win-core-rtlsupport-l1-1-0-dll-file-event.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/api-ms-win-core-rtlsupport-l1-1-0-dll-events-detail.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/dll-search-directories.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/PATH-on-my-machine.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/dependency-walker-with-empty-path.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/configure-module-search-order-in-dependency-walker.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/set-module-search-order-in-dependency-walker.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.837Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/hang-dependency-walker.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/view-hang-dependency-walker.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/filter-in-procmon.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/filtered-dll-file-event.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/filtered-api-ms-win-core-rtlsupport-l1-1-0-dll-file-event.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/api-ms-win-core-rtlsupport-l1-1-0-dll-events-detail.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/dll-search-directories.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/PATH-on-my-machine.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/dependency-walker-with-empty-path.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/configure-module-search-order-in-dependency-walker.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/set-module-search-order-in-dependency-walker.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="let&#39;s make dependency walker fast again">
 <meta name="twitter:description" content="缘起最近，经常需要调查 dll 加载失败的问题。前一阵子刚分享了一篇，感兴趣的小伙伴而可以点击 这里。相信，有 windows 开发经验的小伙伴儿一定听过 Dependency Walker 这款工具，它可是查看模块依赖关系的神兵利器。但是在我的机器上，Dependency Walker 运行的特别慢，经常无响应！慢了这么久，是时候提提速了。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/make-dependency-walker-100x-faster/hang-dependency-walker.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/hang-dependency-walker.png">
 
 
 
@@ -364,8 +364,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -461,9 +461,9 @@
 
 
 
-<h2 id="重现问题"><a href="#重现问题" class="headerlink" title="重现问题"></a>重现问题</h2><p>很容易就可以重现问题，随便拖动一个 <code>dll</code> 文件（或者 <code>exe</code> 文件）到 <code>Dependency Walker</code> 中，等大概 <code>5</code> 秒钟，就会出现大名鼎鼎的无响应界面，需要等待很久才能等到分析结果。<br><img src="/articles/make-dependency-walker-100x-faster/hang-dependency-walker.png" alt="hang-dependency-walker"></p>
+<h2 id="重现问题"><a href="#重现问题" class="headerlink" title="重现问题"></a>重现问题</h2><p>很容易就可以重现问题，随便拖动一个 <code>dll</code> 文件（或者 <code>exe</code> 文件）到 <code>Dependency Walker</code> 中，等大概 <code>5</code> 秒钟，就会出现大名鼎鼎的无响应界面，需要等待很久才能等到分析结果。<br><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/hang-dependency-walker.png" alt="hang-dependency-walker"></p>
 <h2 id="探查敌情"><a href="#探查敌情" class="headerlink" title="探查敌情"></a>探查敌情</h2><p>在大动干戈之前，先用 <code>process explorer</code> 粗略查看 <code>Dependency walker</code> 中各个线程的运行情况。</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/view-hang-dependency-walker.gif" alt="view-hang-dependency-walker"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/view-hang-dependency-walker.gif" alt="view-hang-dependency-walker"></p>
 <p>看来，只有一个线程在工作（其它两个线程是系统工作线程），也是界面线程。如果界面线程都用来处理其它工作，长时间没有处理界面消息的话，界面就会无响应。</p>
 <p>从调用栈可知，<code>Dependency Walker</code> 在运行过程中会不断的调用 <code>SearchPath</code> 和 <code>FindFirstFile</code>。从这两个函数的名字可以猜测是在搜索文件。</p>
 <p>如果有超多文件需要搜素，那么整个过程慢是合理的。只从 <code>process explorer</code> 中并不能知道 <code>Dependency Waler</code> 在搜索哪些文件，在哪些地方搜索。</p>
@@ -472,20 +472,20 @@
 </blockquote>
 <h2 id="process-monitor"><a href="#process-monitor" class="headerlink" title="process monitor"></a>process monitor</h2><p>观察进程文件操作记录对于 <code>process monitor</code> 来说简直是小菜一碟。因为预计时间会比较长，而且只需要关心 <code>Dependency Walker</code> 相关的事件，所以在开始前，先做好过滤。</p>
 <p>拖动 <code>process monitor</code> 上的靶子图标到 <code>Dependency Walker</code> 上，表示只关心当前这个 <code>Dependency Walker</code> 实例相关的事件。勾选 <code>Drop filtered Event</code> 表示丢弃过滤的事件，因为会过滤掉大部分无关的事件，生成的记录文件会比较小，可以记录更多有用的事件。</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/filter-in-procmon.gif" alt="filter-in-procmon"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/filter-in-procmon.gif" alt="filter-in-procmon"></p>
 <p>等 <code>Dependency Walker</code>  完成分析后，停止记录，查看文件相关事件。 <code>dll</code> 相关的事件一共有 <code>247688</code> 条。</p>
 <p>好奇我是怎么知道的？请看下图：</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/filtered-dll-file-event.png" alt="filtered-dll-file-event"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/filtered-dll-file-event.png" alt="filtered-dll-file-event"></p>
 <p>观察一个比较典型的文件（ <code>api-ms-win-core-rtlsupport-l1-1-0.dll</code>）的相关记录。该文件相关的事件数量是 <code>908</code> 条。</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/filtered-api-ms-win-core-rtlsupport-l1-1-0-dll-file-event.png" alt="filtered-api-ms-win-core-rtlsupport-l1-1-0-dll-file-event"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/filtered-api-ms-win-core-rtlsupport-l1-1-0-dll-file-event.png" alt="filtered-api-ms-win-core-rtlsupport-l1-1-0-dll-file-event"></p>
 <p>该文件相关的部分事件截图如下：</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/api-ms-win-core-rtlsupport-l1-1-0-dll-events-detail.png" alt="api-ms-win-core-rtlsupport-l1-1-0-dll-events-detail"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/api-ms-win-core-rtlsupport-l1-1-0-dll-events-detail.png" alt="api-ms-win-core-rtlsupport-l1-1-0-dll-events-detail"></p>
 <p>在上图中，可以很明显的看到 <code>Result</code> 列大部分结果不是 <code>Success</code>。这个在意料之中，因为正常情况下这个 <code>dll</code> 应该只在特定路径下才有。从 <code>Path</code> 列中的记录可知，搜索路径有很多个。</p>
 <h2 id="深入观察"><a href="#深入观察" class="headerlink" title="深入观察"></a>深入观察</h2><p>如果仔细观察，可以发现搜索路径非常像典型的 <code>Dll</code> 搜索路径。<code>Dll</code> 搜索路径的官方参考资料链接为 <a href="https://docs.microsoft.com/zh-cn/windows/win32/dlls/dynamic-link-library-search-order?redirectedfrom=MSDN。" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/windows/win32/dlls/dynamic-link-library-search-order?redirectedfrom=MSDN。</a></p>
 <p>为了方便大家查看，我截取了相关部分，如下图：</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/dll-search-directories.png" alt="dll-search-directories"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/dll-search-directories.png" alt="dll-search-directories"></p>
 <p>我机器上的 <code>PATH</code> 环境变量如下图：</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/PATH-on-my-machine.png" alt="PATH-on-my-machine"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/PATH-on-my-machine.png" alt="PATH-on-my-machine"></p>
 <p>如此看来，<code>Dependency Walker</code> 正是按照典型的 <code>Dll</code> 搜索路径在查找啊（默认情况，可以修改）！</p>
 <p>通过上面的简单分析，可以初步判定：除了把应该写在工作线程的代码写在 <code>UI</code> 线程有点问题，其它地方没有明显问题，确实有很多工作需要处理。</p>
 <p>只能从减少搜索路径的方向着手了。如果可以少搜索一些地方，那么工作量会显著下降，速度相应的会提高上来了。我第一个想到的办法就是改变 <code>PATH</code> 环境变量的值。</p>
@@ -494,16 +494,16 @@
 
 <p>通过以上脚本启动的 <code>Dependency Walker</code> 眼中的 <code>PATH</code> 是空。</p>
 <p>如果再次拖动相同的文件到 <code>Dependency Walker</code> 中，基本上是秒出结果。如下图：</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/dependency-walker-with-empty-path.gif" alt="dependency-walker-with-empty-path"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/dependency-walker-with-empty-path.gif" alt="dependency-walker-with-empty-path"></p>
 <p>在修改 <code>PATH</code> 环境变量之前，大概需要 <code>2</code> 分钟左右才能看到结果，而现在只需要用 <code>1</code> 秒左右，是不是不止快了 <code>100</code> 倍呢？对于一些依赖更加复杂的程序，效率提升的会更加明显！</p>
 <blockquote>
 <p><em>小贴士：只有确定不会从 <code>PATH</code> 中加载对应的 <code>DLL</code>，才可以设置 <code>PATH</code> 为空。既然可以设置 <code>PATH</code> 为空，就可以设置 <code>PATH</code> 为任意值。</em></p>
 </blockquote>
 <p>但是，这样的操作终究有些不自然。难道，<code>Dependency Walker</code> 本身就不支持设置搜索路径吗？</p>
 <h2 id="Dependency-Walker-设置"><a href="#Dependency-Walker-设置" class="headerlink" title="Dependency Walker 设置"></a>Dependency Walker 设置</h2><p>简单的浏览了一遍 <code>Dependency Walker</code> 的菜单，发现可以通过 <code>Options -&gt; Configure Module Search Order...</code> 来设置模块搜索顺序及搜索路径。</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/configure-module-search-order-in-dependency-walker.png" alt="configure-module-search-order-in-dependency-walker"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/configure-module-search-order-in-dependency-walker.png" alt="configure-module-search-order-in-dependency-walker"></p>
 <p>设置界面如下图：</p>
-<p><img src="/articles/make-dependency-walker-100x-faster/set-module-search-order-in-dependency-walker.png" alt="set-module-search-order-in-dependency-walker"></p>
+<p><img src="http://resources.bianchengnan.tech/make-dependency-walker-100x-faster/set-module-search-order-in-dependency-walker.png" alt="set-module-search-order-in-dependency-walker"></p>
 <p>可以根据自己的需要进行设置。</p>
 <blockquote>
 <p><em>小贴士：<code>The system&#39;s ’PATH‘ environment variable directories</code> 指的是系统 <code>PATH</code> 环境变量对应的路径，排除它，效果与把 <code>PATH</code> 设置成空一样。</em></p>
@@ -880,6 +880,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -968,7 +978,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -979,7 +989,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -990,7 +1000,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

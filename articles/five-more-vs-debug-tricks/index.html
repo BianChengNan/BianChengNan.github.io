@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言之前在 《5 个非常实用的 vs 调试技巧》  和 《继续分享 5 个实用的 vs 调试技巧》中分享了 10 个我认为非常值得了解的 vs 调试技巧，本周继续分享 5 个很实用的调试技巧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-more-vs-debug-tricks/show-next-instruction.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-more-vs-debug-tricks/vs-symbol-setting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-more-vs-debug-tricks/open-vs-module-window.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-more-vs-debug-tricks/vs-module-window.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.803Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/show-next-instruction.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/vs-symbol-setting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/open-vs-module-window.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/vs-module-window.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.169Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="再分享 5 个 vs 调试技巧">
 <meta name="twitter:description" content="前言之前在 《5 个非常实用的 vs 调试技巧》  和 《继续分享 5 个实用的 vs 调试技巧》中分享了 10 个我认为非常值得了解的 vs 调试技巧，本周继续分享 5 个很实用的调试技巧。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/five-more-vs-debug-tricks/show-next-instruction.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/show-next-instruction.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -461,7 +461,7 @@
 </ol>
 <p>这两种方法都比较麻烦。其实， <code>vs</code> 中有一个非常实用的功能，可以快速的回到中断处。这个功能就是 <code>显示下一条语句</code>。</p>
 <p>中断后， <code>右键</code>，<code>显示下一条语句</code> 即可显示下一条语句。在 <code>vs2013</code> 中对应的快捷键是 <code>alt + *</code> 。</p>
-<p><img src="/articles/five-more-vs-debug-tricks/show-next-instruction.png" alt="show-next-instruction"></p>
+<p><img src="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/show-next-instruction.png" alt="show-next-instruction"></p>
 <blockquote>
 <p>小贴士：<code>alt + *</code> 是小键盘上的 <code>*</code>。</p>
 </blockquote>
@@ -470,13 +470,13 @@
 <li>断网。断网后可以使加载符号的操作失败的更快。但是会导致有些模块的符号加载不上。</li>
 <li>设置符号加载策略。可以只为特定模块加载符号。通过 <code>调试 -&gt; 选项和设置</code> ，然后选择 <code>调试 -&gt; 符号</code> 即可设置。 </li>
 </ol>
-<p><img src="/articles/five-more-vs-debug-tricks/vs-symbol-setting.png" alt="vs-module-window"></p>
+<p><img src="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/vs-symbol-setting.png" alt="vs-module-window"></p>
 <p><strong>说明：</strong></p>
 <p>如果愿意，可以随时手动为特定模块单独加载符号。</p>
 <p>可以通过 <code>调试 -&gt; 窗口(W) -&gt; 模块(O)</code> 或者快捷键 <code>Ctl + Alt + U</code> 打开模块列表界面。</p>
-<p><img src="/articles/five-more-vs-debug-tricks/open-vs-module-window.png" alt="vs-module-window"></p>
+<p><img src="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/open-vs-module-window.png" alt="vs-module-window"></p>
 <p>然后在选中的模块上 <code>右键 -&gt; 加载符号</code> 即可。</p>
-<p><img src="/articles/five-more-vs-debug-tricks/vs-module-window.png" alt="vs-module-window"></p>
+<p><img src="http://resources.bianchengnan.tech/five-more-vs-debug-tricks/vs-module-window.png" alt="vs-module-window"></p>
 <h2 id="3-调试子进程"><a href="#3-调试子进程" class="headerlink" title="3.  调试子进程"></a>3.  调试子进程</h2><p><code>windbg</code> 有一个非常给力的功能就是<code>调试子进程</code>。当需要调试子进程的时候，不用手动附加到子进程了，而且不必担心错过子进程中的初始化代码了。据我所知，<code>vs</code> 本身并不支持这项功能，需要使用官方提供的插件 —— <a href="https://marketplace.visualstudio.com/items?itemName=vsdbgplat.MicrosoftChildProcessDebuggingPowerTool" target="_blank" rel="noopener">Microsoft Child Process Debugging Power Tool</a>。该插件支持 <code>vs2013~2019</code>。  </p>
 <p>具体使用介绍 请参考 <a href="https://devblogs.microsoft.com/devops/introducing-the-child-process-debugging-power-tool/" target="_blank" rel="noopener">Introducing the Child Process Debugging Power Tool</a></p>
 <h2 id="4-伪变量"><a href="#4-伪变量" class="headerlink" title="4. 伪变量"></a>4. 伪变量</h2><p>了解一些 <code>vs</code> 中的一些伪变量非常有必要。比如，当前进程的环境变量，命令行等信息。</p>
@@ -942,6 +942,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1030,7 +1040,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1041,7 +1051,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1052,7 +1062,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

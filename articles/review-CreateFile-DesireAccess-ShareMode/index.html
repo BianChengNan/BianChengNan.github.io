@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="开发,win10,xp,权限,基础知识,CreateFile,">
+  <meta name="keywords" content="开发,基础知识,win10,xp,权限,CreateFile,">
 
 
 
@@ -89,21 +89,21 @@
 
 
 <meta name="description" content="前言前一阵子，我在编写文件变化监控程序的时候遇到了文件被占用的问题。很早之前写过一篇关于 CreateFile 函数的 dwDesiredAccess 和 dwShareMode 参数的笔记。我发现之前的理解不够全面、准确。为了更好的理解这两个参数的作用，我搜索了大量资料，编写了测试程序及测试脚本，参考了 xp 源码，终于搞清楚这两个参数的作用。简而言之，需要遵循以下两个规则： 规则 1：后续的访">
-<meta name="keywords" content="开发,win10,xp,权限,基础知识,CreateFile">
+<meta name="keywords" content="开发,基础知识,win10,xp,权限,CreateFile">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系">
 <meta property="og:url" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言前一阵子，我在编写文件变化监控程序的时候遇到了文件被占用的问题。很早之前写过一篇关于 CreateFile 函数的 dwDesiredAccess 和 dwShareMode 参数的笔记。我发现之前的理解不够全面、准确。为了更好的理解这两个参数的作用，我搜索了大量资料，编写了测试程序及测试脚本，参考了 xp 源码，终于搞清楚这两个参数的作用。简而言之，需要遵循以下两个规则： 规则 1：后续的访">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-3.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-4.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.847Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/review-CreateFile-DesireAccess-ShareMode/open-result-3.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/review-CreateFile-DesireAccess-ShareMode/open-result-4.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.522Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系">
 <meta name="twitter:description" content="前言前一阵子，我在编写文件变化监控程序的时候遇到了文件被占用的问题。很早之前写过一篇关于 CreateFile 函数的 dwDesiredAccess 和 dwShareMode 参数的笔记。我发现之前的理解不够全面、准确。为了更好的理解这两个参数的作用，我搜索了大量资料，编写了测试程序及测试脚本，参考了 xp 源码，终于搞清楚这两个参数的作用。简而言之，需要遵循以下两个规则： 规则 1：后续的访">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/review-CreateFile-DesireAccess-ShareMode/open-result-2.png">
 
 
 
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -656,7 +656,7 @@
 <p><strong>答：会成功。</strong></p>
 <p>第一次的共享模式是<strong>写</strong>，第二次的访问权限是<strong>写</strong>，第二次的访问权限与第一次的共享模式不冲突。</p>
 <p>第二次的共享模式是<strong>读</strong>，第一次的访问权限是<strong>读</strong>，第二次的共享模式与第一次的访问权限不冲突。</p>
-<p><img src="/articles/review-CreateFile-DesireAccess-ShareMode/open-result-2.png" alt="open-result-2"></p>
+<p><img src="http://resources.bianchengnan.tech/review-CreateFile-DesireAccess-ShareMode/open-result-2.png" alt="open-result-2"></p>
 </li>
 </ol>
 <ol start="3">
@@ -664,13 +664,13 @@
 <p><strong>答：不会成功。</strong></p>
 <p>第三次的访问权限是<strong>读</strong>的话，与第一次的共享模式（<strong>写</strong>）冲突。</p>
 <p>第三次的访问权限是<strong>写</strong>的话，与第二次的共享模式（<strong>读</strong>）冲突。</p>
-<p>第三次的访问权限是<strong>读写</strong>的话，既与第一次的共享模式（<strong>写</strong>）冲突，又与第二次的共享模式（<strong>读</strong>）冲突。<br><img src="/articles/review-CreateFile-DesireAccess-ShareMode/open-result-3.png" alt="open-result-3"></p>
+<p>第三次的访问权限是<strong>读写</strong>的话，既与第一次的共享模式（<strong>写</strong>）冲突，又与第二次的共享模式（<strong>读</strong>）冲突。<br><img src="http://resources.bianchengnan.tech/review-CreateFile-DesireAccess-ShareMode/open-result-3.png" alt="open-result-3"></p>
 <p>这里只贴了第三次的访问权限是<strong>写</strong>的情况，其它两种情况也会失败。</p>
 </li>
 <li><p>第一次尝试以<strong>读</strong>访问权限，<strong>写</strong>共享模式打开文件，第二次尝试以<strong>写</strong>访问权限，<strong>读写</strong>共享模式打开。第三次尝试以<strong>写</strong>访问权限，<strong>读写</strong>共享模式打开，会成功吗？</p>
 <p><strong>答：会成功。</strong></p>
 <p>第三次的访问权限（<strong>写</strong>），既不与第一次的共享模式（<strong>写</strong>）冲突，又不与第二次的共享模式（<strong>读写</strong>）冲突。</p>
-<p>第三次的共享模式（<strong>读写</strong>），既不与第一次的访问权限（<strong>读</strong>）冲突，又不与第二次的访问权限（<strong>写</strong>）冲突。<br><img src="/articles/review-CreateFile-DesireAccess-ShareMode/open-result-4.png" alt="open-result-4"></p>
+<p>第三次的共享模式（<strong>读写</strong>），既不与第一次的访问权限（<strong>读</strong>）冲突，又不与第二次的访问权限（<strong>写</strong>）冲突。<br><img src="http://resources.bianchengnan.tech/review-CreateFile-DesireAccess-ShareMode/open-result-4.png" alt="open-result-4"></p>
 </li>
 </ol>
 <p>最后，贴一下之前整理的笔记，基本正确，但是不够全面，不够深刻。</p>
@@ -791,13 +791,13 @@
           
             <a href="/tags/开发/" rel="tag"><i class="fa fa-tag"></i> 开发</a>
           
+            <a href="/tags/基础知识/" rel="tag"><i class="fa fa-tag"></i> 基础知识</a>
+          
             <a href="/tags/win10/" rel="tag"><i class="fa fa-tag"></i> win10</a>
           
             <a href="/tags/xp/" rel="tag"><i class="fa fa-tag"></i> xp</a>
           
             <a href="/tags/权限/" rel="tag"><i class="fa fa-tag"></i> 权限</a>
-          
-            <a href="/tags/基础知识/" rel="tag"><i class="fa fa-tag"></i> 基础知识</a>
           
             <a href="/tags/CreateFile/" rel="tag"><i class="fa fa-tag"></i> CreateFile</a>
           
@@ -846,6 +846,16 @@
         <div>
           <div class="related-posts">
   
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1193,7 +1203,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1204,7 +1214,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1215,7 +1225,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

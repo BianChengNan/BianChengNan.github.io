@@ -96,24 +96,24 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起我在《栈又溢出了》 一文中记录了一个奇怪的栈溢出问题。虽然解决了，但是总感觉哪里不太合理。我想，vs 一定有一个合理的设置。一起折腾起来吧！">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/release-stack-usage.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/compare-debug-release-configuration.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/optimization-options.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/ZI-Zi-option.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/filter-in-all-options.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/debug-stack-usage-with-o2.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/release-stackoverflow.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/msdn-o2.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/debug-compile-option-with-og.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/msdn-og.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/all-compile-options.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/strange_chkstk_value_in_vs2013.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/higher-compiler-compile-result.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.865Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/release-stack-usage.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/compare-debug-release-configuration.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/optimization-options.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/ZI-Zi-option.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/filter-in-all-options.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/debug-stack-usage-with-o2.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/release-stackoverflow.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/msdn-o2.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/debug-compile-option-with-og.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/msdn-og.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/all-compile-options.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/strange_chkstk_value_in_vs2013.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/higher-compiler-compile-result.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.628Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈局部变量优化探究，意外发现了 vs 的一个 bug ？">
 <meta name="twitter:description" content="缘起我在《栈又溢出了》 一文中记录了一个奇怪的栈溢出问题。虽然解决了，但是总感觉哪里不太合理。我想，vs 一定有一个合理的设置。一起折腾起来吧！">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/stack-variable-usage-optimization-investigation/release-stack-usage.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/release-stack-usage.png">
 
 
 
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -465,43 +465,43 @@
 
 <h2 id="查找工程设置"><a href="#查找工程设置" class="headerlink" title="查找工程设置"></a>查找工程设置</h2><p>本以为能找到某个编译选项对局部变量占用内存的行为进行控制。看遍了工程设置也没发现相关的设置项。<code>release</code> 版会不会有什么不同呢？毕竟，<code>release</code> 版会做一些优化，于是抱着试试看的心态编译了 <code>release</code> 版。您猜怎么着，居然没崩溃！</p>
 <h2 id="反汇编"><a href="#反汇编" class="headerlink" title="反汇编"></a>反汇编</h2><p>赶紧查看下相关的反汇编，果然和预想的一样，函数局部变量占用的栈空间不再是 <code>debug</code> 版中的 <code>0x12C0DC</code>，而是 <code>0x064008</code>。换算成十进制大概是 <code>409608</code>。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/release-stack-usage.png" alt="release-stack-usage"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/release-stack-usage.png" alt="release-stack-usage"></p>
 <p>这说明三个局部变量被优化成了一个！<code>release</code> 优化果然给力！但是具体是哪一项优化导致的呢？该怎么排查呢？<code>debug</code> 版和 <code>release</code> 版结果不一样，最简单粗暴的方法就是<strong>找不同</strong>！</p>
 <h2 id="对比设置"><a href="#对比设置" class="headerlink" title="对比设置"></a>对比设置</h2><p>把 <code>debug</code> 版的配置保存到 <code>debug.txt</code>，<code>release</code> 版的配置保存到 <code>release.txt</code>。然后用 <code>beyond compare</code> 比较两个文件的内容。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/compare-debug-release-configuration.png" alt="compare-debug-release-configuration"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/compare-debug-release-configuration.png" alt="compare-debug-release-configuration"></p>
 <p>为了让各位小伙伴儿更清晰的对比 <code>debug</code> 和 <code>release</code> 的区别，我特意调整了先后顺序，把不同的选项放到了后面！最重要的不同在最后一行。</p>
 <p><code>debug</code> 版为 <code>/ZI /Gm /Od /RTC1 /MDd</code>，<code>release</code> 版为 <code>/Zi /GL /Gy /Gm- /O2 /Oi /MD</code>。</p>
 <p>不知道大家熟悉哪几个，我比较熟悉 <code>/Od</code> （禁用优化，<code>debug</code> 版的默认配置）和 <code>/O2</code> （使速度最大化，<code>release</code> 版的默认配置）。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/optimization-options.png" alt="optimization-options"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/optimization-options.png" alt="optimization-options"></p>
 <p>先把 <code>/Od</code> 改成 <code>/O2</code> 试试，没想到提示错误 <code>error D8016: “/ZI”和“/O2”命令行选项不兼容</code>。那就把 <code>/ZI</code> 改成 <code>/Zi</code>。</p>
 <blockquote>
 <p>说明：<code>/Zi</code> 和 <code>/ZI</code> 都是用来配置生成调试符号的，与当前调查的问题基本没什么关系。使用 <code>/ZI</code> 生成的符号文件可以支持编辑并继续运行，低版本的 <code>vs</code> 对编辑并继续运行的功能支持的并不好，一般 <code>/Zi</code> 就好。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/ZI-Zi-option.png" alt="ZI-Zi-option"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/ZI-Zi-option.png" alt="ZI-Zi-option"></p>
 </blockquote>
 <p>改好后，继续编译。没想到又遇到了如下错误：<code>error D8016: “/O2”和“/RTC1”命令行选项不兼容</code>。改成默认值，和 <code>release</code> 一样的设置。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/filter-in-all-options.png" alt="filter-in-all-options"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/filter-in-all-options.png" alt="filter-in-all-options"></p>
 <p>再次编译，这次终于编译通过了。再次运行 <code>debug</code> 版的程序，不报栈溢出了。赶紧查看反汇编确认，传给 <code>_chkstk</code> 的大小不再是之前的 <code>0x12C0DC</code> 了，而是 <code>0x064004</code>，转换成十进制是 <code>409604</code>。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/debug-stack-usage-with-o2.png" alt="debug-stack-usage-with-o2"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/debug-stack-usage-with-o2.png" alt="debug-stack-usage-with-o2"></p>
 <p>如果把 <code>release</code> 版的 <code>/O2</code> 改成 <code>/Od</code>，<code>release</code> 版会不会也报栈溢出呢？</p>
 <h2 id="让-release-版也报栈溢出"><a href="#让-release-版也报栈溢出" class="headerlink" title="让 release 版也报栈溢出"></a>让 release 版也报栈溢出</h2><p>说干就干，改好配置后编译，运行。果然，栈溢出了。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/release-stackoverflow.png" alt="release-stackoverflow"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/release-stackoverflow.png" alt="release-stackoverflow"></p>
 <p>至此，基本上找到了关键的编译选项—— <code>/O2</code>。但这就完了么？</p>
 <h2 id="O2"><a href="#O2" class="headerlink" title="/O2"></a>/O2</h2><p>在 <code>google</code> 中输入 <code>/O2 msdn</code> ，回车。第一条搜索结果就是<a href="https://docs.microsoft.com/en-us/cpp/build/reference/o1-o2-minimize-size-maximize-speed?view=msvc-160" target="_blank" rel="noopener"> /O2 的官方文档</a>。看看 <code>/O2</code> 都做了哪些优化。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/msdn-o2.png" alt="msdn-o2"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/msdn-o2.png" alt="msdn-o2"></p>
 <p>原来，<code>/O2</code> 相当于设置了这么多选项，到底是哪一个在起作用呢？一共才 <code>7</code> 个，不多，挨个试！恢复 <code>debug</code> 版的优化选项为 <code>/Od</code>。然后添加额外选项。先试 <code>/Og</code>。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/debug-compile-option-with-og.png" alt="debug-compile-option-with-og"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/debug-compile-option-with-og.png" alt="debug-compile-option-with-og"></p>
 <p>没想到运气这么好，一下就猜中了。这里就不放运行结果图了。</p>
 <p>再查看下<a href="https://docs.microsoft.com/en-us/cpp/build/reference/og-global-optimizations?view=msvc-160" target="_blank" rel="noopener">/Og 的官方文档</a>。这里截取部分关键描述。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/msdn-og.png" alt="msdn-og"></p>
-<h2 id="如何快速得到编译选项？"><a href="#如何快速得到编译选项？" class="headerlink" title="如何快速得到编译选项？"></a>如何快速得到编译选项？</h2><p>可以在工程上 <code>右键，属性，配置属性，c/c++，命令行</code> 来快速找到所有编译选项。如下图：<br><img src="/articles/stack-variable-usage-optimization-investigation/all-compile-options.png" alt="all-compile-options"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/msdn-og.png" alt="msdn-og"></p>
+<h2 id="如何快速得到编译选项？"><a href="#如何快速得到编译选项？" class="headerlink" title="如何快速得到编译选项？"></a>如何快速得到编译选项？</h2><p>可以在工程上 <code>右键，属性，配置属性，c/c++，命令行</code> 来快速找到所有编译选项。如下图：<br><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/all-compile-options.png" alt="all-compile-options"></p>
 <h2 id="vs2013-的-bug？"><a href="#vs2013-的-bug？" class="headerlink" title="vs2013 的 bug？"></a>vs2013 的 bug？</h2><p>为了更好的理解栈局部变量优化策略，我准备了很多测试用例，其中有一个用例结果出乎意料！我把代码和结果贴出来。我想这应该是 <code>vs2013</code> 的一个 <code>bug</code>。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BigData</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> data[<span class="number">400</span> * <span class="number">1024</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BigData1</span> :</span> <span class="keyword">public</span> BigData</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> data1;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BigData2</span> :</span> <span class="keyword">public</span> BigData1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> data2;</span><br><span class="line">    BigData1 bigData;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Use</span><span class="params">(BigData* pData)</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">"%c"</span>, pData-&gt;data[<span class="number">0</span>]); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CorrpuptStackEasyly</span><span class="params">(<span class="keyword">int</span> argc)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> size = <span class="keyword">sizeof</span>(BigData2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"size is %d"</span>, (<span class="keyword">int</span>)size);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (argc == <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        BigData data;</span><br><span class="line">        Use(&amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (argc == <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        BigData1 data;</span><br><span class="line">        Use(&amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        BigData2 data;</span><br><span class="line">        Use(&amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    CorrpuptStackEasyly(argc);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>BigData2</code> 的大小应该是 <code>819212</code>，但是传递给 <code>_chkstk</code> 的值却是 <code>1228824</code>。看下图就知道我没瞎说。</p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/strange_chkstk_value_in_vs2013.png" alt="strange_chkstk_value_in_vs2013"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/strange_chkstk_value_in_vs2013.png" alt="strange_chkstk_value_in_vs2013"></p>
 <p>这真的是 <code>vs2013</code> 的 <code>bug</code> 吗？同样的代码在高版本的 <code>vs</code> 中会是什么结果呢？<code>vs2019</code> 太大了，我的 <code>c</code> 盘已经爆红了，不想装了。偶然发现了一个超级宝藏网址，可以查看源代码被不同编译器编译后的汇编代码，真是宝藏啊。</p>
 <h2 id="宝藏网址"><a href="#宝藏网址" class="headerlink" title="宝藏网址"></a>宝藏网址</h2><p>这个宝藏网址是 <a href="https://gcc.godbolt.org/。上面的代码的编译结果如下图：" target="_blank" rel="noopener">https://gcc.godbolt.org/。上面的代码的编译结果如下图：</a></p>
-<p><img src="/articles/stack-variable-usage-optimization-investigation/higher-compiler-compile-result.png" alt="higher-compiler-compile-result"></p>
+<p><img src="http://resources.bianchengnan.tech/stack-variable-usage-optimization-investigation/higher-compiler-compile-result.png" alt="higher-compiler-compile-result"></p>
 <p>符合预期！</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><code>debug</code> 和 <code>release</code> 之所以不同，是因为设置了不同的选项。</li>
@@ -1051,6 +1051,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1146,7 +1168,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1157,7 +1179,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1168,7 +1190,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

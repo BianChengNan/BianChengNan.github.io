@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 这里、 这里 和 这里。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！ 开源 就是增大栈尺寸。节流 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.825Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.379Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="栈大小可以怎么改？">
 <meta name="twitter:description" content="缘起前一段日子，遇到了好几个栈溢出异常，相关文章可以点击 这里、 这里 和 这里。解决栈溢出，一般可以从两个方面进行处理。简而言之就是：开源节流！ 开源 就是增大栈尺寸。节流 就是减少不必要的内存占用。解决栈溢出，正统的方法是减少内存占用（比如，尽量按引用传递参数）。但是有些情况下了解如何增大线程栈尺寸也非常有必要，可以应急！本文介绍几种增大栈尺寸的方法。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png">
 
 
 
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -459,12 +459,12 @@
 <p>可以通过参数 <code>dwStackSize</code> 指定栈大小，单位是<strong>字节</strong>。如果该参数是 <code>0</code> 的话，会使用 <code>PE</code> 文件头中的值。</p>
 <h2 id="2-修改工程配置"><a href="#2-修改工程配置" class="headerlink" title="2. 修改工程配置"></a>2. 修改工程配置</h2><p>可以在 <code>vs</code> 中设置默认的栈保留大小和栈提交大小，相应的值会记录在生成的 <code>PE</code> 头中。</p>
 <p>在工程上<code>右键</code> -&gt; <code>属性</code> -&gt; <code>配置属性</code> -&gt; <code>链接器</code> -&gt; <code>系统</code> -&gt; <code>堆栈保留大小</code>，<code>堆栈提交大小</code>。即可设置。具体位置如下图：</p>
-<p><img src="/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png" alt="stack-reverse-setting"></p>
+<p><img src="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-setting.png" alt="stack-reverse-setting"></p>
 <blockquote>
 <p>说明：这里设置的单位是<strong>字节</strong>。而且是 <code>10</code> 进制的。</p>
 </blockquote>
 <h2 id="3-手动修改PE文件头"><a href="#3-手动修改PE文件头" class="headerlink" title="3. 手动修改PE文件头"></a>3. 手动修改PE文件头</h2><p>如有由于某些原因，未能在开发的时候调整默认值，可以通过二进制编辑工具直接修改已经生成好的 <code>PE</code> 文件头中的字段来修改栈保留大小和栈提交大小。</p>
-<p><img src="/articles/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png" alt="stack-reverse-size-in-image-header"></p>
+<p><img src="http://resources.bianchengnan.tech/interesting-exception-0xc00000fd-continue-how-to-increase-stack-size/stack-reverse-size-in-image-header.png" alt="stack-reverse-size-in-image-header"></p>
 <p><code>SizeOfStackReserve</code> 指定了栈保留大小，默认值是 <code>1MB</code>，也就是这里的 <code>00100000</code>。</p>
 <p><code>SizeOfStackCommit</code> 指定了栈提交大小，默认值是 <code>4KB</code>，也就是这里的 <code>00001000</code>。</p>
 <blockquote>
@@ -1024,6 +1024,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1119,7 +1141,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1130,7 +1152,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1141,7 +1163,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

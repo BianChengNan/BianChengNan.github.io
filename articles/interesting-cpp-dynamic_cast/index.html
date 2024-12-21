@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,调试,vs,c++,debug,crash,dynamic_cast,虚函数,">
+  <meta name="keywords" content="原,调试,vs,debug,c++,crash,虚函数,dynamic_cast,">
 
 
 
@@ -89,22 +89,22 @@
 
 
 <meta name="description" content="缘起最近，在项目代码中看到一个非常神奇的类型转换—— 类型A 的指针居然能动态转换成另外一个完全没有任何关系的类指针。这…… 完全颠覆了我的认知。 为了进一步了解这个神奇的操作，我特意模拟了项目代码中的情形，一起来看看吧。">
-<meta name="keywords" content="原,调试,vs,c++,debug,crash,dynamic_cast,虚函数">
+<meta name="keywords" content="原,调试,vs,debug,c++,crash,虚函数,dynamic_cast">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基础知识 | 有趣的动态转换">
 <meta property="og:url" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，在项目代码中看到一个非常神奇的类型转换—— 类型A 的指针居然能动态转换成另外一个完全没有任何关系的类指针。这…… 完全颠覆了我的认知。 为了进一步了解这个神奇的操作，我特意模拟了项目代码中的情形，一起来看看吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/example1.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/example2.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/example3.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/example3-release.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.824Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example1.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example2.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example3.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example3-release.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.372Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基础知识 | 有趣的动态转换">
 <meta name="twitter:description" content="缘起最近，在项目代码中看到一个非常神奇的类型转换—— 类型A 的指针居然能动态转换成另外一个完全没有任何关系的类指针。这…… 完全颠覆了我的认知。 为了进一步了解这个神奇的操作，我特意模拟了项目代码中的情形，一起来看看吧。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/interesting-cpp-dynamic_cast/example1.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example1.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -459,21 +459,21 @@
 <h2 id="测试代码-1"><a href="#测试代码-1" class="headerlink" title="测试代码 1"></a>测试代码 1</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdlib.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseA</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">AA</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~BaseA() &#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewA</span> :</span> <span class="keyword">public</span> BaseA</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ~NewA() &#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">AA</span><span class="params">()</span> override </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseB</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">BB</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~BaseB() &#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewB</span> :</span> <span class="keyword">public</span> BaseB</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~NewB() &#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">BB</span><span class="params">()</span> override </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">BaseA* <span class="title">TestB</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    NewB *pNewB = <span class="keyword">new</span> NewB();</span><br><span class="line">    <span class="keyword">return</span> (BaseA*)pNewB;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    BaseA* pBaseA = TestB();</span><br><span class="line">    BaseB *pBaseB = (BaseB *)pBaseA;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span>(pBaseA);</span><br><span class="line"></span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>上面的代码有什么问题吗？运行结果是：一切正常。</p>
-<p><img src="/articles/interesting-cpp-dynamic_cast/example1.png" alt="example1"></p>
+<p><img src="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example1.png" alt="example1"></p>
 <p>but……</p>
 <h2 id="测试代码-2"><a href="#测试代码-2" class="headerlink" title="测试代码 2"></a>测试代码 2</h2><p>相对于 <code>测试代码1</code>，<code>测试代码2</code> 中调用了虚函数，只改变了 <code>main</code> 中的调用部分。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    BaseA* pBaseA = TestB();</span><br><span class="line">    BaseB *pBaseB = (BaseB *)pBaseA;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// added part: call virtual functions</span></span><br><span class="line">    pBaseA-&gt;AA();</span><br><span class="line">    pBaseB-&gt;BB();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span>(pBaseA);</span><br><span class="line"></span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>上面的代码会输出什么呢?</p>
-<p><img src="/articles/interesting-cpp-dynamic_cast/example2.png" alt="example2"></p>
+<p><img src="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example2.png" alt="example2"></p>
 <p><code>pBaseA-&gt;AA()</code> 的输出结果是 <code>NewB::BB</code>。有些“意外”，但是却在情理之中。下一篇会比较详细的剖析虚函数调用机制，知道运作及之后，再回过头来看这个问题就很容易理解了！</p>
 <h2 id="测试代码-3"><a href="#测试代码-3" class="headerlink" title="测试代码 3"></a>测试代码 3</h2><p>相对于 <code>测试代码2</code>，<code>测试代码 3</code> 只为 <code>BaseB</code> 增加了一个名为 <code>PerfectFunctionName()</code> 的接口，并在子类<code>NewB</code> 中实现了这个接口。其它部分不变。这里只列出变化的部分。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdlib.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseB</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">BB</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">PerfectFunctionName</span><span class="params">()</span> </span>= <span class="number">0</span>; <span class="comment">// Added part</span></span><br><span class="line">    <span class="keyword">virtual</span> ~BaseB() &#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewB</span> :</span> <span class="keyword">public</span> BaseB</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~NewB() &#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">BB</span><span class="params">()</span> override </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">PerfectFunctionName</span><span class="params">()</span> override </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125; <span class="comment">// Added part</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>最新代码运行结果会是什么样的呢？</p>
-<p><img src="/articles/interesting-cpp-dynamic_cast/example3.png" alt="example3"></p>
+<p><img src="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example3.png" alt="example3"></p>
 <p>上图是 <code>32</code> 位 <code>debug</code> 版程序运行时的输出结果。终于报了异常！<code>release</code> 版运行后也会报异常！</p>
-<p><img src="/articles/interesting-cpp-dynamic_cast/example3-release.png" alt="example3-release"></p>
+<p><img src="http://resources.bianchengnan.tech/interesting-cpp-dynamic_cast/example3-release.png" alt="example3-release"></p>
 <p>从测试结果可知，这种做法在某些情况下确实可以正常运行，但是某些情况下会得到一些奇怪的结果，甚至会发生崩溃。这些现象背后的原因我想留到后面几篇文章分析。感兴趣的小伙伴儿可以手动测试并分析。</p>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>永远不要做这种危险的 <code>SAO</code> 操作！</p>
 <h2 id="More"><a href="#More" class="headerlink" title="More"></a>More</h2><p>强烈推荐大家看一下《深度探索 C++ 对象模型》 这本书！手头儿还没有？没问题，赶紧关注公众号【比目信息】，后台回复【抽奖】就有机会免费得到一本。2020 年 9 月 13 日开奖！</p>
@@ -530,15 +530,15 @@
           
             <a href="/tags/vs/" rel="tag"><i class="fa fa-tag"></i> vs</a>
           
-            <a href="/tags/c/" rel="tag"><i class="fa fa-tag"></i> c++</a>
-          
             <a href="/tags/debug/" rel="tag"><i class="fa fa-tag"></i> debug</a>
+          
+            <a href="/tags/c/" rel="tag"><i class="fa fa-tag"></i> c++</a>
           
             <a href="/tags/crash/" rel="tag"><i class="fa fa-tag"></i> crash</a>
           
-            <a href="/tags/dynamic-cast/" rel="tag"><i class="fa fa-tag"></i> dynamic_cast</a>
-          
             <a href="/tags/虚函数/" rel="tag"><i class="fa fa-tag"></i> 虚函数</a>
+          
+            <a href="/tags/dynamic-cast/" rel="tag"><i class="fa fa-tag"></i> dynamic_cast</a>
           
         </div>
       
@@ -851,6 +851,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -939,7 +949,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -950,7 +960,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -961,7 +971,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

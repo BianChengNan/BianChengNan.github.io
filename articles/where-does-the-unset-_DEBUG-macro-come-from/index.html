@@ -96,21 +96,21 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上一篇文章 《调试实战 | dll 加载失败之Debug Release争锋篇》中，由于两个工程中的 _ITERATOR_DEBUG_LEVEL 不同，导致了对同一个 map 的解析不同，从而导致了崩溃。在示例代码中，我是手动更改的该宏的值，在实际工程中，却另有玄机。在上文中故意省略了这部分内容的介绍。现把实际工程的问题在本文中做个相对详细的梳理总结。 先剧透一下：实际工程中的问题是因为一个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/delete-_debug-macro.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-result.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG-macro-in-props.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/build-with-msbuild.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-with-cl.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/compare-cl-param.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/mdd-option-msdn.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/set-mdd-option-in-vs.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.951Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/delete-_debug-macro.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/compile-result.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG-macro-in-props.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/build-with-msbuild.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/compile-with-cl.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/compare-cl-param.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/mdd-option-msdn.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/set-mdd-option-in-vs.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:51.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 神秘的 _DEBUG 宏从何处来？">
 <meta name="twitter:description" content="缘起在上一篇文章 《调试实战 | dll 加载失败之Debug Release争锋篇》中，由于两个工程中的 _ITERATOR_DEBUG_LEVEL 不同，导致了对同一个 map 的解析不同，从而导致了崩溃。在示例代码中，我是手动更改的该宏的值，在实际工程中，却另有玄机。在上文中故意省略了这部分内容的介绍。现把实际工程的问题在本文中做个相对详细的梳理总结。 先剧透一下：实际工程中的问题是因为一个">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png">
 
 
 
@@ -363,8 +363,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:51+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -476,43 +476,43 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _DEBUG</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message(<span class="meta-string">"---- _DEBUG defined."</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> message(<span class="meta-string">"---- _DEBUG NOT defined."</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">wmain</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>相信大家都知道，<code>debug</code> 会定义 <code>_DEBUG</code> 宏，而 <code>release</code> 不会定义 <code>_DEBUG</code> 宏。默认的 <code>debug</code>  和 <code>release</code> 中对应的 <code>Preprocessor definition</code> 配置对比如下图：</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png" alt="preprocessor-definitions-comparation"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/preprocessor-definitions-comparation.png" alt="preprocessor-definitions-comparation"></p>
 <p>最开始，我以为简单的删掉 <code>_DEBUG</code> 宏，编译的时候就不会有 <code>_DEBUG</code> 宏了。</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/delete-_debug-macro.png" alt="删除 _DEBUG 宏"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/delete-_debug-macro.png" alt="删除 _DEBUG 宏"></p>
 <p>没想到……</p>
 <h2 id="顽强的-DEBUG-宏"><a href="#顽强的-DEBUG-宏" class="headerlink" title="顽强的 _DEBUG 宏"></a>顽强的 _DEBUG 宏</h2><p>再次编译的时候， <code>_DEBUG</code> 宏还是被定义了。</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-result.png" alt="compile-result"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/compile-result.png" alt="compile-result"></p>
 <h2 id="误入歧途"><a href="#误入歧途" class="headerlink" title="误入歧途"></a>误入歧途</h2><p>根据经验，工程配置可以直接存储在工程文件（后缀一般是 <code>.vcxproj</code>），也可以存储在 <code>.props</code> 文件中。在 <code>TestDebugMacro.vcxproj</code> 中搜索 <code>_DEBUG</code> 宏，一无所获！会不会存储在 <code>.props</code> 中呢？使用 <code>File Locator</code> 搜索关键字 <code>_DEBUG</code>，搜索条件如下图：</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG-macro-in-props.png" alt="search-_DEBUG-macro-in-props"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG-macro-in-props.png" alt="search-_DEBUG-macro-in-props"></p>
 <p>只搜到了几条相关的记录，因为使用的是 <code>vs2013</code>，对应的版本号是 <code>v120</code>，所以只需要关注高亮的搜索记录。</p>
 <p>虽然，看上去不太可能，但是抱着试试看的心态，删除 <code>Microsoft.Cpp.AppContainerApplication.props</code> 第 <code>104</code> 行的 <code>_DEBUG</code> 宏，</p>
 <p>重新编译。结果， <code>_DEBUG</code> 宏，依然顽强的活着。这里就不截图了。</p>
 <p>会不会记录在注册表里呢？搜索一番，一无所获！</p>
 <p>肯定是记录到哪里了，应该不会动态生成吧？！</p>
 <h2 id="继续搜索"><a href="#继续搜索" class="headerlink" title="继续搜索"></a>继续搜索</h2><p>扩大搜索范围，在所有文件中搜索，经过排查，只有 <code>cl.exe</code> 中的记录比较靠谱。</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG.png" alt="search-_DEBUG"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/search-_DEBUG.png" alt="search-_DEBUG"></p>
 <p>难道写死在 <code>cl.exe</code> 中了？有点儿不可思议。（文中暗表，确实写死在 <code>cl.exe</code> 中了。）</p>
 <p>顺着这条路已经找不到更多有价值的线索了，需要换个思路了。</p>
 <h2 id="换个思路"><a href="#换个思路" class="headerlink" title="换个思路"></a>换个思路</h2><p>会不会是 <code>vs</code> 在编译的时候，根据某些条件自动添加的？为了排除这种情况，直接使用 <code>msbuild.exe</code> 进行构建操作（在 <a href="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/">《调试实战 | 全局变量初始化顺序探究》</a>里已经介绍过了）。</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/build-with-msbuild.png" alt="build-with-msbuild"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/build-with-msbuild.png" alt="build-with-msbuild"></p>
 <p>可以发现，直接使用 <code>msbuild.exe</code> 编译也会定义 <code>_DEBUG</code> 宏。可以把 <code>vs</code> 从怀疑名单中划掉了。</p>
 <p>注意看传递给 <code>cl.exe</code> 的参数（上图黄色高亮部分）中也没有 <code>_DEBUG</code> 宏的踪影。</p>
 <p>难道是 <code>msbuild</code> 通过进程通信手段实现的？（真佩服自己的脑洞）</p>
 <p>试试直接使用  <code>cl.exe TestDebugMacro.cpp</code> 编译。</p>
 <h2 id="柳暗花明"><a href="#柳暗花明" class="headerlink" title="柳暗花明"></a>柳暗花明</h2><p> 居然  <code>_DEBUG</code> 宏消失了！！！</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/compile-with-cl.png" alt="compile-with-cl"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/compile-with-cl.png" alt="compile-with-cl"></p>
 <p>通过 <code>msbuild.exe</code> 启动的 <code>cl.exe</code> ，从日志可以发现 <code>cl.exe</code> 的参数如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _CONSOLE /D _LIB</span><br><span class="line">   /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo&quot;Debug\\&quot; /Fd&quot;Debug\vc120.pdb&quot; /Gd /TP</span><br><span class="line">   /analyze- /errorReport:queue TestDebugMacro.cpp</span><br></pre></td></tr></table></figure>
 
 <p>而手动执行的 <code>cl.exe</code> 只传递了需要编译的文件名。会不会是哪个神奇的参数搞的鬼呢？好办，二分法排查！</p>
 <p>经过几次尝试，很快定位到是 <code>/MDd</code>  搞得鬼！</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/compare-cl-param.png" alt="compare-cl-param"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/compare-cl-param.png" alt="compare-cl-param"></p>
 <p><code>/MDd</code> 选项是何方神圣？搜索一下，很快找到了微软官方的介绍。</p>
 <h2 id="MDd-选项"><a href="#MDd-选项" class="headerlink" title="/MDd 选项"></a>/MDd 选项</h2><p>官方文档很明确的描述到：<code>/MDd</code> 选项会定义 <code>_DEBUG</code>，<code>_MT</code> 和 <code>_DLL</code> ，并且会使用<strong>调试</strong> 版本的<strong>多线程</strong>运行时库。</p>
 <p>具体请介绍参考微软官方文档截图：</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/mdd-option-msdn.png" alt="mdd-option-msdn"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/mdd-option-msdn.png" alt="mdd-option-msdn"></p>
 <p>贴一张工程属性设置截图。</p>
-<p><img src="/articles/where-does-the-unset-_DEBUG-macro-come-from/set-mdd-option-in-vs.png" alt="set-mdd-option-in-vs"></p>
+<p><img src="http://resources.bianchengnan.tech/where-does-the-unset-_DEBUG-macro-come-from/set-mdd-option-in-vs.png" alt="set-mdd-option-in-vs"></p>
 <h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><p>当时没有严格按照对比的思路进行排查，浪费了很多时间！</p>
 <p>很久之前确实对比过 <code>/MDd</code> 几种选项的不同，当时的关注点主要在于会链接不同的运行时库，忽略了对宏的影响。相信经过这次折腾，我永远也忘不了 <code>/MDd</code> 选项定义 <code>_DEBUG</code> 宏。这个行为不是通过配置文件发生的，而是写到了 <code>cl.exe</code> 的文件中！</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -976,6 +976,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1064,7 +1074,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1075,7 +1085,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1086,7 +1096,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前一阵子，平台在换基线，底层接口变了很多，因此引出了至少 20000 个编译错误。在加班改完这些编译错误后，没想到又遇到了一个诡异的编译错误。而且之前还解决过类似的编译错误，但是这次却没能第一时间找出罪魁祸首。一起看看这是一个什么编译错误吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/pugixml-compile-error.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/vs-preprocess-option.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/generated-preprocessed-files.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/search-mark-using-file-locator.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/view-preprocessed-file-content-in-editpad.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/compare-include.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/include-pugixml_cpp_in_hpp_file.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.934Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/pugixml-compile-error.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/vs-preprocess-option.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/generated-preprocessed-files.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/search-mark-using-file-locator.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/view-preprocessed-file-content-in-editpad.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/compare-include.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/include-pugixml_cpp_in_hpp_file.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.909Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 记一次 pugixml 编译错误的解决">
 <meta name="twitter:description" content="缘起前一阵子，平台在换基线，底层接口变了很多，因此引出了至少 20000 个编译错误。在加班改完这些编译错误后，没想到又遇到了一个诡异的编译错误。而且之前还解决过类似的编译错误，但是这次却没能第一时间找出罪魁祸首。一起看看这是一个什么编译错误吧。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/pugixml-compile-error.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/pugixml-compile-error.png">
 
 
 
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -455,24 +455,24 @@
         <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>前一阵子，平台在换基线，底层接口变了很多，因此引出了至少 <code>20000</code> 个编译错误。在加班改完这些编译错误后，没想到又遇到了一个诡异的编译错误。而且之前还解决过类似的编译错误，但是这次却没能第一时间找出罪魁祸首。一起看看这是一个什么编译错误吧。</p>
 <a id="more"></a>
 
-<p><img src="/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/pugixml-compile-error.png" alt="pugixml-compile-error"></p>
+<p><img src="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/pugixml-compile-error.png" alt="pugixml-compile-error"></p>
 <p>诡异吧？标准模板库里（参考 <code>vector</code> 的实现）大量使用了这种技法（ <code>c++</code> 中典型的 <code>placement new</code>）。为什么这里就不行了呢？</p>
 <h2 id="杀手锏"><a href="#杀手锏" class="headerlink" title="杀手锏"></a>杀手锏</h2><p>解决这种诡异的编译错误，杀手锏是查看预编译生成的文件。好在 <code>vs</code> 已经提供了相应的支持。</p>
-<p><img src="/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/vs-preprocess-option.png" alt="vs-preprocess-option"></p>
+<p><img src="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/vs-preprocess-option.png" alt="vs-preprocess-option"></p>
 <p><code>/P</code> 表示将预处理的输出写入到文件中（每个 <code>.cpp</code> 文件会生成一个对应的 <code>.i</code> 文件）。</p>
 <p><code>/C</code> 表示保留注释。</p>
 <p>可以在有问题的源码上方加上独特的标记 <code>// TODO:BCN check here</code>，这样可以通过搜索快速定位到错误的代码的位置。<strong>强烈建议这么做，因为预处理输出的文件实在是太大了。</strong></p>
 <h2 id="查看输出结果"><a href="#查看输出结果" class="headerlink" title="查看输出结果"></a>查看输出结果</h2><p>在 <code>vs</code> 中按上图所示设置好，然后重新编译，编译完成后会生成如下几个 <code>.i</code> 文件，如下图： </p>
-<p><img src="/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/generated-preprocessed-files.png" alt="generated-preprocessed-files"></p>
+<p><img src="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/generated-preprocessed-files.png" alt="generated-preprocessed-files"></p>
 <blockquote>
 <p><strong>注意：</strong> 相对于 <code>.cpp</code> 文件，<code>.i</code> 文件非常巨大。在这个简单的示例工程中，即使没写什么业务代码，生成出来的文件都有 <code>11 MB</code> 多，实际项目中产生的 <code>.i</code> 文件达到几十兆，上百兆是很轻松的。</p>
 </blockquote>
 <p>大多数情况下，可以很明确的知道要查看哪个 <code>.i</code> 文件（可以通过错误提示来判断）。但是本例比较特殊，不知道应该查看哪个 <code>.i</code> 文件（报错的文件是 <code>pugixml.cpp</code> ，但是生成的 <code>.i</code> 文件中并没有名为 <code>pugixml.i</code>  的文件）。</p>
 <p>请出 <code>File Locator</code>，设置搜索目录为 <code>.i</code> 文件所在的目录，设置文件名为 <code>*.i</code>，并设置 <code>Containing text</code> 为 <code>&quot;// TODO:BCN check here&quot;</code>，点击 <code>Start</code> 开始搜索：</p>
-<p><img src="/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/search-mark-using-file-locator.png" alt="search-mark-using-file-locator"></p>
+<p><img src="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/search-mark-using-file-locator.png" alt="search-mark-using-file-locator"></p>
 <p>很快就得到了搜索结果 —— 文件 <code>PugiXmlCompileErrorDlg.i</code> 的第 <code>664200</code> 行。</p>
 <p>使用 <code>EditPad</code> 打开 <code>PugiXmlCompileErrorDlg.i</code>，按 <code>Ctrl + g</code> ，在弹出的界面中的行号位置输入 <code>664200</code> 即可跳转过去。但是 <code>EditPad</code> 中的行号和 <code>File Locator</code> 给出来的行号不匹配，<code>664200</code> 行并不是期待的注释内容。没关系，按 <code>ctrl + f</code> 重新搜索一遍，瞬间就搜到了（感叹一下 <code>EditPad</code> 的强大）。</p>
-<p><img src="/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/view-preprocessed-file-content-in-editpad.png" alt="view-preprocessed-file-content-in-editpad"></p>
+<p><img src="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/view-preprocessed-file-content-in-editpad.png" alt="view-preprocessed-file-content-in-editpad"></p>
 <p>注意看高亮内容，本来应该是 <code>new (memory) xml_attribute_struct(page);</code> 的，但是却在 <code>new</code> 和 <code>(memory)</code> 之间多了一段”奇怪“的字符串。</p>
 <h2 id="恍然大悟"><a href="#恍然大悟" class="headerlink" title="恍然大悟"></a>恍然大悟</h2><p>看到这，我瞬间就明白是怎么回事了，相信有 <code>MFC</code> 开发经验的小伙伴儿应该也反应过来了：</p>
 <p>在 <code>DEBUG</code> 版的 <code>MFC</code> 程序中，<code>new</code> 可能会被定义成 <code>DEBUG_NEW</code>：</p>
@@ -489,12 +489,12 @@
 </ol>
 <p>因为这两个问题都比较简单，本文不打算深入探讨，直接给出结论。</p>
 <p><strong>问题1：</strong>标准库可以这么用是因为 —— 在包含标准库中的头文件时，<code>new</code> 还是 <code>new</code>，没有被定义成 <code>DEBUG_NEW</code>。而 <code>pugixml</code> 有问题，是因为在包含 <code>pugixml.hpp</code> 之前，<code>new</code> 被定义成了 <code>DEBUG_NEW</code>。如下图：</p>
-<p><img src="/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/compare-include.png" alt="compare-include"></p>
+<p><img src="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/compare-include.png" alt="compare-include"></p>
 <blockquote>
 <p><strong>说明：</strong> 实际项目远比示例代码要复杂。不是那么容易能看出来的。</p>
 </blockquote>
 <p><strong>问题2：</strong>因为如果定义了 <code>PUGIXML_HEADER_ONLY</code> 并且没有定义 <code>PUGIXML_SOURCE</code>, <code>pugixml.hpp</code> 会在内部包含 <code>pugixml.cpp</code>。</p>
-<p><img src="/articles/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/include-pugixml_cpp_in_hpp_file.png" alt="include-pugixml_cpp_in_hpp_file"></p>
+<p><img src="http://resources.bianchengnan.tech/unexpected-pugixml-compile-error-after-solving-20000-more-compile-errors/include-pugixml_cpp_in_hpp_file.png" alt="include-pugixml_cpp_in_hpp_file"></p>
 <p>是的，你没看错，源文件也是可以通过 <code>#include</code> 包含的。</p>
 <h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>只需要把 <code>#include &quot;pugixml/pugixml.hpp&quot;</code> 移动到 <code>#ifdef _DEBUG</code> 上方即可。或者干脆注释掉 <code>#define new DEBUG_NEW</code> 这一行。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -900,6 +900,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -988,7 +998,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -999,7 +1009,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1010,7 +1020,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言Yarden Shafir 分享了两篇非常通俗易懂的，关于 windbg 新引入的调试数据模型的文章。原文链接如下： part1：https://medium.com/@yardenshafir2/windbg-the-fun-way-part-1-2e4978791f9b part2：https://medium.com/@yardenshafir2/windbg-the-fun-way-p">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part2/dx-g-procWithKernelApc.Select.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part2/view-tempFile.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.879Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part2/dx-g-procWithKernelApc.Select.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part2/view-tempFile.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="难译 | windbg 乐趣之道（下）">
 <meta name="twitter:description" content="前言Yarden Shafir 分享了两篇非常通俗易懂的，关于 windbg 新引入的调试数据模型的文章。原文链接如下： part1：https://medium.com/@yardenshafir2/windbg-the-fun-way-part-1-2e4978791f9b part2：https://medium.com/@yardenshafir2/windbg-the-fun-way-p">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part2/dx-g-procWithKernelApc.Select.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part2/dx-g-procWithKernelApc.Select.png">
 
 
 
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -553,7 +553,7 @@
 <p>我们还可以将其输出成表格，显示相关进程的信息并且可以分别浏览每个进程中的 <code>APC</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dx -g @$procWithKernelApc.Select(p =&gt; new &#123; Name = p.Name, PID = p.PID, Object = p.Object, ApcThreads = p.ApcThreads.Select(t =&gt; @$apcsForThread(t))&#125;)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/articles/translation-windbg-the-fun-way-part2/dx-g-procWithKernelApc.Select.png" alt="dx-g-procWithKernelApc.Select"></p>
+<p><img src="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part2/dx-g-procWithKernelApc.Select.png" alt="dx-g-procWithKernelApc.Select"></p>
 <p>但是请等一下，这些包含 <code>nt!EmpCheckErrataList</code> 的 <code>APC</code> 是怎么回事？为什么 <code>SearchUI.exe</code> 里到处都是？这个进程和 <code>erratas</code> 有什么关系？（<strong>译注：</strong> 函数 <code>nt!EmpCheckErrataList</code> 中包含 <code>Errata</code>。）</p>
 <p>秘密在于实际上并没有 <code>APC</code> 会调用 <code>nt!EmpCheckErrataList</code>。不，符号也没有错。（<strong>译注：</strong> 哈哈，感觉作者在跟读者讨论问题）</p>
 <p>我们之所以看到这样的现象，是因为编译器很智能 —— 当编译器看到不同的函数具有相同的代码的时候，编译器会让它们全部指向同一段代码，而不是多次复制这段代码。你可能会认为这不是一个会经常发生的事情，但让我们看看 <code>nt!EmpCheckErrataList</code> 的反汇编代码（这次使用旧办法）：</p>
@@ -670,7 +670,7 @@
 
 <p>我们让系统想运行多久就运行多久，当我们想停止记录日志时，我们可以禁用或清除断点并使用 <code>dx @$tmpFile.Close()</code> 关闭文件。</p>
 <p>现在我们可以打开 <code>@$tmpFile</code> 并查看结果：</p>
-<p><img src="/articles/translation-windbg-the-fun-way-part2/view-tempFile.png" alt="view-tempFile"></p>
+<p><img src="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part2/view-tempFile.png" alt="view-tempFile"></p>
 <p>就是这样！记录关于调试器的信息是多么简单啊！</p>
 <p>这就是我们 <code>WinDbg</code> 系列的全部内容！本系列的所有脚本都将被上传到 <code>github</code> ，还有一些新的没有包含在这里的脚本。我鼓励您进一步研究这个数据模型，因为我们甚至没有涵盖它包含的所有不同方法。编写你自己的工具，并与世界分享它们 :)</p>
 <blockquote>
@@ -1044,6 +1044,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1132,7 +1142,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1143,7 +1153,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1154,7 +1164,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

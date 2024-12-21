@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在 上一篇文章 中，我们总结了使用 windbg 和 IDA 找出 cvtres.exe 报错的根本原因，但是留下了几个细节问题。本篇文章就来把这几个细节问题“格”干净。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-free-and-nonfree-item-count.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-piob-in-windbg.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-init-piob-callstack.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-first-3-items.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-init-code.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-stdin-stdout-stderror.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.926Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-free-and-nonfree-item-count.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-piob-in-windbg.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-init-piob-callstack.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-first-3-items.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-init-code.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-stdin-stdout-stderror.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.865Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 使用 IDA 和 windbg 调试 LNK1123 转换到 COFF 期间失败：文件无效或损坏（中）">
 <meta name="twitter:description" content="前言在 上一篇文章 中，我们总结了使用 windbg 和 IDA 找出 cvtres.exe 报错的根本原因，但是留下了几个细节问题。本篇文章就来把这几个细节问题“格”干净。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-free-and-nonfree-item-count.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-free-and-nonfree-item-count.png">
 
 
 
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -485,25 +485,25 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$$ 以下变量定义在 VC\crt\src\stdio.h 中</span><br><span class="line">dx @$ioReadFlag = 0x1</span><br><span class="line">dx @$ioWriteFlag = 0x2</span><br><span class="line">dx @$ioRWFlag = 0x80</span><br><span class="line">dx @$ioLockedFlag = 0x8000</span><br><span class="line"></span><br><span class="line">$$ inuse() 和 str_locked() 定义在 VC\crt\src\file2.h 中</span><br><span class="line">dx -r0 @$IsInUse = (f =&gt; f-&gt;_flag &amp; (@$ioReadFlag | @$ioWriteFlag | @$ioRWFlag))</span><br><span class="line">dx -r0 @$IsLocked = (f =&gt; f-&gt;_flag &amp; @$ioLockedFlag)</span><br><span class="line"></span><br><span class="line">$$ 使用自定义变量 my_piob 指向 __piob</span><br><span class="line">dx -r0 @$my_piob = (FILE*[512])MSVCR120!__piob</span><br><span class="line"></span><br><span class="line">$$ 找到所有可用的记录的数量</span><br><span class="line">dx @$my_piob.Where(f =&gt; f == 0 || (@$IsInUse(f) &amp;&amp; @$IsLocked(f) ) ).Count()</span><br><span class="line"></span><br><span class="line">$$ 找到所有不可用的记录的数量</span><br><span class="line">dx @$my_piob.Where(f =&gt; !(f == 0 || (@$IsInUse(f) &amp;&amp; @$IsLocked(f) ) ) ).Count()</span><br></pre></td></tr></table></figure>
 
 <p>当打开 <code>510.res</code> 中断下来时，可以使用以上脚本找出所有不可用记录，发现没找到任何记录，说明所有记录都被占用了。</p>
-<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-free-and-nonfree-item-count.png" alt="view-free-and-nonfree-item-count"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-free-and-nonfree-item-count.png" alt="view-free-and-nonfree-item-count"></p>
 </li>
 </ol>
 <ol start="2">
 <li><p><strong>为什么在打开 <code>510.res</code> 的时候就报错了？应该可以打开 512 个文件才对？</strong></p>
 <p>猜测应该是已经打开了一些文件。为了验证这个猜测，再次调试。</p>
 <p>当 <code>cvtres.exe</code> 中断到 <code>windbg</code> 后，执行 <code>x MSVCR120!__piob</code> 查看 <code>__piob</code> 的值。</p>
-<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-piob-in-windbg.png" alt="view-piob-in-windbg"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-piob-in-windbg.png" alt="view-piob-in-windbg"></p>
 <p>可以看到此时 <code>__piob</code> 的地址是 <code>0x6250fe00</code> ，值是 <code>0</code>。说明此时还没被赋值。通过 <code>ba w4 0x6250fe00</code> 设置内存写断点设置好后，执行 <code>g</code> 命令恢复运行。几乎立刻中断到 <code>windbg</code> 中。</p>
-<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-init-piob-callstack.png" alt="view-init-piob-callstack"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-init-piob-callstack.png" alt="view-init-piob-callstack"></p>
 <p>可以看到 <code>__piob</code> 会在 <code>__initstdio()</code> 函数中被初始化。而且前 <code>_IOB_ENTRIES</code> 项（值为 <code>20</code>）的值会被 <code>_iob</code> 中对应的值赋值。而 <code>_iob</code> 的前三项是被占用的。如下图：</p>
-<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-first-3-items.png" alt="view-iob-first-3-items"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-first-3-items.png" alt="view-iob-first-3-items"></p>
 </li>
 </ol>
 <p>   所以，<code>cvtres.exe</code> 最多只能通过 <code>_wfsopen()</code> 函数打开 <code>512-3 = 509</code> 个文件。也就是说，只能打开 <code>1.res ~ 509.res</code>，打开 <code>510.res</code> 的时候会报错。</p>
 <blockquote>
-<p><strong>注意：</strong> <code>_iob</code> 的前三项分别指向了 <code>stdin</code>, <code>stdout</code>, <code>stderror</code>。我是怎么知道的？看代码呗。<br><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-init-code.png" alt="view-iob-init-code"></p>
+<p><strong>注意：</strong> <code>_iob</code> 的前三项分别指向了 <code>stdin</code>, <code>stdout</code>, <code>stderror</code>。我是怎么知道的？看代码呗。<br><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-iob-init-code.png" alt="view-iob-init-code"></p>
 <p>除了通过 <code>_iob</code> 初始化代码的注释可以看出来前三项的意义，也可以通过 <code>stdio.h</code> 中的宏定义看出来。</p>
-<p><img src="/articles/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-stdin-stdout-stderror.png" alt="view-stdin-stdout-stderror"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-vs-compile-error-CVT1101-LNK1123-part2/view-stdin-stdout-stderror.png" alt="view-stdin-stdout-stderror"></p>
 </blockquote>
 <h2 id="More"><a href="#More" class="headerlink" title="More"></a>More</h2><p>还有一个小问题没解决 —— 为什么设置 <code>PATH</code> 环境变量后，直接通过文件名启动程序，<code>windbg</code> 会报错？下一篇文章再“格”吧。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -1059,6 +1059,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1154,7 +1176,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1165,7 +1187,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1176,7 +1198,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

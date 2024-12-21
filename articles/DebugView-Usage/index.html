@@ -96,25 +96,25 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="简介DebugView是sysinternals工具集中的一款用来查看调试信息的工具。不管你是内核开发人员还是应用程序开发人员，都会用到这款神器。先简单看看DebugView可以干什么吧。  可以查看应用程序输出的调试信息。 可以查看驱动程序输出的调试信息。 可以查看本地机器的调试信息。 可以查看远程机器的调试信息。 可以根据规则高亮显示。 可以根据关键字过滤。 可以根据关键字搜索。 可以自动显示">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/basic-demo.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/switch-clocktime.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/highlight-filter.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/connect-remote-machine.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/help.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/output-to-debugger.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/capture-options.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/Demo.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/administrator-previlege-required.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/enable-debug-filter-registry-setting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/OSR-Explain.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/unable-to-access-dbgv.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/dbgview-createfile-failed-event.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/no-search-result-of-dbgv.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/basic-demo.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/switch-clocktime.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/highlight-filter.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/connect-remote-machine.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/help.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/output-to-debugger.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/capture-options.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/Demo.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/administrator-previlege-required.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/enable-debug-filter-registry-setting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/OSR-Explain.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/unable-to-access-dbgv.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/dbgview-createfile-failed-event.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/DebugView-Usage/no-search-result-of-dbgv.png">
 <meta property="og:updated_time" content="2019-12-12T14:11:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神兵利器 | 你知道怎么使用 DebugView 查看内核调试信息吗？">
 <meta name="twitter:description" content="简介DebugView是sysinternals工具集中的一款用来查看调试信息的工具。不管你是内核开发人员还是应用程序开发人员，都会用到这款神器。先简单看看DebugView可以干什么吧。  可以查看应用程序输出的调试信息。 可以查看驱动程序输出的调试信息。 可以查看本地机器的调试信息。 可以查看远程机器的调试信息。 可以根据规则高亮显示。 可以根据关键字过滤。 可以根据关键字搜索。 可以自动显示">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/DebugView-Usage/basic-demo.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/DebugView-Usage/basic-demo.png">
 
 
 
@@ -484,14 +484,14 @@
 </li>
 </ul>
 <p>下图是一个使用<code>DebugView</code>捕获<code>C++</code>程序和<code>C#</code>程序输出的调试信息的截屏。</p>
-<p><img src="/articles/DebugView-Usage/basic-demo.png" alt="示例"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/basic-demo.png" alt="示例"></p>
 <h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><p><code>DebugView</code>有一些值得我们了解的功能，下面列举了一些我用到的功能。</p>
 <ul>
 <li><p><code>Options</code> -&gt; <code>Show milliseconds</code> 可以精确到毫秒，默认精确到秒。</p>
 </li>
 <li><p><code>Options</code> -&gt; <code>Clock time</code> （快捷键 <code>CTRL + T</code>），可以切换时间显示方式。</p>
 <p>有时候我们希望知道两条调试信息的时间差（估算某段代码的执行效率的时候），有时候我们希望知道某条调试信息具体的时间点，可以按<code>CTRL + T</code>快速切换。</p>
-<p><img src="/articles/DebugView-Usage/switch-clocktime.gif" alt="switch clocktime"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/switch-clocktime.gif" alt="switch clocktime"></p>
 </li>
 <li><p><code>Edit</code> -&gt; <code>Filter/Highlight...</code>可以<strong>过滤</strong>/<strong>高亮</strong>符合条件的记录。</p>
 <ul>
@@ -501,12 +501,12 @@
 </li>
 </ul>
 <p>点开下面的视频感受下吧！</p>
-<p><img src="/articles/DebugView-Usage/highlight-filter.gif" alt="highlight-filter"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/highlight-filter.gif" alt="highlight-filter"></p>
 </li>
 <li><p>使用<code>File</code> -&gt; <code>New Window...</code>可以快速启动<code>DebugView</code>的新实例。如果你需要监听多台机器的调试信息，此功能可能对你有用。</p>
 </li>
 <li><p>使用<code>Computer</code> -&gt; <code>Connect...</code>可以监视远程计算机的调试信息。</p>
-<p><img src="/articles/DebugView-Usage/connect-remote-machine.gif" alt="监视远程机器的调试日志"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/connect-remote-machine.gif" alt="监视远程机器的调试日志"></p>
 <ul>
 <li>远端机器上必须以代理模式运行<code>DebugView</code>。可以通过<code>dbgview.exe /a</code>启动代理模式。更多选项，请参考<code>DebugView</code>的帮助文档，或者运行<code>dbgView.exe -h</code>查看。</li>
 <li>以代理模式运行的<code>DebugView</code>会监听<code>TCP 2020</code>端口，注意设置防火墙的例外规则。</li>
@@ -519,7 +519,7 @@
 <li><p>不要让多个<code>DebugView</code>同时监听同一台机器的调试信息，否则会导致调试信息分别发送到不同的<code>DebugView</code>中，对我们排错产生不必要的干扰！</p>
 </li>
 <li><p><code>DbgView.exe -h</code>可以查看<code>DebugView</code>支持的命令行参数及简短介绍。</p>
-<p><img src="/articles/DebugView-Usage/help.jpg" alt="命令行选项"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/help.jpg" alt="命令行选项"></p>
 </li>
 </ul>
 <ul>
@@ -549,39 +549,39 @@
 <p>如果遇到<code>DebugView</code>不能捕获调试信息的情况，可以从以下几个方面排查：</p>
 <h2 id="问题及解决方法"><a href="#问题及解决方法" class="headerlink" title="问题及解决方法"></a>问题及解决方法</h2><ul>
 <li><p>如果应用程序正在被调试，那么<code>DebugView</code>捕获不到该程序的调试信息，请到调试器的输出窗口查看。具体原理可以参考张银奎老师的《软件调试》。</p>
-<p><img src="/articles/DebugView-Usage/output-to-debugger.gif" alt="DebugView捕获不到C# Debug Message!"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/output-to-debugger.gif" alt="DebugView捕获不到C# Debug Message!"></p>
 </li>
 </ul>
 <ul>
 <li><p>是否勾选了对应的捕获选项。有时候最简单的反而是最容易被我们忽略的。</p>
-<p><img src="/articles/DebugView-Usage/capture-options.png" alt="捕获选项"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/capture-options.png" alt="捕获选项"></p>
 </li>
 </ul>
 <ul>
 <li><p>检查当前的<code>DebugView</code>实例的连接状态，注意看标题栏。</p>
-<p><img src="/articles/DebugView-Usage/Demo.png" alt="通过标题栏查看连接状态"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/Demo.png" alt="通过标题栏查看连接状态"></p>
 </li>
 </ul>
 <ul>
 <li><p>在<code>win10</code>系统中，无法捕获驱动程序输出的调试信息。</p>
 <p>首先，捕获驱动程序的调试信息，需要管理员权限，如果没有管理员权限，会报下图中的错误：</p>
-<p><img src="/articles/DebugView-Usage/administrator-previlege-required.png" alt="需要管理员权限"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/administrator-previlege-required.png" alt="需要管理员权限"></p>
 </li>
 </ul>
 <p>其次，从<code>Vista</code>之后，需要设置注册表才能捕获。另存下面代码为<code>Debug Print Filter.reg</code>，双击即可。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version <span class="number">5.00</span></span><br><span class="line"></span><br><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Debug Print Filter]</span><br><span class="line"><span class="string">"DEFAULT"</span>=dword:<span class="number">0000000f</span></span><br></pre></td></tr></table></figure>
 
-<p>注册表对应的内容如下图所示：<br><img src="/articles/DebugView-Usage/enable-debug-filter-registry-setting.png" alt="注册表项"></p>
-<p>具体原因请参考 <a href="http://www.osronline.com/article.cfm%5eid=295.htm，为了方便大家，我截取了该网址的内容：" target="_blank" rel="noopener">http://www.osronline.com/article.cfm%5eid=295.htm，为了方便大家，我截取了该网址的内容：</a><br><img src="/articles/DebugView-Usage/OSR-Explain.png" alt="OSR-Explain"></p>
+<p>注册表对应的内容如下图所示：<br><img src="http://resources.bianchengnan.tech/DebugView-Usage/enable-debug-filter-registry-setting.png" alt="注册表项"></p>
+<p>具体原因请参考 <a href="http://www.osronline.com/article.cfm%5eid=295.htm，为了方便大家，我截取了该网址的内容：" target="_blank" rel="noopener">http://www.osronline.com/article.cfm%5eid=295.htm，为了方便大家，我截取了该网址的内容：</a><br><img src="http://resources.bianchengnan.tech/DebugView-Usage/OSR-Explain.png" alt="OSR-Explain"></p>
 <ul>
 <li><p>退出<code>DebugView</code>后，再次运行<code>DebugView</code>捕获内核调试信息会报下图中的错误：</p>
-<p><img src="/articles/DebugView-Usage/unable-to-access-dbgv.png" alt="unable to access dbgv.sys"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/unable-to-access-dbgv.png" alt="unable to access dbgv.sys"></p>
 <p>从提示看，应该是<code>Dbgv.sys</code>被占用了。使用<code>Process monitor</code>查看<code>DebugView</code>的文件读写记录，印证了我们的猜测。</p>
-<p><img src="/articles/DebugView-Usage/dbgview-createfile-failed-event.png" alt="dbgview-createfile-failed-event"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/dbgview-createfile-failed-event.png" alt="dbgview-createfile-failed-event"></p>
 </li>
 </ul>
 <p>本想通过<code>process explorer</code>的<code>Find Handle or DLL</code>功能来查看是哪个进程在占用，<strong>未果！</strong>使用其它工具也没搜到相关信息。如果有哪位朋友知道如何查看驱动文件（<code>*.sys</code>）的占用情况，请告诉我！</p>
-<p><img src="/articles/DebugView-Usage/no-search-result-of-dbgv.png" alt="no-search-result-of-dbgv"></p>
+<p><img src="http://resources.bianchengnan.tech/DebugView-Usage/no-search-result-of-dbgv.png" alt="no-search-result-of-dbgv"></p>
 <p>在网上搜到解决方案：<strong>只需要重命名<code>Dbgv.sys</code>即可</strong>。参考网址：<a href="https://www.cnblogs.com/jiaochen/p/5581440.html" target="_blank" rel="noopener">https://www.cnblogs.com/jiaochen/p/5581440.html</a></p>
 <blockquote>
 <p><strong>说明：</strong> 这应该是老版本的一个<code>bug</code>，我在微软官网上下载最新的<code>4.9</code>版本的<code>DebugView</code>后，没有此问题了。建议大家下载最新版的<code>DebugView</code>使用。</p>
@@ -1062,6 +1062,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1150,7 +1160,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1161,7 +1171,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1172,7 +1182,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

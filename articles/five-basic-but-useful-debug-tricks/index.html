@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言调试是一项非常重要的技能，熟练掌握调试技巧有助于我们快速解决问题。vs 是我们平时编写代码时的首选工具，相信也是大多数小伙伴儿的首选调试工具，因为实际操作起来太方便了，代码编写完，一个 F5 就可以愉快的调试了。今天我想向大家推荐几个非常值得了解 vs 调试技巧。话不多说，我们开始吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/parallel-stack.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/parallel-watch.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/parallel-watch-setting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/auto-window.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/auto-window-setting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/debug-with-f5.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/attach-debug-setting.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/use-breakpoint-modify-variable.gif">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.802Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/parallel-stack.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/parallel-watch.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/parallel-watch-setting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/auto-window.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/auto-window-setting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/debug-with-f5.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/attach-debug-setting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/use-breakpoint-modify-variable.gif">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.160Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="5 个非常实用的 vs 调试技巧">
 <meta name="twitter:description" content="前言调试是一项非常重要的技能，熟练掌握调试技巧有助于我们快速解决问题。vs 是我们平时编写代码时的首选工具，相信也是大多数小伙伴儿的首选调试工具，因为实际操作起来太方便了，代码编写完，一个 F5 就可以愉快的调试了。今天我想向大家推荐几个非常值得了解 vs 调试技巧。话不多说，我们开始吧。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/five-basic-but-useful-debug-tricks/parallel-stack.gif">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/parallel-stack.gif">
 
 
 
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -463,34 +463,34 @@
 <p><strong>打开方式：</strong></p>
 <p>调试的时候，通过 <code>调试 -&gt; 窗口 -&gt; 并行堆栈</code> 即可打开。在 <code>vs2013</code> 中对应的快捷键是 <code>ctrl + shift + d, s</code> 。</p>
 <p>注意是按住 <code>ctrl + shift</code>，再按 <code>d</code>，松开 <code>ctrl, shift</code> 后再按 <code>s</code>。</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/parallel-stack.gif" alt="parallel-stack"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/parallel-stack.gif" alt="parallel-stack"></p>
 <p><strong>说明：</strong></p>
 <p>我个人不太喜欢 <code>vs</code> 默认的中文翻译，我认为调用堆栈，并行堆栈翻译的并不准确，<code>Call Stack</code> 直译为调用栈就很好，因为函数调用跟堆一点关系都没有，而且 <code>stack</code> 直译过来也是栈，<code>heap</code> 才是堆，不知道为什么会把调用栈翻译成堆栈。希望有知道的小伙伴儿留言指点。</p>
 <h2 id="并行监视"><a href="#并行监视" class="headerlink" title="并行监视"></a>并行监视</h2><p><strong>作用简介：</strong></p>
 <p>相信，大家经常使用监视窗口查看变量，当我们想查看每个栈帧的局部变量的时候，我们需要切换到对应栈帧才能看到对应的值，是不是比较麻烦？并行监视窗口了解下？</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/parallel-watch.gif" alt="parallel-watch"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/parallel-watch.gif" alt="parallel-watch"></p>
 <p><strong>打开方式：</strong></p>
 <p>调试的时候，通过 <code>调试 -&gt; 窗口 -&gt; 并行监视 -&gt; 并行监视1/2/3/4</code> 即可打开对应的并行监视窗口。和监视窗口一样可以同时打开四个。</p>
 <p>在 <code>vs2013</code> 中对应的快捷键是 <code>ctrl + shift + d, 1/2/3/4</code> 。注意是按住 <code>ctrl + shift</code>，再按 <code>d</code>，松开 <code>ctrl, shift</code> 后再按 <code>1/2/3/4</code>。</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/parallel-watch-setting.png" alt="parallel-watch-setting"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/parallel-watch-setting.png" alt="parallel-watch-setting"></p>
 <h2 id="自动窗口"><a href="#自动窗口" class="headerlink" title="自动窗口"></a>自动窗口</h2><p><strong>作用简介：</strong></p>
 <p>除了可以查看函数参数，局部变量的值意外，更有用的功能是查看函数调用的返回值。</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/auto-window.gif" alt="auto-window"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/auto-window.gif" alt="auto-window"></p>
 <p><strong>打开方式：</strong></p>
 <p>调试的时候，通过 <code>调试 -&gt; 窗口 -&gt; 自动窗口</code> 即可打开。在 <code>vs2013</code> 中对应的快捷键是 <code>ctrl + alt + v, s</code> 。注意是按住 <code>ctrl + alt</code>，再按 <code>v</code>，松开 <code>ctrl, alt</code> 后再按 <code>s</code>。</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/auto-window-setting.png" alt="auto-window-setting"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/auto-window-setting.png" alt="auto-window-setting"></p>
 <h2 id="混合调试"><a href="#混合调试" class="headerlink" title="混合调试"></a>混合调试</h2><p><strong>作用简介：</strong></p>
 <p>当我们需要调试的程序中有 <code>.NET</code> 代码，也有 <code>c++</code> 代码时，开启混合调试非常有必要。</p>
 <p><strong>打开方式：</strong></p>
 <p>通过 <code>F5</code> 调试时的设置方法。</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/debug-with-f5.png" alt="debug-with-f5"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/debug-with-f5.png" alt="debug-with-f5"></p>
 <p>通过附加进程进行调试时的设置方法。</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/attach-debug-setting.png" alt="attach-debug-setting"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/attach-debug-setting.png" alt="attach-debug-setting"></p>
 <p><strong>务必注意：</strong> 有时候我们设置断点不生效，可以检查一下调试方式是否选对了。如果我们只想调试 <code>C++</code> 代码，可以只勾选 <code>Native</code>，如果只想调 <code>.NET</code> 代码，可以根据实际情况勾选 <code>Managed(v4.5, v4.0)</code> 或者 <code>Managed(v3.5, v3.0, v2.0)</code>，如果都想调那就都勾选。</p>
 <h2 id="使用断点修改变量的值"><a href="#使用断点修改变量的值" class="headerlink" title="使用断点修改变量的值"></a>使用断点修改变量的值</h2><p><strong>作用简介：</strong></p>
 <p>相信大家在调试的时候都设置过断点，但是你是否知道我们可以在调试的时候通过断点来改变变量的值？</p>
 <p>调查问题时，想手动修改值来验证一下我们的想法是否正确，但是又不想修改代码，也不想中断下来后，手动修改，因为可能需要手动修改 <code>N</code> 次，改过的小伙伴儿应该有体会。我们可以通过这个小技巧来自动帮我们改变变量的值。</p>
-<p><img src="/articles/five-basic-but-useful-debug-tricks/use-breakpoint-modify-variable.gif" alt="use-breakpoint-modify-variable"></p>
+<p><img src="http://resources.bianchengnan.tech/five-basic-but-useful-debug-tricks/use-breakpoint-modify-variable.gif" alt="use-breakpoint-modify-variable"></p>
 <p><strong>注意：</strong> </p>
 <p>1、 表达式不要加分号！！！</p>
 <p>2、 高版本的 <code>vs</code> 才支持，<code>vs2019</code> 亲测有效，其它版本没测试。</p>
@@ -887,6 +887,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -975,7 +985,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -986,7 +996,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -997,7 +1007,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

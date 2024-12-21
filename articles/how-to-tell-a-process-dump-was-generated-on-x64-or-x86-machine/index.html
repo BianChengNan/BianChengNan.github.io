@@ -96,12 +96,12 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起曾经在 2022 年分析过一个崩溃转储，文章在这里。在那个案例中，堆空间大小将近 4GB。根据上次的结论，这应该是一个运行在 64 位系统下的 32 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 32 位的还是 64 位的？如果是 32 位进程，怎么判断是运行在 32 位系统上还是运行在 64 位系统上呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/compare-32-64-bit-process.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.817Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/compare-32-64-bit-process.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何判断转储文件是在 32 位系统还是 64 位系统下生成的？">
 <meta name="twitter:description" content="缘起曾经在 2022 年分析过一个崩溃转储，文章在这里。在那个案例中，堆空间大小将近 4GB。根据上次的结论，这应该是一个运行在 64 位系统下的 32 位进程崩溃产生的转储文件。这让我有了一个疑问？怎么从进程转储文件中得知进程是 32 位的还是 64 位的？如果是 32 位进程，怎么判断是运行在 32 位系统上还是运行在 64 位系统上呢？">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/compare-32-64-bit-process.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/compare-32-64-bit-process.png">
 
 
 
@@ -354,8 +354,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -465,7 +465,7 @@
 </blockquote>
 </li>
 </ol>
-<p><img src="/articles/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/compare-32-64-bit-process.png" alt="compare-32-64-bit-process"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-tell-a-process-dump-was-generated-on-x64-or-x86-machine/compare-32-64-bit-process.png" alt="compare-32-64-bit-process"></p>
 <ol start="3">
 <li><p>使用 <code>lm</code> 命令查看模块，如果模块中有 <code>wow64cpu, wow64win, wow64</code> 中的一个，说明是 <code>32</code> 位进程运行在 <code>64</code> 位系统下。</p>
 <p>如果不包含，或者是 <code>32</code> 位进程运行在 <code>32</code> 位系统上，或者是 <code>64</code> 位进程运行在 <code>64</code> 位系统上。具体是哪种情况，可以通过查看寄存器位数进行判断。</p>
@@ -1031,6 +1031,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1126,7 +1148,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1137,7 +1159,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1148,7 +1170,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

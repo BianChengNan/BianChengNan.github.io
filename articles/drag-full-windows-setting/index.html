@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言不知道大家有没有留意过，我们在拖动窗体的时候，有时候显示的是虚框，有时候显示的是窗体内容。可能有的朋友不是太明白，没关系，一图胜千言。请看图：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.gitee.io/articles/drag-full-windows-setting//drag-full-windows-on.gif">
-<meta property="og:image" content="https://bianchengnan.gitee.io/articles/drag-full-windows-setting//drag-full-windows-off.gif">
-<meta property="og:image" content="https://bianchengnan.gitee.io/articles/drag-full-windows-setting//drag-full-windows-setting.jpg">
-<meta property="og:image" content="https://bianchengnan.gitee.io/articles/drag-full-windows-setting//show-full-windows-setting-screen-record.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/drag-full-windows-setting/drag-full-windows-on.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/drag-full-windows-setting/drag-full-windows-off.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/drag-full-windows-setting/drag-full-windows-setting.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/drag-full-windows-setting/show-full-windows-setting-screen-record.gif">
 <meta property="og:updated_time" content="2019-12-05T14:42:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 你知道拖动窗口时只显示虚框怎么设置吗？">
 <meta name="twitter:description" content="前言不知道大家有没有留意过，我们在拖动窗体的时候，有时候显示的是虚框，有时候显示的是窗体内容。可能有的朋友不是太明白，没关系，一图胜千言。请看图：">
-<meta name="twitter:image" content="https://bianchengnan.gitee.io/articles/drag-full-windows-setting//drag-full-windows-on.gif">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/drag-full-windows-setting/drag-full-windows-on.gif">
 
 
 
@@ -452,19 +452,19 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不知道大家有没有留意过，我们在拖动窗体的时候，有时候显示的是虚框，有时候显示的是窗体内容。可能有的朋友不是太明白，没关系，<strong>一图胜千言</strong>。请看图：</p>
 <a id="more"></a>
 
-<p><img src="//bianchengnan.gitee.io/articles/drag-full-windows-setting//drag-full-windows-on.gif" alt="拖动时显示窗体内容"></p>
-<p><img src="//bianchengnan.gitee.io/articles/drag-full-windows-setting//drag-full-windows-off.gif" alt="拖动时不显示窗体内容，只显示虚框"></p>
+<p><img src="http://resources.bianchengnan.tech/drag-full-windows-setting/drag-full-windows-on.gif" alt="拖动时显示窗体内容"></p>
+<p><img src="http://resources.bianchengnan.tech/drag-full-windows-setting/drag-full-windows-off.gif" alt="拖动时不显示窗体内容，只显示虚框"></p>
 <p>这下应该知道我在说什么了吧，但是具体是哪个选项跟拖动时的显示效果有关呢？:thinking:</p>
 <h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><p>一个偶然的机会，我发现在<strong>性能选项</strong>里可以设置拖动时的显示效果。</p>
 <p><code>我的电脑</code>，<code>右键</code>，<code>属性</code>，点击<code>高级系统设置</code>按钮，在弹出的<code>系统属性</code>对话框中的<code>高级</code> Tab页下的 <code>性能</code>组，点击<code>设置(S)...</code>按钮，在弹出的<code>性能选项</code>对话框中，选择<code>自定义(C)...</code>，勾选<code>拖动时显示窗口内容</code>复选框。即可在拖动时显示窗口内容，取消勾选后，拖动时只会显示虚框。具体设置如下图：</p>
-<p><img src="//bianchengnan.gitee.io/articles/drag-full-windows-setting//drag-full-windows-setting.jpg" alt="drag-full-windows-setting"></p>
+<p><img src="http://resources.bianchengnan.tech/drag-full-windows-setting/drag-full-windows-setting.jpg" alt="drag-full-windows-setting"></p>
 <p>现在，我们知道在哪里设置了，如果用代码该怎么实现呢？我们知道，在<code>windows</code>下，很多设置都是保存在注册表中的。如果我们能找到对应的注册表项，那么我们就可以用代码修改对应的注册表项就可以啦。但是这个设置对应的注册表项是哪个呢？我们应该怎么找到它呢？看过之前几篇排错文章的朋友一定猜到了，用<code>process monitor</code>啊！在继续阅读之前，强烈建议你自己动手实战一下。</p>
 <div class="note info"><p><strong>小提示：</strong> 因为是<strong>保存</strong>设置到注册表，所以我们只保留注册表<strong>写</strong>事件即可。</p></div>
 
 
 
 <h2 id="追本溯源"><a href="#追本溯源" class="headerlink" title="追本溯源"></a>追本溯源</h2><p>相信你已经自己动手找到关键的注册表项了:+1:。不过我还是把我的调查过程的录屏贴出来，方便没来得及手动实战的读者查阅。</p>
-<p><img src="//bianchengnan.gitee.io/articles/drag-full-windows-setting//show-full-windows-setting-screen-record.gif" alt="show-full-windows-setting-screen-record"></p>
+<p><img src="http://resources.bianchengnan.tech/drag-full-windows-setting/show-full-windows-setting-screen-record.gif" alt="show-full-windows-setting-screen-record"></p>
 <p>原来该设置对应的注册表项是 <code>HKCU\Control Panel\Desktop\DragFullWindows</code>。值为<code>1</code>时拖动时显示窗体内容，值为<code>0</code>时拖动时只显示虚框。</p>
 <p>保存下面的代码为<code>drag-full-window.reg</code>，双击导入注册表即可（重启生效）。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line"></span><br><span class="line">[HKEY_CURRENT_USER\Control Panel\Desktop]</span><br><span class="line">&quot;DragFullWindows&quot;=&quot;1&quot;</span><br></pre></td></tr></table></figure>
@@ -939,6 +939,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1027,7 +1037,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1038,7 +1048,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1049,7 +1059,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

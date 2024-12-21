@@ -96,27 +96,27 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言相信，很多小伙伴儿都在命令提示符中执行过 ipconfig 查看 ip 信息。我们还可以执行  ping ip 来 ping 对应的 ip 地址，执行 notepad 启动记事本，执行 explorer 启动文件管理器……  但是，你好奇过背后的运作机制吗？为什么输入几个简单的几个字母就能启动外部程序，本文试图通过一系列实验来挖掘其背后的运作机制。 如果你对下面的问题有很明确的答案，本文不是为">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/can-not-find-bcn.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/cmd-current-directory.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/cmd-path-environment-value.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/procmon-filter-event-bcn.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/path-with-invalid-folder.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/procmon-filter-event-with-not_existed_folder.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/callstack.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/start-bcn-on-current-folder.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/start-bcn-on-windows-folder.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/start-ipconfig-with-empty-path.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/pathext.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/pathext-search-order.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/excute-with-empty-pathext.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/default-pathext.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/compare-load-order.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/run-with-extension.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.787Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/can-not-find-bcn.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/cmd-current-directory.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/cmd-path-environment-value.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/procmon-filter-event-bcn.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/path-with-invalid-folder.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/procmon-filter-event-with-not_existed_folder.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/callstack.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/start-bcn-on-current-folder.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/start-bcn-on-windows-folder.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/start-ipconfig-with-empty-path.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/pathext.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/pathext-search-order.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/excute-with-empty-pathext.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/default-pathext.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/compare-load-order.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/run-with-extension.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.050Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="10 个实验搞懂命令提示符">
 <meta name="twitter:description" content="前言相信，很多小伙伴儿都在命令提示符中执行过 ipconfig 查看 ip 信息。我们还可以执行  ping ip 来 ping 对应的 ip 地址，执行 notepad 启动记事本，执行 explorer 启动文件管理器……  但是，你好奇过背后的运作机制吗？为什么输入几个简单的几个字母就能启动外部程序，本文试图通过一系列实验来挖掘其背后的运作机制。 如果你对下面的问题有很明确的答案，本文不是为">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/experiment-with-win10-command-prompt/can-not-find-bcn.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/can-not-find-bcn.png">
 
 
 
@@ -369,8 +369,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -476,12 +476,12 @@
 <h2 id="PATH-实验"><a href="#PATH-实验" class="headerlink" title="PATH 实验"></a>PATH 实验</h2><p><strong>实验1：</strong>在命令提示符中输入一个不存在的命令（比如，<code>bcn</code>），使用 <code>process monitor</code> 观察整个过程。</p>
 <hr>
 <p>如我们所料，找不到。结果如下图：</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/can-not-find-bcn.png" alt="can-not-find-bcn"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/can-not-find-bcn.png" alt="can-not-find-bcn"></p>
 <p>在观察 <code>process monitor</code> 捕获的日志之前，我们先查看当前命令提示符的当前路径（ <code>Current Directory</code>）和 <code>PATH</code> 环境变量的值。</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/cmd-current-directory.png" alt="current directory的值"></p>
-<p><img src="/articles/experiment-with-win10-command-prompt/cmd-path-environment-value.png" alt="PATH环境变量的值"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/cmd-current-directory.png" alt="current directory的值"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/cmd-path-environment-value.png" alt="PATH环境变量的值"></p>
 <p>下图是使用 <code>process monitor</code> 捕获的事件，已过滤无关信息。</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/procmon-filter-event-bcn.png" alt="procmon-filter-event-bcn"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/procmon-filter-event-bcn.png" alt="procmon-filter-event-bcn"></p>
 <p>红色高亮部分是当前路径相关的事件，黄白相间的部分是 <code>PATH</code> 环境变量相关的事件。</p>
 <p>从此可以比较有信心的猜测：在命令提示符中输入命令会先在当前路径下查找，再到 <code>PATH</code> 环境变量指定的路径依次查找。</p>
 <p><strong>实验2：</strong> 添加一个不存在的路径到 <code>PATH</code> 环境变量中，再次观察整个过程。</p>
@@ -489,26 +489,26 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:: 更新 PATH 环境变量</span><br><span class="line">set PATH=%PATH%d:\not_existed_folder</span><br><span class="line">:: 执行命令</span><br><span class="line">bcn</span><br></pre></td></tr></table></figure>
 
 <p>当前路径没变，而对应的 <code>PATH</code> 已经多了一条 <code>d:\not_existed_folder</code>，如下图：</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/path-with-invalid-folder.png" alt="path-with-invalid-folder"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/path-with-invalid-folder.png" alt="path-with-invalid-folder"></p>
 <p>下图是使用 <code>process monitor</code> 捕获的相关事件（已过滤无关事件）。跟上面的实验对比，发现只多了黄色高亮部分。</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/procmon-filter-event-with-not_existed_folder.png" alt="procmon-filter-event-with-not_existed_folder"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/procmon-filter-event-with-not_existed_folder.png" alt="procmon-filter-event-with-not_existed_folder"></p>
 <p>注意对比上图中黄色和红色部分。红色部分对应的路径是存在的，所以有三条记录。黄色部分对应的路径是不存在的，只有一条记录。可以双击某条记录，查看对应的调用栈。相信查看过调用栈后，你会和我一样，对 <code>Operation</code> 这一列有一个新的认识。</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/callstack.png" alt="callstack"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/callstack.png" alt="callstack"></p>
 <p><strong>实验3：</strong> 把 <code>bcn.exe</code> 放到当前路径（ <code>C:\Users\bcn\Desktop</code>）下，执行 <code>bcn</code>。</p>
 <hr>
-<p><img src="/articles/experiment-with-win10-command-prompt/start-bcn-on-current-folder.png" alt="start-bcn-on-current-folder"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/start-bcn-on-current-folder.png" alt="start-bcn-on-current-folder"></p>
 <p>从上图可知，启动的是 <code>C:\Users\bcn\Desktop\bcn.exe</code>，因为在当前路径下就找到了对应的程序，所以并没有到 <code>PATH</code> 环境变量指示的路径中查找。</p>
 <p><strong>实验4：</strong> 删除 <code>C:\Users\bcn\Desktop\bcn.exe</code>，把 <code>bcn.exe</code> 放到 <code>PATH</code> 环境变量中的 <code>c:\windows\</code> 下，再次执行 <code>bcn</code>。</p>
 <hr>
-<p><img src="/articles/experiment-with-win10-command-prompt/start-bcn-on-windows-folder.png" alt="start-bcn-on-current-folder"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/start-bcn-on-windows-folder.png" alt="start-bcn-on-current-folder"></p>
 <p>从上图可知，启动的是 <code>C:\Windows\bcn.exe</code>，在当前路径下没找到，然后依次到 <code>PATH</code> 环境变量指示的路径中查找，在<code>c:\windows\</code> 下找到了对应的程序。</p>
 <p><strong>实验5：</strong> 清空 <code>PATH</code> 环境变量，在命令提示符中输入 <code>ipconfig</code>，看看是否能正常运行。</p>
 <hr>
-<p><img src="/articles/experiment-with-win10-command-prompt/start-ipconfig-with-empty-path.png" alt="Snipaste_2020-05-05_12-49-10"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/start-ipconfig-with-empty-path.png" alt="Snipaste_2020-05-05_12-49-10"></p>
 <p><strong>结论：</strong></p>
 <p>通过以上几个实验，我们知道了在命令提示符中执行一个命令时的查找顺序是：当前路径，<code>PATH</code> 环境变量中指定的路径（按出现顺序进行查找）。</p>
 <h2 id="PATHEXT-实验"><a href="#PATHEXT-实验" class="headerlink" title="PATHEXT 实验"></a>PATHEXT 实验</h2><p>相信有细心的小伙伴儿发现了，在上面的 <code>实验3</code> 和 <code>实验4</code> 中，会先查找 <code>bcn.COM</code>，没找到才继续查找的 <code>bcn.exe</code>。为什么是这种行为呢？跟什么有关呢？我们看下 <code>PATHEXT</code>环境变量的值，如下图：</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/pathext.png" alt="pathext"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/pathext.png" alt="pathext"></p>
 <p>我们发现 <code>.COM</code> 出现在 <code>.EXE</code> 之前，是不是这个原因呢？让我们做实验来验证。</p>
 <p><strong>实验6：</strong> 观察 <code>PATHEXT</code> 是否会影响查找结果。</p>
 <hr>
@@ -516,14 +516,14 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set PATHEXT=.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.EXE;.COM</span><br><span class="line">bcn</span><br></pre></td></tr></table></figure>
 
 <p><code>process monitor</code> 捕获的事件验证了我们的猜测。截图：</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/pathext-search-order.png" alt="pathext-search-order"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/pathext-search-order.png" alt="pathext-search-order"></p>
 <p><strong>实验7：</strong> 观察 <code>PATHEXT</code> 时的行为。</p>
 <hr>
 <p>清空 <code>PATHEXT</code>，再执行 <code>bcn</code>。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set PATHEXT=</span><br><span class="line">bcn</span><br></pre></td></tr></table></figure>
 
 <p><code>process monitor</code> 捕获相关事件如下图：</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/excute-with-empty-pathext.png" alt="excute-with-empty-pathext"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/excute-with-empty-pathext.png" alt="excute-with-empty-pathext"></p>
 <p>有点意外，原本以为会执行失败。看来如果 <code>PATHEXT</code> 是空，会使用默认的 <code>PATHEXT</code>，默认的 <code>PATHEXT</code> 是什么呢？</p>
 <p><strong>实验8：</strong> 观察默认的<code>PATHEXT</code> 。</p>
 <hr>
@@ -531,7 +531,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set PATHEXT=</span><br><span class="line">bcn</span><br></pre></td></tr></table></figure>
 
 <p><code>process monitor</code> 捕获相关事件如下图：</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/default-pathext.png" alt="default-pathext"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/default-pathext.png" alt="default-pathext"></p>
 <p>在我的系统（<code>win10 1903</code>）中，当 <code>PATHEXT</code> 为空时，默认搜索的扩展名是 <code>.COM;.EXE;.BAT;.CMD;.VBS;.JS;.WS;.MSC;</code>。其它系统可能有不同的行为，感兴趣的小伙伴儿请自行实验。</p>
 <p><strong>实验9：</strong> 当前目录下同时存在 <code>bcn.com</code> 和 <code>bcn.exe</code> 会执行哪个？（通过上面的实验，结论很明显了）</p>
 <hr>
@@ -541,11 +541,11 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set PATHEXT=.EXE;.COM</span><br><span class="line">bcn</span><br></pre></td></tr></table></figure>
 
 <p><code>procmon</code> 捕获的两次查找过程对比图，黄色是设置 <code>.COM</code> 优先的结果，红色是设置 <code>.EXE</code> 优先的结果。</p>
-<p><img src="/articles/experiment-with-win10-command-prompt/compare-load-order.png" alt="compare-load-order"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/compare-load-order.png" alt="compare-load-order"></p>
 <p>从结果可以进一步确定，优先查找 <code>PATHEXT</code> 中先出现的后缀名。</p>
 <p><strong>实验10：</strong>观察直接执行 <code>bcn.exe</code> 观察查找过程。</p>
 <hr>
-<p><img src="/articles/experiment-with-win10-command-prompt/run-with-extension.png" alt="run-with-extension"></p>
+<p><img src="http://resources.bianchengnan.tech/experiment-with-win10-command-prompt/run-with-extension.png" alt="run-with-extension"></p>
 <p>如果命令中带后缀，那么查找的时候不会依赖 <code>PATHEXT</code> ，会直接执行给定的命令。</p>
 <h2 id="实验代码"><a href="#实验代码" class="headerlink" title="实验代码"></a>实验代码</h2><p>如果你也想自己动手实验。可以新建一个工程，并粘贴下面的代码，编译生成测试程序。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdlib.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> exe_path[MAX_PATH] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">  ::GetModuleFileNameA(<span class="literal">NULL</span>, exe_path, MAX_PATH);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, exe_path);</span><br><span class="line">  system(<span class="string">"pause"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -924,6 +924,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1012,7 +1022,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1023,7 +1033,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1034,7 +1044,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

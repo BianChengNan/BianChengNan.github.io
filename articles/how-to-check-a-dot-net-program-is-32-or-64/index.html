@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起前阵子，朋友遇到一个 .net 程序启动不起来的问题。根据之前的经验，一般是依赖的动态库加载失败导致的。或者找不到（依赖的动态库没有放到相应的目录下，一般放到应用程序所在目录即可），或者不匹配（64 位的程序加载 32 位的动态库，或者 32 位的程序加载 64 位的动态库）。整个排查过程并不复杂，本文不打算介绍整个排查过程，而是想介绍一些 .net 程序的基本常识（比如，以 Any CPU">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-a-dot-net-program-is-32-or-64/csharp-compile-option.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-corflags.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-dumpbin.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-cff-explorer.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.810Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/csharp-compile-option.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-corflags.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-dumpbin.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-cff-explorer.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何判断一个 Dot Net 程序是 32 位还是 64 位？">
 <meta name="twitter:description" content="缘起前阵子，朋友遇到一个 .net 程序启动不起来的问题。根据之前的经验，一般是依赖的动态库加载失败导致的。或者找不到（依赖的动态库没有放到相应的目录下，一般放到应用程序所在目录即可），或者不匹配（64 位的程序加载 32 位的动态库，或者 32 位的程序加载 64 位的动态库）。整个排查过程并不复杂，本文不打算介绍整个排查过程，而是想介绍一些 .net 程序的基本常识（比如，以 Any CPU">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/how-to-check-a-dot-net-program-is-32-or-64/csharp-compile-option.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/csharp-compile-option.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -467,7 +467,7 @@
 
 <p>在介绍查看方法之前，先介绍一些基本常识。</p>
 <h2 id="Any-CPU"><a href="#Any-CPU" class="headerlink" title="Any CPU"></a><code>Any CPU</code></h2><p>做过 <code>.net</code> 开发的小伙伴一定接触过 <code>Any CPU</code> ，新建一个 <code>c#</code> 测试工程，默认的编译选项就是这个。</p>
-<p><img src="/articles/how-to-check-a-dot-net-program-is-32-or-64/csharp-compile-option.png" alt="csharp-compile-option"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/csharp-compile-option.png" alt="csharp-compile-option"></p>
 <p><code>目标平台（G）</code> 和 <code>首选 32 位（P）</code> 两个选项共同决定了传递给 <code>csc.exe</code> 的  <code>/platform</code> 选项的值。</p>
 <p>在<code>目标平台（G）</code> 是 <code>Any CPU</code>的情况下，如果勾选了 <code>首选 32 位（P）</code>，那么 <code>/platform</code> 的值是 <code>anycpu32bitpreferred</code>，如果未勾选，那么 <code>/platform</code> 的值是 <code>anycpu</code>。</p>
 <blockquote>
@@ -556,20 +556,20 @@
 <p>了解了以上知识，就可以手动查看 <code>PE</code> 文件来进行判断了。但是手动判断既容易错，又麻烦，还得时不时得翻看一下 <code>PE</code> 文件格式，很不方便。除了通过手动查看 <code>PE</code> 文件来查看，还可以通过工具来查看。本文简单介绍几个常用工具及其查看方法。</p>
 <h2 id="查看工具"><a href="#查看工具" class="headerlink" title="查看工具"></a>查看工具</h2><ul>
 <li><p><code>CorFlags.exe</code></p>
-<p><img src="/articles/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-corflags.png" alt="view-net-bitness-in-corflags"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-corflags.png" alt="view-net-bitness-in-corflags"></p>
 <p>除了查看，<code>CorFlags.exe</code> 也可以修改对应的标记位。具体用法可以直接在命令行中输入 <code>CorFlags.exe</code> 进行查看。</p>
 </li>
 </ul>
 <ul>
 <li><p><code>dumpbin</code></p>
-<p><code>dumpbin</code> 可以查看很多信息，对于 <code>.net</code> 程序，可以使用 <code>dumpbin /clrheader</code> 选项查看 <code>clr</code> 头信息。如下图：  <img src="/articles/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-dumpbin.png" alt="view-net-bitness-in-dumpbin"></p>
+<p><code>dumpbin</code> 可以查看很多信息，对于 <code>.net</code> 程序，可以使用 <code>dumpbin /clrheader</code> 选项查看 <code>clr</code> 头信息。如下图：  <img src="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-dumpbin.png" alt="view-net-bitness-in-dumpbin"></p>
 <p>上图是两个以不同编译选项生成的程序的对比效果，我第一次查看 <code>dumpbin</code> 的显示结果没看懂，对比后才明白。</p>
 </li>
 </ul>
 <ul>
 <li><p><code>cff explorer</code></p>
 <p>带图形界面的 <code>PE</code> 工具，不仅可以查看，也可以修改，很方便。</p>
-<p><img src="/articles/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-cff-explorer.png" alt="view-net-bitness-in-cff-explorer"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-a-dot-net-program-is-32-or-64/view-net-bitness-in-cff-explorer.png" alt="view-net-bitness-in-cff-explorer"></p>
 </li>
 </ul>
 <p>除了这几个工具，还有很多其它工具也可以查看，就不一一列举了。</p>
@@ -1113,6 +1113,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1208,7 +1230,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1219,7 +1241,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1230,7 +1252,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

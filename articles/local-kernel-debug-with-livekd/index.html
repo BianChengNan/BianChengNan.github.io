@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="说明：本文很早就发布在我的博客上了，当时总结的有些问题，本次重新整理完善后再次发布。 前言有时候我们非常想知道当前系统内核的一些状态，比如查看当前系统加载了哪些驱动，查看某个进程外 COM 调用卡在哪里了，等等。如果我们可以调试系统内核，或者抓取一个系统转储来做事后调试，该多好啊。我们可以通过如下方法得到系统转储：  双机内核调试（需要另外一台机器来做双机调试） 让系统崩溃（可以使用 sysint">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-help-message.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-need-elevate.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-promote-symbol.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-cant-find-kd.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-fail-to-load-kd.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-fail-to-load-kd-troubleshooting.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-help-message.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-need-elevate.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-promote-symbol.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-cant-find-kd.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-fail-to-load-kd.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-fail-to-load-kd-troubleshooting.png">
 <meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/E:%5Chexo-blog%5Csource_posts%5Clocal-kernel-debug-with-livekd%5Clivekd-can-not-find-nt-kernel-symbol.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-success.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-success.png">
 <meta property="og:updated_time" content="2020-04-11T12:44:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="本地内核调试神器 —— livekd 使用总结">
 <meta name="twitter:description" content="说明：本文很早就发布在我的博客上了，当时总结的有些问题，本次重新整理完善后再次发布。 前言有时候我们非常想知道当前系统内核的一些状态，比如查看当前系统加载了哪些驱动，查看某个进程外 COM 调用卡在哪里了，等等。如果我们可以调试系统内核，或者抓取一个系统转储来做事后调试，该多好啊。我们可以通过如下方法得到系统转储：  双机内核调试（需要另外一台机器来做双机调试） 让系统崩溃（可以使用 sysint">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/local-kernel-debug-with-livekd/livekd-help-message.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-help-message.png">
 
 
 
@@ -477,7 +477,7 @@
 
 
 <h2 id="使用帮助"><a href="#使用帮助" class="headerlink" title="使用帮助"></a>使用帮助</h2><ol>
-<li>可以运行 <code>livekd -?</code> 来查看使用方法。<br><img src="/articles/local-kernel-debug-with-livekd/livekd-help-message.png" alt="livekd-help-message"></li>
+<li>可以运行 <code>livekd -?</code> 来查看使用方法。<br><img src="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-help-message.png" alt="livekd-help-message"></li>
 </ol>
 <ul>
 <li>通过 <code>-k</code> 来指定 <code>kd.exe</code> 的路径。</li>
@@ -485,9 +485,9 @@
 <li>可以传递参数给 <code>kd.exe</code> 或者 <code>windbg.exe</code>。</li>
 </ul>
 <h2 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h2><ol>
-<li><p>使用 <code>livekd</code> 进行本地内核调试，需要管理员权限，没以管理员权限运行会给出对应的错误提示。<br><img src="/articles/local-kernel-debug-with-livekd/livekd-need-elevate.png" alt="livekd-need-elevate"></p>
+<li><p>使用 <code>livekd</code> 进行本地内核调试，需要管理员权限，没以管理员权限运行会给出对应的错误提示。<br><img src="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-need-elevate.png" alt="livekd-need-elevate"></p>
 </li>
-<li><p><code>livekd</code> 需要内核文件的调试符号的支持。<br>可以通过环境变量 <code>_NT_SYMBOL_PATH</code> 来告诉 <code>livekd</code> 到哪里加载调试符号。如果没设置也没关系，<code>livekd</code> 会自动下载需要的调试符号到某个位置，遇到下图的情况，输入<code>y</code>即可。<br><img src="/articles/local-kernel-debug-with-livekd/livekd-promote-symbol.png" alt="livekd-promote-symbol"></p>
+<li><p><code>livekd</code> 需要内核文件的调试符号的支持。<br>可以通过环境变量 <code>_NT_SYMBOL_PATH</code> 来告诉 <code>livekd</code> 到哪里加载调试符号。如果没设置也没关系，<code>livekd</code> 会自动下载需要的调试符号到某个位置，遇到下图的情况，输入<code>y</code>即可。<br><img src="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-promote-symbol.png" alt="livekd-promote-symbol"></p>
 </li>
 </ol>
 <ul>
@@ -497,10 +497,10 @@
 </li>
 </ul>
 <ol start="4">
-<li><code>livekd</code> 需要内核调试器（<code>kd.exe</code> 或 <code>windbg.exe</code>）的支持，可以通过命令行参数 <code>-k</code> 指定 <code>kd.exe</code> 的完整路径。通过 <code>-k</code> 参数指定 <code>kd.exe</code> 的路径的时候，如果有空格，需要用<code>&quot;&quot;</code>包起来，否则可能报如下错误：<br><img src="/articles/local-kernel-debug-with-livekd/livekd-cant-find-kd.png" alt="livekd-cant-find-kd"></li>
+<li><code>livekd</code> 需要内核调试器（<code>kd.exe</code> 或 <code>windbg.exe</code>）的支持，可以通过命令行参数 <code>-k</code> 指定 <code>kd.exe</code> 的完整路径。通过 <code>-k</code> 参数指定 <code>kd.exe</code> 的路径的时候，如果有空格，需要用<code>&quot;&quot;</code>包起来，否则可能报如下错误：<br><img src="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-cant-find-kd.png" alt="livekd-cant-find-kd"></li>
 </ol>
 <ul>
-<li>下载符号文件需要 <code>symsrv.dll</code> 和 <code>dbghelp.dll</code> 的支持，请确保 <code>livekd</code> 可以顺利加载这两个文件。<br><img src="/articles/local-kernel-debug-with-livekd/livekd-fail-to-load-kd.png" alt="livekd-fail-to-load-kd"><br>如果出现上图中的错误，请按照提示加上 <code>-vsym</code> 再次运行，可以查看到更详细的问题。我这里是因为不能加载 <code>symsrv.dll</code> 导致的。<br><img src="/articles/local-kernel-debug-with-livekd/livekd-fail-to-load-kd-troubleshooting.png" alt="livekd-fail-to-load-kd-troubleshooting"></li>
+<li>下载符号文件需要 <code>symsrv.dll</code> 和 <code>dbghelp.dll</code> 的支持，请确保 <code>livekd</code> 可以顺利加载这两个文件。<br><img src="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-fail-to-load-kd.png" alt="livekd-fail-to-load-kd"><br>如果出现上图中的错误，请按照提示加上 <code>-vsym</code> 再次运行，可以查看到更详细的问题。我这里是因为不能加载 <code>symsrv.dll</code> 导致的。<br><img src="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-fail-to-load-kd-troubleshooting.png" alt="livekd-fail-to-load-kd-troubleshooting"></li>
 </ul>
 <ul>
 <li><p>如果以上都已经设置正确，但还是报错，可以使用 <code>-vsym</code> 参数查看具体的错误提示。因为最近微软符号服务器在国内连接有点困难。所以大概率会遇到下面的问题。</p>
@@ -516,7 +516,7 @@
 </ul>
 </blockquote>
 <ol start="5">
-<li>如果以上几步设置好了，运行 <code>livekd</code> 应该没问题了。剩下的就是通过<code>livekd -?</code>来熟悉用法了，祝各位好运。贴一张正常运行的效果图。:smile:<br><img src="/articles/local-kernel-debug-with-livekd/livekd-success.png" alt="livekd-success"></li>
+<li>如果以上几步设置好了，运行 <code>livekd</code> 应该没问题了。剩下的就是通过<code>livekd -?</code>来熟悉用法了，祝各位好运。贴一张正常运行的效果图。:smile:<br><img src="http://resources.bianchengnan.tech/local-kernel-debug-with-livekd/livekd-success.png" alt="livekd-success"></li>
 </ol>
 <blockquote>
 <p><strong>说明：</strong><br>如果之前没加载过符号文件的话，可能会花一定的时间加载符号。请耐心等待。</p>
@@ -1072,6 +1072,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1167,7 +1189,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1178,7 +1200,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1189,7 +1211,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

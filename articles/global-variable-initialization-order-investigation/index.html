@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起我在上一篇文章——《调试实战 | dll 加载失败之全局变量初始化篇》中，跟大家分享了一个由于全局变量初始化顺序导致的 dll 加载失败的例子。感兴趣的小伙伴儿可以点击阅读。 虽然我们知道了是由于全局变量初始化顺序导致的问题，也给出了解决方案。但是有一点却没有刨根问底——为什么改变文件在工程文件中的顺序就可以改变全局变量初始化顺序？是怎么影响的呢？本篇文章力求解决这个问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/vs-msbuild-cl-link.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/filetracker-introduce.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/msbuild-cl-link-param.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/msbuild-remove-param-file.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/gflags-set-debug-link.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/windbg-command-line.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/obj-link-order.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.807Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/vs-msbuild-cl-link.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/filetracker-introduce.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/msbuild-cl-link-param.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/msbuild-remove-param-file.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/gflags-set-debug-link.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/windbg-command-line.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/obj-link-order.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.202Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 全局变量初始化顺序探究">
 <meta name="twitter:description" content="缘起我在上一篇文章——《调试实战 | dll 加载失败之全局变量初始化篇》中，跟大家分享了一个由于全局变量初始化顺序导致的 dll 加载失败的例子。感兴趣的小伙伴儿可以点击阅读。 虽然我们知道了是由于全局变量初始化顺序导致的问题，也给出了解决方案。但是有一点却没有刨根问底——为什么改变文件在工程文件中的顺序就可以改变全局变量初始化顺序？是怎么影响的呢？本篇文章力求解决这个问题。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/global-variable-initialization-order-investigation/vs-msbuild-cl-link.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/vs-msbuild-cl-link.png">
 
 
 
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -476,15 +476,15 @@
 <h2 id="猜想"><a href="#猜想" class="headerlink" title="猜想"></a>猜想</h2><p>因为编译是把符号放到对应的 <code>.obj</code> 中，链接的时候才把对应的 <code>.obj</code> 文件链接成最后的应用程序。链接的时候应该是按照 <code>.obj</code> 文件出现的先后顺序依次把 <code>.obj</code> 中的符号放到对应的位置。</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>对比观察调整顺序前和调整顺序后的编译参数，链接参数。因为猜测是链接导致的问题，我们主要关注链接参数。</p>
 <h2 id="编译过程初探"><a href="#编译过程初探" class="headerlink" title="编译过程初探"></a>编译过程初探</h2><p>当我们在 <code>vs</code> 中执行 <code>build</code> 时的整个过程如下图（使用 <code>process monitor</code> 捕获的）：</p>
-<p><img src="/articles/global-variable-initialization-order-investigation/vs-msbuild-cl-link.png" alt="vs-msbuild-cl-link"></p>
+<p><img src="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/vs-msbuild-cl-link.png" alt="vs-msbuild-cl-link"></p>
 <p>可以清晰的看到，<code>vs</code> 在内部会启动 <code>msbuild.exe</code> 执行后续的操作。<code>msbuild.exe</code> 会间接启动 <code>cl.exe</code> 进行编译，<code>link.exe</code> 进行链接。我们还发现黄色高亮部分的 <code>Tracker.exe</code> ，这个进程主要用来加速编译的。具体可以参考<code>《Inside the Microsoft Build Engine Using MSBuild and Team Foundation Build》</code> 这本书的介绍，简单截图如下：</p>
-<p><img src="/articles/global-variable-initialization-order-investigation/filetracker-introduce.png" alt="filetracker-introduce"></p>
+<p><img src="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/filetracker-introduce.png" alt="filetracker-introduce"></p>
 <h2 id="简化编译过程"><a href="#简化编译过程" class="headerlink" title="简化编译过程"></a>简化编译过程</h2><p>因为 <code>vs</code> 会通过 <code>msbuild.exe</code> 执行操作，我们可以直接使用 <code>msbuild.exe</code> 进行构建。<code>msbuild</code> 有一个选项 <code>TrackFileAccess</code> 可以用来控制是否使用 <code>FileTracker</code>。为 <code>false</code> 时，不启用 <code>FileTracker</code>。</p>
 <p>为了简化问题，我们直接执行 <code>msbuild.exe -p:TrackFileAccess=false project_file_to_build.vcxproj</code> 。</p>
-<p><img src="/articles/global-variable-initialization-order-investigation/msbuild-cl-link-param.png" alt="msbuild-cl-link-param"></p>
+<p><img src="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/msbuild-cl-link-param.png" alt="msbuild-cl-link-param"></p>
 <p>我们发现，传递给 <code>cl.exe</code> 和 <code>link.exe</code> 的参数都是文件。猜测，应该是把参数保存到文件中传递的。据观察，这些文件会在执行完后被清理。得想办法在这些文件被删除之前保存一份，各位小伙伴儿有什么好办法吗？</p>
 <p>我们先看下这些参数文件是谁创建和删除的，什么时候删除的。创建很简单，肯定是 <code>msbuild.exe</code>。删除呢？是 <code>cl.exe / link.exe</code> 还是 <code>msbuild.exe</code> 呢？又是什么时候删除的呢？相信下图能很好的回答这些问题了。</p>
-<p><img src="/articles/global-variable-initialization-order-investigation/msbuild-remove-param-file.png" alt="msbuild-remove-param-file"></p>
+<p><img src="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/msbuild-remove-param-file.png" alt="msbuild-remove-param-file"></p>
 <p>我想到两个思路：</p>
 <ol>
 <li>因为这些文件是 <code>msbuild.exe</code> 创建/删除的，可以在 <code>msbuild.exe</code> 中文件操作的地方加断点。</li>
@@ -492,12 +492,12 @@
 </ol>
 <p>第一个思路相对来说比较复杂，今天我们尝试第二个思路。我们该如何暂停呢？请出 <code>gflags.exe</code>。</p>
 <h2 id="中断-link-exe"><a href="#中断-link-exe" class="headerlink" title="中断 link.exe"></a>中断 link.exe</h2><p>我们可以在 <code>gflags.exe</code> 中进行如下设置，这样当 <code>link.exe</code> 启动时就会中断到 <code>windbg.exe</code> 中了。</p>
-<p><img src="/articles/global-variable-initialization-order-investigation/gflags-set-debug-link.png" alt="gflags-set-debug-link"></p>
+<p><img src="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/gflags-set-debug-link.png" alt="gflags-set-debug-link"></p>
 <p>断下来后，我们可以在 <code>windbg</code> 中输入 <code>!peb</code> 观察参数，里面包含了我们需要拷贝的文件路径。</p>
-<p><img src="/articles/global-variable-initialization-order-investigation/windbg-command-line.png" alt="windbg-command-line"></p>
+<p><img src="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/windbg-command-line.png" alt="windbg-command-line"></p>
 <p>有了文件路径，我们就可以手动复制对应的文件到桌面慢慢研究了。</p>
 <h2 id="对比链接参数"><a href="#对比链接参数" class="headerlink" title="对比链接参数"></a>对比链接参数</h2><p>调整 <code>Test1.cpp Test2.cpp</code> 在 <code>.vcxproj</code> 中的顺序，按上面的方法分别保存传递给 <code>link.exe</code> 的参数文件，对比如下图（格式有调整）：</p>
-<p><img src="/articles/global-variable-initialization-order-investigation/obj-link-order.png" alt="obj-link-order"></p>
+<p><img src="http://resources.bianchengnan.tech/global-variable-initialization-order-investigation/obj-link-order.png" alt="obj-link-order"></p>
 <p>发现在两次链接过程中，<code>Test1.obj Test2.obj</code> 出现的顺序是不一样的。</p>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>哪个源码文件在 <code>.vcxproj</code> 中先出现，其对应的 <code>.obj</code> 文件在传递给 <code>link.exe</code> 的参数文件（<code>.rsp</code>）中越靠前，会被优先处理。<code>.obj</code> 中包含的全局变量会被优先处理。当进程启动时，执行全局变量初始化的时候会按照先后顺序初始化。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -1041,6 +1041,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1136,7 +1158,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1147,7 +1169,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1158,7 +1180,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

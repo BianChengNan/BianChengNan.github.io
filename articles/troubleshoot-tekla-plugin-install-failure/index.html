@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近同事使用.tsep安装Tekla插件的时候，Tekla提示该插件已经存在了，需要卸载后再安装。同事找了半天，没找到怎么卸载，我也没找到。于是决定弄清楚Tekla是 如何判断一个插件安装与否的。 想必看过我其它排错文章的小伙伴已经猜到了，我们今天文章中的主角依然是process monitor。好了，话不多说，好戏马上开始。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-tekla-plugin-install-failure/Include-Process-From-Window.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-tekla-plugin-install-failure/tekla-install-plugin-failed-event-filter.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-tekla-plugin-install-failure/interested-readfile-event.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-tekla-plugin-install-failure/Include-Process-From-Window.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-tekla-plugin-install-failure/tekla-install-plugin-failed-event-filter.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-tekla-plugin-install-failure/interested-readfile-event.png">
 <meta property="og:updated_time" content="2019-11-12T14:50:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 解决 Tekla 通过 .tsep 安装插件失败的问题">
 <meta name="twitter:description" content="缘起最近同事使用.tsep安装Tekla插件的时候，Tekla提示该插件已经存在了，需要卸载后再安装。同事找了半天，没找到怎么卸载，我也没找到。于是决定弄清楚Tekla是 如何判断一个插件安装与否的。 想必看过我其它排错文章的小伙伴已经猜到了，我们今天文章中的主角依然是process monitor。好了，话不多说，好戏马上开始。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/troubleshoot-tekla-plugin-install-failure/Include-Process-From-Window.gif">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-tekla-plugin-install-failure/Include-Process-From-Window.gif">
 
 
 
@@ -464,7 +464,7 @@
 <h3 id="捕获Tekla操作记录"><a href="#捕获Tekla操作记录" class="headerlink" title="捕获Tekla操作记录"></a>捕获<code>Tekla</code>操作记录</h3><p>打开<code>process monitor</code>，开始监视。然后双击<code>.tsep</code>进行安装，当弹出错误对话框的时候，关闭<code>process monitor</code>监视。</p>
 <h3 id="过滤我们关心的记录"><a href="#过滤我们关心的记录" class="headerlink" title="过滤我们关心的记录"></a>过滤我们关心的记录</h3><p><code>process monitor</code>会捕获<strong>超级多</strong>的事件。如果不能进行有效的过滤，想找到我们关心的事件，无异于<strong>大海捞针</strong>。但是我们要根据什么条件来过滤呢？</p>
 <p>首先，我们需要根据进程名进行过滤，但是我们怎么知道安装程序对应的进程名呢? <code>process monitor</code>的<code>Include Process From Window</code>功能可以很方便的帮我们根据窗口找到其对应的进程。按住该按钮（大写字母<code>A</code>右侧，像靶子的那个按钮），拖动到目标窗体，松开即可。如下图：</p>
-<p><img src="/articles/troubleshoot-tekla-plugin-install-failure/Include-Process-From-Window.gif" alt="Include-Process-From-Window"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-tekla-plugin-install-failure/Include-Process-From-Window.gif" alt="Include-Process-From-Window"></p>
 <p>除了根据进程名过滤，我们还需要根据其它条件进一步过滤。我们的过滤条件大概是这样的：</p>
 <ul>
 <li><code>Process Name</code>只关心<code>TsepFileDispatcher.exe</code>。</li>
@@ -474,9 +474,9 @@
 <li><code>Result</code>只关心<code>SUCCESS</code>类型的。</li>
 </ul>
 <p>下图是我们刚刚设置的过滤规则（为了突出重点，我删掉了<code>process monitor</code>自带的过滤规则）。</p>
-<p><img src="/articles/troubleshoot-tekla-plugin-install-failure/tekla-install-plugin-failed-event-filter.png" alt="tekla-install-plugin-failed-event-filter"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-tekla-plugin-install-failure/tekla-install-plugin-failed-event-filter.png" alt="tekla-install-plugin-failed-event-filter"></p>
 <p>经过以上过滤，剩下的事件就很少了，我们可以分别查看<code>Registry</code>和<code>File System</code>的事件。我们先看<code>File System</code>事件。</p>
-<p><img src="/articles/troubleshoot-tekla-plugin-install-failure/interested-readfile-event.png" alt="interested-readfile-event"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-tekla-plugin-install-failure/interested-readfile-event.png" alt="interested-readfile-event"></p>
 <p>当我看到</p>
 <p><code>C:\ProgramData\Tekla Structures Learning\2018\Extensions\Installed\{叠合板模板}{1.0}{73703402-ee5b-4058-bf6a-ad1077481245}\Manifest.xml</code></p>
 <p>这条记录的时候，我猜测<code>Tekla</code>会把插件装在子目录<code>Extensions\Installed</code>下，我要安装的插件标识符是<code>叠合板模板</code>，版本是<code>{1.0}</code>，对应的<code>GUID</code>是<code>{73703402-ee5b-4058-bf6a-ad1077481245}</code>。</p>
@@ -955,6 +955,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1043,7 +1053,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1054,7 +1064,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1065,7 +1075,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,debug,dump,转储文件,procdump,windbg,">
+  <meta name="keywords" content="原,总结,调试,debug,windbg,dump,转储文件,procdump,">
 
 
 
@@ -89,24 +89,24 @@
 
 
 <meta name="description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言细心的小伙伴可能注意到了，我在上一篇介绍抓取转储文件的工具的文章 —— 你需要知道的 N 种抓取 dump 的工具 中提到了：  如果用 64 位的 windbg 附加到 32 位目标进程后，直接执行.dump 命令生成的转储文件会 “有问题”。  经常抓 dump 的小伙伴很可能">
-<meta name="keywords" content="原,总结,调试,debug,dump,转储文件,procdump,windbg">
+<meta name="keywords" content="原,总结,调试,debug,windbg,dump,转储文件,procdump">
 <meta property="og:type" content="article">
 <meta property="og:title" content="你生成的转储文件有问题吗？">
 <meta property="og:url" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言细心的小伙伴可能注意到了，我在上一篇介绍抓取转储文件的工具的文章 —— 你需要知道的 N 种抓取 dump 的工具 中提到了：  如果用 64 位的 windbg 附加到 32 位目标进程后，直接执行.dump 命令生成的转储文件会 “有问题”。  经常抓 dump 的小伙伴很可能">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/wow64-callstack.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/strange-call-stack.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/normal-call-stack.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/effmach.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/procdump-dump-32bit-process.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/taskmanager-dump-32bit-process.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/little-problem-about-dump-file/wow64-callstack.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/little-problem-about-dump-file/strange-call-stack.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/little-problem-about-dump-file/normal-call-stack.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/little-problem-about-dump-file/effmach.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/little-problem-about-dump-file/procdump-dump-32bit-process.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/little-problem-about-dump-file/taskmanager-dump-32bit-process.gif">
 <meta property="og:updated_time" content="2020-01-04T13:43:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你生成的转储文件有问题吗？">
 <meta name="twitter:description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言细心的小伙伴可能注意到了，我在上一篇介绍抓取转储文件的工具的文章 —— 你需要知道的 N 种抓取 dump 的工具 中提到了：  如果用 64 位的 windbg 附加到 32 位目标进程后，直接执行.dump 命令生成的转储文件会 “有问题”。  经常抓 dump 的小伙伴很可能">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/little-problem-about-dump-file/wow64-callstack.jpg">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/little-problem-about-dump-file/wow64-callstack.jpg">
 
 
 
@@ -462,24 +462,24 @@
 
 
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>还记得 <code>N</code> 年前，我用任务管理器抓取 <code>32</code> 位进程的转储文件后，使用 <code>windbg</code> 分析时，傻眼了！全是<code>wow64</code> 相关的栈帧，一个我关心的栈帧都没有。大概就像下图这样。（配图是我新截的，第一次分析时没保存截图）</p>
-<p><img src="/articles/little-problem-about-dump-file/wow64-callstack.jpg" alt="有问题的调用栈"></p>
+<p><img src="http://resources.bianchengnan.tech/little-problem-about-dump-file/wow64-callstack.jpg" alt="有问题的调用栈"></p>
 <p>我所指的 “有问题”，就是指的这个问题。你知道怎么解决吗？</p>
 <h2 id="小知识"><a href="#小知识" class="headerlink" title="小知识"></a>小知识</h2><p>在 <code>x64</code> 系统中，如果我们用系统自带的任务管理器为目标进程创建转储文件，不论目标进程是 <code>32</code> 位，还是 <code>64</code> 位，任务管理器将始终创建 <code>64</code> 位的转储文件。为 <code>32</code> 位进程创建的转储文件会包含 <code>WoW64</code> 子系统的信息，我们用 <code>windbg</code> 分析的时候，可能会遇到上文中提到的问题。下面是同一个 <code>32</code> 位进程的转储文件的调用栈截图。</p>
 <p>第一张截图是直接使用 <code>k</code> 命令得到的结果。可以看到很诡异。</p>
-<p><img src="/articles/little-problem-about-dump-file/strange-call-stack.png" alt="有问题的调用栈"></p>
+<p><img src="http://resources.bianchengnan.tech/little-problem-about-dump-file/strange-call-stack.png" alt="有问题的调用栈"></p>
 <p>第二张截图是使用 <code>.load</code> 命令加载 <code>wow64exts</code> 扩展后，使用其 <code>!sw</code> 命令切换模式后，再使用 <code>k</code> 命令得到的结果。可以看到，结果很完美。</p>
-<p><img src="/articles/little-problem-about-dump-file/normal-call-stack.jpg" alt="正常的调用栈"></p>
+<p><img src="http://resources.bianchengnan.tech/little-problem-about-dump-file/normal-call-stack.jpg" alt="正常的调用栈"></p>
 <p>对，<code>wow64exts</code> 是我们的解决之道。如果你像曾经的我一样，不知道使用 <code>wow64exts!sw</code> 命令切换模式进行调试的话，是不是就 “有问题” 了？每次都手动加载 <code>wow64exts</code>，然后用 <code>!sw</code> 命令切换模式岂不是很麻烦？我们可以在加载 <code>wow64exts</code> 模块后，直接使用 <code>!wow64exts.k</code> 查看调用栈，这里就不截图了。还有更省心的办法吗？如果用 <code>k</code> 命令能直接看到想看的调用栈岂不是更好？有，不过我们抓取转储文件的时候需要有讲究。</p>
 <div class="note info"><p><strong>2020-01-11 更新：</strong></p>
 <p>群里大佬提醒，也可以使用 <code>.effmach</code> 命令来查看或切换调试器使用的处理器模式。我们可以使用 <code>.effmach x86</code> 来强制切换到 <code>x86</code> 模式下，然后再执行 <code>k</code> 命令。效果和 <code>.load wow64exts; !sw; k</code> 一样。 大家可以试一下。关于 <code>.effmach</code> 的帮助，请参考<a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-effmach--effective-machine-" target="_blank" rel="noopener">微软官方文档</a>，或者直接参考下面的截图。</p>
-<p><img src="/articles/little-problem-about-dump-file/effmach.png" alt="截自微软官方文档"></p></div>
+<p><img src="http://resources.bianchengnan.tech/little-problem-about-dump-file/effmach.png" alt="截自微软官方文档"></p></div>
 
 
 
 <h2 id="procdump"><a href="#procdump" class="headerlink" title="procdump"></a>procdump</h2><p>在 <code>x64</code> 位系统下，<code>procdump</code> 默认对 <code>32</code> 进程创建 <code>32</code> 位的转储文件。这样做的好处是，生成的转储文件中不包含 <code>WOW64</code> 子系统的相关信息。我们用 <code>windbg</code> 分析转储文件时，可以直接使用 <code>k</code> 系列命令查看调用栈，不需要借助 <code>wow64exts</code> 的帮助了，这样调试起来更简单直接。</p>
 <p>为了更直观的感受 <code>procdump</code> 的好处，我专门录制了两段视频。第一段是使用 <code>windbg</code> 分析 <code>procdump</code> 为 <code>32</code> 位进程生成的转储文件，第二段是使用 <code>windbg</code> 分析任务管理器为同一个 <code>32</code> 位进程生成的转储文件。</p>
-<p><img src="/articles/little-problem-about-dump-file/procdump-dump-32bit-process.gif" alt="调试 procdump 生成的 dump"></p>
-<p><img src="/articles/little-problem-about-dump-file/taskmanager-dump-32bit-process.gif" alt="调试任务管理生成的 dump"></p>
+<p><img src="http://resources.bianchengnan.tech/little-problem-about-dump-file/procdump-dump-32bit-process.gif" alt="调试 procdump 生成的 dump"></p>
+<p><img src="http://resources.bianchengnan.tech/little-problem-about-dump-file/taskmanager-dump-32bit-process.gif" alt="调试任务管理生成的 dump"></p>
 <p>相信大家可以直观的感受到，调试 <code>procdump</code> 生成的转储文件的时候，非常直接。调试任务管理器生成的转储文件的时候，需要借助  <code>wow64exts</code> 的帮助才可以看到正常的调用栈。</p>
 <div class="note info"><p><strong>说明：</strong></p>
 <p>使用 <code>procdump</code> 默认选项生成的转储文件中不包含 <code>WoW64</code> 相关的信息。如果需要调试涉及 <code>WoW64</code> 子系统的故障，可以在运行 <code>procdump</code> 的时候加上 <code>-64</code> 选项，这样为 <code>32</code> 位进程生成的转储文件就包含 <code>WoW64</code> 子系统的信息了。我们绝大多数情况下不会调试 <code>WoW64</code>子系统相关的故障，所以就使用默认选项吧。</p></div>
@@ -559,13 +559,13 @@
           
             <a href="/tags/debug/" rel="tag"><i class="fa fa-tag"></i> debug</a>
           
+            <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
+          
             <a href="/tags/dump/" rel="tag"><i class="fa fa-tag"></i> dump</a>
           
             <a href="/tags/转储文件/" rel="tag"><i class="fa fa-tag"></i> 转储文件</a>
           
             <a href="/tags/procdump/" rel="tag"><i class="fa fa-tag"></i> procdump</a>
-          
-            <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
           
         </div>
       
@@ -926,6 +926,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1014,7 +1024,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1025,7 +1035,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1036,7 +1046,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

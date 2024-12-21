@@ -96,23 +96,23 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起之前基于 .net 官方提供的 FileSystemWatcher 写了一个文件变化监听工具，具体参考这篇文章 。主要解决了以下三个问题：  事件触发时，文件可能还不能被访问。 如果监听选项设置的过多，有可能会多次触发文件变化事件。 监听过滤器不够灵活，我没找到同时监听多种特定文件类型的方法（比如，同时只监听 .docx 和 .bmp 文件）。  为了解决问题1，我在调用用户注册的回调函数前，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/wrong-result.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/debug-output.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/file-is-being-used-by-another-process-exception.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/search-testimage1.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-collect.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/collect-event-with-perfview.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-left-expand.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/filter-result.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/call-stack.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/go-to-source.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.800Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/wrong-result.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/debug-output.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/file-is-being-used-by-another-process-exception.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/search-testimage1.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-collect.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/collect-event-with-perfview.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-left-expand.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/filter-result.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/call-stack.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/go-to-source.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.153Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 谁在偷偷占用我的文件？原来是我自己">
 <meta name="twitter:description" content="缘起之前基于 .net 官方提供的 FileSystemWatcher 写了一个文件变化监听工具，具体参考这篇文章 。主要解决了以下三个问题：  事件触发时，文件可能还不能被访问。 如果监听选项设置的过多，有可能会多次触发文件变化事件。 监听过滤器不够灵活，我没找到同时监听多种特定文件类型的方法（比如，同时只监听 .docx 和 .bmp 文件）。  为了解决问题1，我在调用用户注册的回调函数前，">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif">
 
 
 
@@ -365,8 +365,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -471,19 +471,19 @@
 </blockquote>
 <h2 id="测试程序"><a href="#测试程序" class="headerlink" title="测试程序"></a>测试程序</h2><p><code>TestMonitorImage.exe</code> 会<strong>递归</strong>监听当前程序所在目录中的所有 <code>.bmp</code> 类型的文件变化，监听到相应事件后会调用 <code>picturebox.Load(path)</code> 把图像显示到界面上。</p>
 <p><code>copy.ps1</code> 是一个辅助脚本，会每隔一秒拷贝一张图片到子目录中，会触发文件变化事件。按理说，每隔一秒界面上应该显示一张新图片，如此往复，如下图：</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif" alt="right-result"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/right-result.gif" alt="right-result"></p>
 <p>但是……</p>
 <h2 id="初遇问题"><a href="#初遇问题" class="headerlink" title="初遇问题"></a>初遇问题</h2><p>没想到只显示了一张图片后就停止显示了，就像下面这样。</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/wrong-result.png" alt="wrong-result"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/wrong-result.png" alt="wrong-result"></p>
 <p>这不可能啊（哈哈，最近的口头禅）！但是现象确实是不对的，到底是哪里出了问题呢？</p>
 <h2 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h2><p>附加调试器，通过调试信息可以判断监听还在正常进行，因为能不断输出调试日志。</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/debug-output.gif" alt="debug-output"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/debug-output.gif" alt="debug-output"></p>
 <p>接着观察一下回调函数是否正常。在回调函数里加断点，奇怪，怎么没命中？难道是通知环节出了问题？</p>
 <p>观察一下通知线程的运行情况，观察了几秒钟，发现这个线程会反复遇到同一个异常——文件正由另一进程使用，因此该进程无法访问此文件。</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/file-is-being-used-by-another-process-exception.png" alt="file-is-being-used-by-another-process-exception"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/file-is-being-used-by-another-process-exception.png" alt="file-is-being-used-by-another-process-exception"></p>
 <p>按理说，<code>powershell</code> 脚本拷贝完文件后，就不会占用这个文件了。而且我机器上装的是固态硬盘，本地文件拷贝过程应该非常快，就算再慢，<code>1</code> 秒也应该拷贝完了。即使遇到文件被占用的异常，最多只会在最开始的十几毫秒内遇到，不应该过了这么久还会遇到这种异常。那到底是谁在占用这个文件呢？</p>
 <h2 id="请出-process-explorer"><a href="#请出-process-explorer" class="headerlink" title="请出 process explorer"></a>请出 process explorer</h2><p>打开 <code>process explorer</code>，搜索 <code>testimage1.bmp</code>，发现只搜到一条结果，而且居然还是自己的进程！</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/search-testimage1.png" alt="search-testimage1"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/search-testimage1.png" alt="search-testimage1"></p>
 <p>看来应该是某处代码打开了这个文件，但是没有关闭。在 <code>windows</code> 中，打开文件后会返回一个句柄（<code>HANDLE</code>），不再使用这个文件的时候需要关闭。如果打开了文件，但是没有关闭它，则会导致句柄泄露，而且下次再尝试打开这个文件的时候<strong>可能</strong>会遇到文件被占用，无法访问的情况。有没有一种机制可以追踪句柄打开/关闭的情况呢？如果能同时显示对应的调用栈，那就更完美了。我知道两种方法：</p>
 <ol>
 <li>使用 <code>windbg</code> 的 <code>!htrace</code> 命令</li>
@@ -491,10 +491,10 @@
 </ol>
 <p>如果可以调试的话，可以用 <code>windbg</code> 附加到对应的进程中，然后执行 <code>!htrace -enable</code> 开启句柄追踪，等程序运行一段时间后，执行 <code>!htrace -diff</code> 即可查看句柄变化情况，而且可以看到对应的调用栈。虽然 <code>windbg</code> 很强大，但是今天的主角不是 <code>windbg</code>，而是 <a href="https://github.com/microsoft/perfview" target="_blank" rel="noopener">perfView</a> —— 一款开源、免费、绿色而且非常强大的 <code>ETW</code> 事件收集及分析工具。</p>
 <h2 id="采集数据"><a href="#采集数据" class="headerlink" title="采集数据"></a>采集数据</h2><p>打开 <code>perfView</code>，点击 <code>Collect -&gt; Collect   Alt+C</code>，会以管理员权限弹出收集界面，如下图：</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-collect.png" alt="perfview-collect"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-collect.png" alt="perfview-collect"></p>
 <p>点击 <code>Advance Options</code> 按钮，即可打开高级选项。勾选 <code>Handle</code> 即可追踪句柄，勾选 <code>File I/O</code> 即可追踪文件操作。</p>
 <p>设置好后，点击 <code>Start Collection</code> 即可开始收集。问题重现后，点击 <code>Stop Collection</code> 停止收集。完整操作过程如下：</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/collect-event-with-perfview.gif" alt="collect-event-with-perfview"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/collect-event-with-perfview.gif" alt="collect-event-with-perfview"></p>
 <blockquote>
 <p><strong><em>说明：</em></strong></p>
 <ol>
@@ -503,7 +503,7 @@
 </ol>
 </blockquote>
 <h2 id="分析数据"><a href="#分析数据" class="headerlink" title="分析数据"></a>分析数据</h2><p>点击 <code>Stop Collection</code> 按钮后， <code>perfView</code> 会自动保存采集结果，然后显示在左侧列表中。</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-left-expand.png" alt="perfview-left-expand"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/perfview-left-expand.png" alt="perfview-left-expand"></p>
 <p>选中刚刚采集的文件，找到 <code>Events</code> 项，<strong>双击</strong>即可查看所有原始的 <code>ETW</code> 数据。其它项都是为了方便查看某些数据而创建的。比如，<code>CPU Stacks</code> 可以查看进程 <code>CPU</code> 使用情况。</p>
 <p>因为采集的文件中包含<strong>海量</strong>的数据，而且大多数与我们要分析的问题无关，因此我们需要过滤出感兴趣的数据。</p>
 <h2 id="过滤数据"><a href="#过滤数据" class="headerlink" title="过滤数据"></a>过滤数据</h2><p><code>perfView</code> 提供了很灵活的过滤机制，既可以根据进程过滤，也可以根据事件类型过滤，还可以根据事件内容进行过滤。</p>
@@ -515,11 +515,11 @@
 <p> <strong>注意：</strong></p>
 <p>我在操作的过程中先显示了 <code>file</code> 和 <code>handle</code> 相关的事件，然后才只显示 <code>handle</code> 相关的事件。如果上来就只显示 <code>handle</code> 相关的事件，那么根据 <code>.bmp</code> 过滤的话，会过滤不出来任何记录。我猜是 <code>perfView</code> 自动根据 <code>file</code> 事件中的句柄和文件名推断出了对应的 <code>handle</code> 事件的 <code>ObjectName</code>。</p>
 </blockquote>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/filter-result.png" alt="filter-result"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/filter-result.png" alt="filter-result"></p>
 <p>从上图可以很清楚的看到 <code>.bmp</code> 相关的事件。注意 <code>ThreadID</code> 一列，<code>线程ID</code> 为 <code>10164</code> 的线程只出现了一次，对应的事件是 <code>CreateHandle</code>。（缺少了对应的 <code>CloseHandle</code>，说明这个线程只打开了文件，并没有关闭）在对应行的 <code>Time MSec</code> 这一列，右键，点击 <code>Open Any Stack   Alt+S</code> （或者在对应列上按 <code>Alt + S</code>）即可查看对应的调用栈，如下图：</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/call-stack.png" alt="call-stack"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/call-stack.png" alt="call-stack"></p>
 <p>在对应行上，右键，点击 <code>Goto SOurce(Def)  Alt+D</code> （或者在对应行上按 <code>Alt+D</code>）即可打开对应的源码，如下图：</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/go-to-source.png" alt="go-to-source"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/go-to-source.png" alt="go-to-source"></p>
 <p>可以发现在 <code>OnFileChanged()</code> 回调函数中，会使用 <code>s_form.pictureBox1.Load(e.FullPath)</code> 加载文件。可以猜测 <code>Load()</code> 函数内部打开对应的文件后并没有关闭。</p>
 <p>目前程序在每次通知前会使用 <code>WaitUntilCanAccess()</code> 检查文件是否可以读写（内部通过  <code>File.Open(e.FullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);</code> 进行判断）。</p>
 <p>试想，如果下次收到同一个文件变化的通知，<code>WaitUntilCanAccess()</code> 内部会使用 <code>File.Open()</code> 尝试打开这个文件，而这个文件已经被打开了，是不是有可能触发文件被占用的异常呢？确实有可能会，也可能不会！</p>
@@ -528,7 +528,7 @@
 <h2 id="深入分析"><a href="#深入分析" class="headerlink" title="深入分析"></a>深入分析</h2><p>关于<code>FileAcess</code> 和 <code>FileShare</code> 的关系，请参考我总结的这篇文章 —— <a href="https://bianchengnan.github.io/articles/review-CreateFile-DesireAccess-ShareMode/">《开发常识 | 彻底理清 CreateFile 读写权限与共享模式的关系》</a>。</p>
 <p>简单来说就是：后续的<strong>访问权限</strong>与先前的<strong>共享权限</strong>不能冲突。后续的<strong>共享权限</strong>与先前的<strong>访问权限</strong>不能冲突。</p>
 <p>检查一下 <code>线程ID</code> 为 <code>10164</code> 的线程打开文件时指定的 <code>ShareAccess</code>，是 <code>ShareAccess.Read</code>，如下图：</p>
-<p><img src="/articles/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png" alt="fileIO-Create-on-callback"></p>
+<p><img src="http://resources.bianchengnan.tech/findout-who-is-using-my-file-with-the-help-of-perfview-and-process-explorer/fileIO-Create-on-callback.png" alt="fileIO-Create-on-callback"></p>
 <p>后续如果用 <code>FileAccess.ReadWrite</code> 打开，肯定会报错。而 <code>WaitUntilCanAccess()</code> 内部调用 <code>File.Open()</code> 时 <code>FileAccess</code> 参数的值就是 <code>FileAccess.ReadWrite</code>。  </p>
 <p>而且 <code>WaitUntilCanAccess()</code> 指定的 <code>ShareAccess</code> 是 <code>FileShare.None</code>。只要在调用  <code>WaitUntilCanAccess()</code>  的时候，已经在其它地方打开了这个文件，肯定会触发文件被占用的异常。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>简单做个总结，整个过程是这样的：</p>
@@ -958,6 +958,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1046,7 +1056,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1057,7 +1067,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1068,7 +1078,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

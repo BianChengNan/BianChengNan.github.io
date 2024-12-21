@@ -96,24 +96,24 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言之前一直以为 64 位进程很难出现内存分配异常，因为 64 位进程的虚拟内存空间非常大（总共 64 位，目前只用了 48 位，也就是 256TB，用户态可以使用一半，也就是 128TB）。没想到，前一阵子居然遇到了 vs2022（ vs 终于有了 64 位的版本）分配内存失败的情况。分析到最后是因为分配 MEM_COMMIT 类型的内存失败导致的异常。一起来看看吧。  说明： 本文很早就写了草">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/vs2022-dump-file.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/callstack-of-new-memory-throw-exception.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/search-new-size.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/get-allocate-size-pass-to-new.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/address-summary.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/get-address-region-larger-than-0x80000000.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/c000012d_status_commitment_limit.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/test-max-reserve-memory.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-1.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-2.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-3.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/view-AllocationType-param.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/show-system-and-process-running-time.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.765Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/vs2022-dump-file.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/callstack-of-new-memory-throw-exception.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/search-new-size.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/get-allocate-size-pass-to-new.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/address-summary.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/get-address-region-larger-than-0x80000000.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/c000012d_status_commitment_limit.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/test-max-reserve-memory.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-1.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-2.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-3.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/view-AllocationType-param.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/show-system-and-process-running-time.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:49.935Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 记一次有教益的 vs2022 内存分配失败崩溃分析">
 <meta name="twitter:description" content="前言之前一直以为 64 位进程很难出现内存分配异常，因为 64 位进程的虚拟内存空间非常大（总共 64 位，目前只用了 48 位，也就是 256TB，用户态可以使用一半，也就是 128TB）。没想到，前一阵子居然遇到了 vs2022（ vs 终于有了 64 位的版本）分配内存失败的情况。分析到最后是因为分配 MEM_COMMIT 类型的内存失败导致的异常。一起来看看吧。  说明： 本文很早就写了草">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/crazy-vs2022-allocate-memory-failed-part1/vs2022-dump-file.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/vs2022-dump-file.png">
 
 
 
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:49+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -467,30 +467,30 @@
 
 
 <h2 id="vs2022-卡死了"><a href="#vs2022-卡死了" class="headerlink" title="vs2022 卡死了"></a>vs2022 卡死了</h2><p>前一阵子，我在使用 <code>vs2022</code> 编辑代码的时候，不知道做了什么操作导致 <code>vs2022</code> 卡住了。过了一段时间后，<code>procdump</code> 自动运行起来了（因为我把 <code>procdump</code> 设置为了 <code>JIT</code> 调试器。当有进程崩溃的时候，<code>procdump</code> 会自动执行转储操作），等了好一会儿才退出。查看 <code>d:\dumps\</code> 目录下的转储文件，真是不看不知道，一看吓一跳，对应的转储文件居然有将近 <code>20GB</code>。</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/vs2022-dump-file.png" alt="vs2022-dump-file"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/vs2022-dump-file.png" alt="vs2022-dump-file"></p>
 <p>看来，<code>vs2022</code> 应该是遇到了内存方面的异常。</p>
 <h2 id="查看调用栈"><a href="#查看调用栈" class="headerlink" title="查看调用栈"></a>查看调用栈</h2><p>使用 <code>windbg</code> 打开对应的转储文件，执行 <code>k</code> 查看调用栈。如下图：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/callstack-of-new-memory-throw-exception.png" alt="callstack-of-new-memory-throw-exception"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/callstack-of-new-memory-throw-exception.png" alt="callstack-of-new-memory-throw-exception"></p>
 <p>可以很明显的看到是在调用 <code>new()</code> 分配内存失败后抛出了异常。再多查看几个栈帧，可以发现是由 <code>vector</code> 的 <code>_Emplace_reallocate()</code> 函数触发的内存分配。<code>vs2022</code> 是 <code>64</code> 位的进程，虚拟内存空间可以说是大的离谱。居然内存分配会失败！有点意思，那到底分配了多大内存呢？</p>
 <h2 id="分配了多大内存？"><a href="#分配了多大内存？" class="headerlink" title="分配了多大内存？"></a>分配了多大内存？</h2><p> 查看栈帧 <code>0a</code> 和 <code>0b</code> 的反汇编代码，如下图：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/search-new-size.png" alt="search-new-size"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/search-new-size.png" alt="search-new-size"></p>
 <p>从上图可知，<code>new()</code> 的参数 <code>rcx</code> 来自栈帧 <code>0a</code> 中的 <code>rax</code>，<code>rax</code> 又来自 <code>rcx+0x27</code>。<code>rcx</code> 来自栈帧 <code>0b</code> 中的 <code>rax</code>，<code>rax</code> 是 <code>vcpkg!std::_Get_size_of_n&lt;16&gt;()</code> 的返回值，<code>vcpkg!std::_Get_size_of_n&lt;16&gt;()</code> 的参数 <code>rcx</code> 来自 <code>rax</code>，而这个 <code>rax</code> 保存到栈上 <code>rsp+0x78</code> 的位置。可以先拿到  <code>rsp+0x78</code> 处的值，然后一步步推导出传递给 <code>new()</code> 的参数。</p>
 <p>在开始之前，先了解一下 <code>vcpkg!std::_Get_size_of_n&lt;size_t&gt;()</code> 的逻辑。<code>vcpkg!std::_Get_size_of_n&lt;size_t&gt;()</code> 是一个模板函数，模板参数是元素类型的大小，这里是 <code>0n16</code>。该函数的实现很简单，就是返回 <code>_Count * _Ty_size</code> （当然还有一些界限检查，下面是精简后的代码）。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">size_t</span> _Ty_size&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> _Get_size_of_n(<span class="keyword">const</span> <span class="keyword">size_t</span> _Count) &#123;</span><br><span class="line">    <span class="keyword">return</span> _Count * _Ty_size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以通过查看栈帧 <code>0b</code> <code>rsp+0x78</code> 位置的值得到要分配的元素个数，然后乘以 <code>0n16</code> 就可以得到最终传递给 <code>new()</code> 的值。</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/get-allocate-size-pass-to-new.png" alt="get-allocate-size-pass-to-new"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/get-allocate-size-pass-to-new.png" alt="get-allocate-size-pass-to-new"></p>
 <p>计算后得知，本次分配的空间大约为 <code>923MB</code> 。</p>
 <blockquote>
 <p><strong>注意：</strong> 虽然分配的内存空间不是超级大，但是本次尝试分配的元素个数是 <code>0x039bc719</code>，通过 <code>.formats 0x039bc719</code> 可以查看对应的十进制数是 <code>60540697</code>，也就是大约 <code>6</code> 千万个对象！</p>
 </blockquote>
 <p>说实话，分析到这里的时候，我是有点儿没底气的。<code>vs2022</code> 可是 <code>64</code> 位的进程啊！没想到只分配大概 <code>923MB</code> 就失败了！带着这个疑问，继续查看当前进程的地址空间情况。</p>
 <h2 id="查看空闲空间"><a href="#查看空闲空间" class="headerlink" title="查看空闲空间"></a>查看空闲空间</h2><p>可以使用 <code>!address -summary</code> 看一下内存使用情况，如下图：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/address-summary.png" alt="address-summary"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/address-summary.png" alt="address-summary"></p>
 <p>可以发现最大的空闲空间大概有 <code>119.96TB</code> 这么大。</p>
 <blockquote>
 <p><strong>说明：</strong> 既可以通过上面的 <code>Largest Region by Usage</code> 查看最大的空闲空间，还可以通过 <code>!address -f:Free -c:&quot;.if(%3 &gt; 0x80000000) {.echo %1 %2 %3}&quot;</code> 显示出大于 <code>0x80000000</code> 的空闲段，如下图：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/get-address-region-larger-than-0x80000000.png" alt="get-address-region-larger-than-0x80000000"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/get-address-region-larger-than-0x80000000.png" alt="get-address-region-larger-than-0x80000000"></p>
 <p>顺便说一句，第一次执行的时候是真的慢！</p>
 </blockquote>
 <p>既然有足够大的空闲空间，为什么分配内存还会失败呢？看到这里我更疑惑了，同时心里有了另外一个疑问—— 在 <code>x64</code> 进程中，用户态代码到底可以分配多大内存？</p>
@@ -502,14 +502,14 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">NTSTATUS <span class="title">NtAllocateVirtualMemory</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  [in]      HANDLE    ProcessHandle,</span></span></span><br><span class="line"><span class="function"><span class="params">  [in, out] PVOID     *BaseAddress,</span></span></span><br><span class="line"><span class="function"><span class="params">  [in]      ULONG_PTR ZeroBits,</span></span></span><br><span class="line"><span class="function"><span class="params">  [in, out] PSIZE_T   RegionSize,</span></span></span><br><span class="line"><span class="function"><span class="params">  [in]      ULONG     AllocationType,</span></span></span><br><span class="line"><span class="function"><span class="params">  [in]      ULONG     Protect</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
 
 <p>查看官方文档可知，<code>0xc000012d</code> 的意义是 <code>STATUS_COMMITMENT_LIMIT</code>。</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/c000012d_status_commitment_limit.png" alt="c000012d_status_commitment_limit"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/c000012d_status_commitment_limit.png" alt="c000012d_status_commitment_limit"></p>
 <p>根据 <code>Description</code> 列的描述可知，增大页面文件的大小可能会有帮助。看到这里的时候，我突然想起来，好像 <code>malloc()</code> 在调用<code>ntdll!NtAllocateVirtualMemory()</code> 的时候，传递的 <code>AllocationType</code> 应该是包含 <code>MEM_COMMIT</code> 标志的（因为可以直接对返回的地址空间进行读写操作了）。而分配这种类型的内存，<code>windows</code> 会检查是否有足够的内存（物理内存+页文件）支撑，如果剩余的物理内存+页文件（会被系统中的所有进程共同使用）的大小不能满足本次分配，那么会报错。</p>
 <p> 如果把 <code>MEM_COMMIT</code> 换成 <code>MEM_RESERVE</code>，能分配多大的内存呢？</p>
 <h2 id="测试-MEM-RESERVE-最大分配尺寸"><a href="#测试-MEM-RESERVE-最大分配尺寸" class="headerlink" title="测试 MEM_RESERVE 最大分配尺寸"></a>测试 MEM_RESERVE 最大分配尺寸</h2><p>于是我又写了一段测试代码，直接调用 <code>VirtualAlloc()</code> 进行内存分配。测试代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"windows.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">size_t</span> one_gb = <span class="number">1L</span>L * <span class="number">1024L</span>L * <span class="number">1024L</span>L * <span class="number">1024L</span>L; <span class="comment">// 1 GB</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">ToGb</span><span class="params">(<span class="keyword">size_t</span> bytes)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> bytes / <span class="number">1024.0</span> / <span class="number">1024.0</span> / <span class="number">1024.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">ToTb</span><span class="params">(<span class="keyword">size_t</span> bytes)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> bytes / <span class="number">1024.0</span> / <span class="number">1024.0</span> / <span class="number">1024.0</span> / <span class="number">1024.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">size_t</span> TestMaxAllocateMemory(<span class="keyword">size_t</span> init_size, <span class="keyword">size_t</span> decrease_size, DWORD allocation_type)</span><br><span class="line">&#123;</span><br><span class="line">    LPVOID p = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">nullptr</span> == (p = VirtualAlloc(<span class="literal">nullptr</span>, init_size, allocation_type, PAGE_READWRITE)))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> last_error = GetLastError();</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"allocate "</span> &lt;&lt; ToGb(init_size) &lt;&lt; <span class="string">" GB failed. last error:"</span> &lt;&lt; last_error</span><br><span class="line">            &lt;&lt; <span class="string">". try allocate "</span> &lt;&lt; ToGb(init_size - decrease_size) &lt;&lt; <span class="string">" GB."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">        init_size -= decrease_size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> init_size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TestMaxReserveMemory</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> size_reserve = <span class="number">128L</span>L * <span class="number">1024L</span>L * one_gb;  <span class="comment">// 128 TB</span></span><br><span class="line">    size_reserve = TestMaxAllocateMemory(size_reserve, one_gb, MEM_RESERVE);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"allocate "</span> &lt;&lt; ToTb(size_reserve) &lt;&lt; <span class="string">" TB reserver memory success."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TestMaxReserveMemory();</span><br><span class="line">    <span class="built_in">std</span>::getchar();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>运行结果如下：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/test-max-reserve-memory.png" alt="test-max-reserve-memory"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/test-max-reserve-memory.png" alt="test-max-reserve-memory"></p>
 <p>当分配类型是 <code>MEM_RESERVE</code> 的时候，一次性最多可以分配大概 <code>126 TB</code> 的虚拟内存。基本符合之前的认知。</p>
 <blockquote>
 <p><strong>注意：</strong> 每次运行结果不完全一致，不过相差不多。</p>
@@ -519,11 +519,11 @@
 
 <p>我分别在不同系统内存占用的情况下运行了三次，三次运行结果如下：</p>
 <p>当系统内存相对充裕的时候，运行结果如下：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-1.png" alt="allocate-memory-commit-1"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-1.png" alt="allocate-memory-commit-1"></p>
 <p>当系统内存被消耗了一部分的时候，运行结果如下：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-2.png" alt="allocate-memory-commit-1"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-2.png" alt="allocate-memory-commit-1"></p>
 <p>当使用 <code>TestLimit64 -m 2048 -c 10</code> 分配 <code>20GB</code> 的 <code>MEM_COMMIT</code> 内存后，运行结果如下：</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-3.png" alt="allocate-memory-commit-1"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/allocate-memory-commit-3.png" alt="allocate-memory-commit-1"></p>
 <blockquote>
 <p><strong>画外音：</strong> 当我尝试模拟系统内存吃紧的时候，突然想起来 <code>Testlimit</code>  就是用来测试各种资源极限的。<code>-m</code> 模拟的是分配 <code>MEM_COMMIT</code> 类型内存的，<code>-r</code> 模拟的是分配 <code>MEM_RESERVER</code> 类型内存的。<code>-c</code> 是分配数量，如果不指定，则无限分配。</p>
 </blockquote>
@@ -533,11 +533,11 @@
 <li>确定分配失败时，剩余物理内存+页文件的大小是否足够大。</li>
 </ol>
 <h2 id="明确-AllocationType"><a href="#明确-AllocationType" class="headerlink" title="明确 AllocationType"></a>明确 AllocationType</h2><p>使用 <code>k 3</code> 显示 <code>3</code> 个调用栈帧。栈帧 <code>01</code> 会调用 <code>ntdll!NtAllocateVirtualMemory()</code>，所以栈帧 <code>01</code> 会传递参数给<code>ntdll!NtAllocateVirtualMemory()</code>。使用 <code>ub 00007ffe30492762 L1a</code> 查看相关调用代码，可以发现 <code>AllocationType</code> 保存在 <code>rsp+0x20</code> 的位置，<code>Protect</code> 保存在 <code>rsp+0x28</code> 的位置，前四个参数分别由 <code>rcx, rdx, r8, r9</code> 进行传递。</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/view-AllocationType-param.png" alt="view-AllocationType-param"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/view-AllocationType-param.png" alt="view-AllocationType-param"></p>
 <p>由此，可以确定之前的理解是正确的。 <code>malloc()</code> 调用 <code>ntdll!NtAllocateVirtualMemory()</code> 时，<code>AllocationType</code> 的值是 <code>MEM_COMMIT</code>。</p>
 <h2 id="剩余的内存是否足够大"><a href="#剩余的内存是否足够大" class="headerlink" title="剩余的内存是否足够大"></a>剩余的内存是否足够大</h2><p>因为转储文件只包含当前进程的信息，没有系统级的转储文件，不好确认系统中的其它进程的内存使用情况。但是转储文件的大小已经达到了 <code>18.3GB</code>，本次尝试分配的大小是 <code>923MB</code>，加上 <code>18.3GB</code>，大概是 <code>19GB</code>。</p>
 <p>通过 <code>.time</code> 命令，可以发现系统已经运行了接近 <code>2</code> 天，当前进程已经运行了大概 <code>18.5</code> 个小时。由系统开机时间可以推算，当时应该有不少进程在运行（我的系统上，<code>chrome</code> 和 <code>firefox</code> 基本是常开状态）。</p>
-<p><img src="/articles/crazy-vs2022-allocate-memory-failed-part1/show-system-and-process-running-time.png" alt="show-system-and-process-running-time"></p>
+<p><img src="http://resources.bianchengnan.tech/crazy-vs2022-allocate-memory-failed-part1/show-system-and-process-running-time.png" alt="show-system-and-process-running-time"></p>
 <p>而且在 <code>vs2022</code> 无响应的时候，整个系统确实有些卡顿。以上种种迹象表明，系统当时的内存吃紧。这时候出现内存分配异常，确实合情合理。</p>
 <h2 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h2><p>前几天，客户的程序也遇到了一个类似的问题。她机器上内存紧张的时候，执行程序中的一个功能需要分配 <code>196MB</code> 的内存，由于物理内存不足，失败了。因为我之前已经调查过类似的问题了，在调查客户的问题的时候，非常快速而且有信心。我想这就是写文章记录的价值之一吧！</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -1084,6 +1084,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1179,7 +1201,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1190,7 +1212,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1201,7 +1223,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 《栈大小可以怎么改？》、《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》、《栈又溢出了》、《有趣的异常》。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 P">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/calculate-current-thread-stack-size.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-stack-size-in-vmmap.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/search-MiCheckForUserStackOverflow.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-description.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-key-flow.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-stack-base-and-stack-size.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.811Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/calculate-current-thread-stack-size.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-stack-size-in-vmmap.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/search-MiCheckForUserStackOverflow.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-description.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-key-flow.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-stack-base-and-stack-size.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.226Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何确定线程栈的基址？">
 <meta name="twitter:description" content="缘起很早之前，我遇到过几个与栈相关的问题，当时总结过几篇关于线程栈的文章，分别是 《栈大小可以怎么改？》、《栈局部变量优化探究，意外发现了 vs 的一个 bug ？》、《栈又溢出了》、《有趣的异常》。在这几篇总结中，简单的总结了栈溢出的原因，设置线程栈大小的方法。但是还有一点没弄清楚：操作系统是怎么知道一个线程的栈大小的？一定记录在某个位置了，否则就不能正确的在栈溢出的时候抛出异常了。不能根据 P">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-thread-using-teb-command.png">
 
 
 
@@ -360,8 +360,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -472,34 +472,34 @@
 
 
 <h2 id="teb-命令"><a href="#teb-命令" class="headerlink" title="!teb 命令"></a>!teb 命令</h2><p>相信，很多小伙伴儿都知道，可以使用 <code>!teb</code> 查看线程相关的信息。</p>
-<p><img src="/articles/how-to-check-thread-stack-base/view-thread-using-teb-command.png" alt="view-thread-using-teb-command"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-thread-using-teb-command.png" alt="view-thread-using-teb-command"></p>
 <p>其中的 <code>StackBase</code> 和 <code>StackLimit</code> 分别指示了栈顶和当前栈使用情况。因为栈是从上向下增长的，所以 <code>StackBase</code> 的值比较大。</p>
 <p>我之前一直认为这两个字段分别指向了栈顶和栈底（线程栈可以到达的最低位置），可以通过这两个字段计算出线程栈大小。后来才发现 <code>StackLimit</code> 并没有指向栈底，而是指向了线程栈当前所到达的最低位置。</p>
 <p>线程栈默认的大小是 <code>1MB</code>。如果计算一下 <code>StackBase - StackLimit</code> 的值即可知道，它们的差值是 <code>256KB</code>，而不是 <code>1MB</code>。</p>
-<p><img src="/articles/how-to-check-thread-stack-base/calculate-current-thread-stack-size.png" alt="calculate-current-thread-stack-size"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/calculate-current-thread-stack-size.png" alt="calculate-current-thread-stack-size"></p>
 <p>那么当前线程栈的大小是不是 <code>1MB</code> 呢？该如何确认呢？可以通过 <code>vmmap</code> 确定。</p>
 <h2 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a>vmmap</h2><p>打开 <code>vmmap.exe</code>，并选择想要查看的进程，即可进行查看。</p>
 <blockquote>
 <p><strong>注意：</strong> 当选择的进程已经中断到调试器时，<code>vmmap.exe</code> 会一直等待，需要让目标进程运行起来。</p>
 </blockquote>
-<p><img src="/articles/how-to-check-thread-stack-base/view-stack-size-in-vmmap.png" alt="view-stack-size-in-vmmap"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-stack-size-in-vmmap.png" alt="view-stack-size-in-vmmap"></p>
 <p>可以看到，线程 <code>9804</code> 的线程栈大小确实是 <code>1MB</code>。</p>
 <p>根据以上信息，可以确定 <code>StackLimit</code> 并不是真正的线程栈栈底。那么，栈底位置到底记录在哪里了呢？</p>
 <p>最近在重翻《软件调试》的时候，发现了一个关键函数。</p>
 <h2 id="栈空间自动增长的关键函数"><a href="#栈空间自动增长的关键函数" class="headerlink" title="栈空间自动增长的关键函数"></a>栈空间自动增长的关键函数</h2><p>在第 <code>22</code> 章 <code>22.8.1</code> 节 栈空间的自动增长（<code>P617</code>）中提到了一个关键函数 <code>MiCheckForUserStackOverflow</code>。该函数是判断栈空间能否增长的关键函数。如果知道该函数是如何实现的，就能找到栈底了。</p>
 <p>脑子里很快有了三个选项：<code>google</code> 搜索，<code>ReactOS</code> 和 <code>server03</code> 源码。正好电脑上有源码，不用考虑其它两个选项了。</p>
 <h2 id="参考源码"><a href="#参考源码" class="headerlink" title="参考源码"></a>参考源码</h2><p>知道了函数名，但是还不知道这个函数在哪个文件中实现的。这个简单，在 <code>File Locator</code> 中输入 <code>MiCheckForUserStackOverflow</code>，很快就找到了关键的文件。</p>
-<p><img src="/articles/how-to-check-thread-stack-base/search-MiCheckForUserStackOverflow.png" alt="search-MiCheckForUserStackOverflow"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/search-MiCheckForUserStackOverflow.png" alt="search-MiCheckForUserStackOverflow"></p>
 <p>双击打开 <code>accesschk.c</code>，找到 <code>MiCheckForUserStackOverflow</code>。注释很清晰的解释了这个函数的作用。</p>
-<p><img src="/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-description.png" alt="MiCheckForUserStackOverflow-description"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-description.png" alt="MiCheckForUserStackOverflow-description"></p>
 <blockquote>
 <p><strong>说明：</strong> 该函数的实现在 <code>wrk</code> 中也可以找到，地址是 <a href="https://github.com/mic101/windows/blob/master/WRK-v1.2/base/ntos/mm/acceschk.c。" target="_blank" rel="noopener">https://github.com/mic101/windows/blob/master/WRK-v1.2/base/ntos/mm/acceschk.c。</a></p>
 </blockquote>
 <p>整个函数虽然行数很多，但是有大部分是注释，而且考虑了各种情况。我截取了最关键的部分，如下图：</p>
-<p><img src="/articles/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-key-flow.png" alt="MiCheckForUserStackOverflow-key-flow"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/MiCheckForUserStackOverflow-key-flow.png" alt="MiCheckForUserStackOverflow-key-flow"></p>
 <p>看样子 <code>teb-&gt;DeallocationStack</code> 记录了栈底。 <code>StackBase</code> 减去 <code>teb-&gt;DeallocationStack</code> 的值应该是栈大小（默认是 <code>1MB</code>）。在 <code>windbg</code> 中验证一下。</p>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>在 <code>windbg</code> 中输入如下命令 <code>dt _teb 0043f000 -y DeallocationStack -y NtTib.StackBase</code>，只查看 <code>DeallocationStack</code> 和 <code>NtTib.StackBase</code> 的值。然后计算差值，发现正好是 <code>1MB</code> （<code>0x100000</code>）。</p>
-<p><img src="/articles/how-to-check-thread-stack-base/view-stack-base-and-stack-size.png" alt="view-stack-base-and-stack-size"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-check-thread-stack-base/view-stack-base-and-stack-size.png" alt="view-stack-base-and-stack-size"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p><code>_TEB</code> 结构体的 <code>DeallocationStack</code> 指向线程栈底，而 <code>NtTib.StackLimit</code> 指向的是线程栈当前所到达的最低位置。</p>
 </li>
@@ -892,6 +892,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -980,7 +990,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -991,7 +1001,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1002,7 +1012,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近项目中遇到一个诡异的问题，程序在升级到.net4.6.1后，执行某个功能时会崩溃，提示访问只读内存区。大概规律如下:  debug版不崩溃，release版稳定崩溃。 只有x64位的程序崩溃，32位及anycpu编译出来的程序运行不会崩溃。 出问题的代码范围很小（按钮点击事件代码不多）。  根据以上信息，各位小伙伴有什么思路吗？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/pinvoke-lead-to-memory-corruption/preffer-32-bit.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/pinvoke-lead-to-memory-corruption/effects-of-platform-switch-zh-cn.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/pinvoke-lead-to-memory-corruption/preffer-32-bit.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/pinvoke-lead-to-memory-corruption/effects-of-platform-switch-zh-cn.png">
 <meta property="og:updated_time" content="2019-10-03T11:30:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 调试 PInvoke 导致栈破坏">
 <meta name="twitter:description" content="缘起最近项目中遇到一个诡异的问题，程序在升级到.net4.6.1后，执行某个功能时会崩溃，提示访问只读内存区。大概规律如下:  debug版不崩溃，release版稳定崩溃。 只有x64位的程序崩溃，32位及anycpu编译出来的程序运行不会崩溃。 出问题的代码范围很小（按钮点击事件代码不多）。  根据以上信息，各位小伙伴有什么思路吗？">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/pinvoke-lead-to-memory-corruption/preffer-32-bit.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/pinvoke-lead-to-memory-corruption/preffer-32-bit.png">
 
 
 
@@ -482,8 +482,8 @@
 </li>
 <li><p>为什么运行<code>Any CPU</code>编译出来的程序不崩溃？</p>
 <p>当<code>Platform target</code>是<code>Any CPU</code>的时候，在工程属性，<code>Build</code>下的<code>Prefer 32-bit</code>的选项默认是勾选的，编译的程序会作为32位进程运行，所以不会崩溃。如果取消勾选，则编译出来的程序会作为64位应用程序运行，会崩溃。</p>
-<p><img src="/articles/pinvoke-lead-to-memory-corruption/preffer-32-bit.png" alt="build选项"></p>
-<p>关于<code>Platform target</code>的作用，具体参考<a href="https://book.douban.com/subject/4924165/" target="_blank" rel="noopener">《CLR via C#》</a>，下图是从《CLR via C#》中文版第 4 版上截取的.<br><img src="/articles/pinvoke-lead-to-memory-corruption/effects-of-platform-switch-zh-cn.png" alt="Effects of /platform switch 摘自《CLR via C#》"></p>
+<p><img src="http://resources.bianchengnan.tech/pinvoke-lead-to-memory-corruption/preffer-32-bit.png" alt="build选项"></p>
+<p>关于<code>Platform target</code>的作用，具体参考<a href="https://book.douban.com/subject/4924165/" target="_blank" rel="noopener">《CLR via C#》</a>，下图是从《CLR via C#》中文版第 4 版上截取的.<br><img src="http://resources.bianchengnan.tech/pinvoke-lead-to-memory-corruption/effects-of-platform-switch-zh-cn.png" alt="Effects of /platform switch 摘自《CLR via C#》"></p>
 </li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>.net</code>程序中，令人头疼的堆破坏问题很难出现了，这极大的提高了程序的稳定性。如果出现堆破坏，很有可能跟<a href="https://docs.microsoft.com/zh-cn/dotnet/standard/native-interop/pinvoke" target="_blank" rel="noopener">P/Invoke</a>或者<code>unsafe</code>代码相关，可以重点排查相关代码。</p>
@@ -1032,6 +1032,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1127,7 +1149,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1138,7 +1160,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1149,7 +1171,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

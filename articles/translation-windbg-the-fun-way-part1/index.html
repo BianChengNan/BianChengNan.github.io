@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言Yarden Shafir 分享了两篇非常通俗易懂的，关于 windbg 新引入的调试数据模型的文章。链接如下： part1：https://medium.com/@yardenshafir2/windbg-the-fun-way-part-1-2e4978791f9b part2：https://medium.com/@yardenshafir2/windbg-the-fun-way-par">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part1/translation-permission.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part1/output-of-dx-g-cursession.Processes.Select.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part1/output-of-dx-g-tableEntry-_INVERTED_FUNCTION_TABLE_ENTRY.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part1/dx-inverted-_INVERTED_FUNCTION_TABLE.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.877Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/translation-permission.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/output-of-dx-g-cursession.Processes.Select.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/output-of-dx-g-tableEntry-_INVERTED_FUNCTION_TABLE_ENTRY.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/dx-inverted-_INVERTED_FUNCTION_TABLE.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.686Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="难译 | windbg 乐趣之道（上）">
 <meta name="twitter:description" content="前言Yarden Shafir 分享了两篇非常通俗易懂的，关于 windbg 新引入的调试数据模型的文章。链接如下： part1：https://medium.com/@yardenshafir2/windbg-the-fun-way-part-1-2e4978791f9b part2：https://medium.com/@yardenshafir2/windbg-the-fun-way-par">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/translation-windbg-the-fun-way-part1/translation-permission.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/translation-permission.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -462,7 +462,7 @@
 <ol>
 <li>翻译已征得原作者同意。</li>
 </ol>
-<p><img src="/articles/translation-windbg-the-fun-way-part1/translation-permission.png" alt="translation-permission"></p>
+<p><img src="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/translation-permission.png" alt="translation-permission"></p>
 <ol start="2">
 <li><p>鸽了太久了，对不住原作者</p>
 </li>
@@ -583,7 +583,7 @@
 <p>这看起来已经好多了，但是我们可以使用新的表格视图让它看起来更好（通过 <code>-g</code> 选项）：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dx -g @$cursession.Processes.Select(p =&gt; new &#123;Name = p.Name, ThreadCount = p.Threads.Count()&#125;)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/articles/translation-windbg-the-fun-way-part1/output-of-dx-g-cursession.Processes.Select.png" alt="output-of-dx-g-cursession.Processes.Select"></p>
+<p><img src="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/output-of-dx-g-cursession.Processes.Select.png" alt="output-of-dx-g-cursession.Processes.Select"></p>
 <p>这看起来太棒了。是的，这些标题是可点击的，点击标题会将表格排序！</p>
 <p>如果我们想看到以十进制显示的 <code>PID</code> 和线程数，我们可以在命令的末尾加上 <code>,d</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dx -g @$cursession.Processes.Select(p =&gt; new &#123;Name = p.Name, ThreadCount = p.Threads.Count()&#125;),d</span><br></pre></td></tr></table></figure>
@@ -597,14 +597,14 @@
 <p>现在我们可以创建数组了。不幸的是，数组的大小必须是静态的，不能使用变量，所以我们需要根据 <code>CurrentSize</code> 手动输入（或者将它设置为 <code>256</code>，这是整个数组的大小）。我们可以用表格视图很好地显示它：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dx -g @$tableEntry = *(nt!_INVERTED_FUNCTION_TABLE_ENTRY(*)[0xbe])@$inverted-&gt;TableEntry</span><br></pre></td></tr></table></figure>
 
-<p><img src="/articles/translation-windbg-the-fun-way-part1/output-of-dx-g-tableEntry-_INVERTED_FUNCTION_TABLE_ENTRY.png" alt="output-of-dx-g-tableEntry-_INVERTED_FUNCTION_TABLE_ENTRY"></p>
+<p><img src="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/output-of-dx-g-tableEntry-_INVERTED_FUNCTION_TABLE_ENTRY.png" alt="output-of-dx-g-tableEntry-_INVERTED_FUNCTION_TABLE_ENTRY"></p>
 <p>或者，我们可以使用 <code>Take()</code> 方法来获得相同的结果，该方法接收一个数字并显示指定数量的集合元素：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dx -g @$inverted-&gt;TableEntry-&gt;Take(@$inverted-&gt;CurrentSize)</span><br></pre></td></tr></table></figure>
 
 <p>我们也可以用同样的方法来查看 <code>UserInvertedFunctionTable</code> (在我们切换到非 <code>System</code> 进程的用户态空间后)，从 <code>nt!KeUserInvertedFunctionTable</code> 开始：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dx @$inverted = *(nt!_INVERTED_FUNCTION_TABLE**)&amp;nt!KeUserInvertedFunctionTable</span><br><span class="line"></span><br><span class="line">@$inverted = *(nt!_INVERTED_FUNCTION_TABLE**)&amp;nt!KeUserInvertedFunctionTable                 : 0x7ffa19e3a4d0 [Type: _INVERTED_FUNCTION_TABLE *]</span><br><span class="line">    [+0x000] CurrentSize      : 0x2 [Type: unsigned long]</span><br><span class="line">    [+0x004] MaximumSize      : 0x200 [Type: unsigned long]</span><br><span class="line">    [+0x008] Epoch            : 0x6 [Type: unsigned long]</span><br><span class="line">    [+0x00c] Overflow         : 0x0 [Type: unsigned char]</span><br><span class="line">    [+0x010] TableEntry       [Type: _INVERTED_FUNCTION_TABLE_ENTRY [256]]</span><br><span class="line">    </span><br><span class="line">dx -g @$inverted-&gt;TableEntry-&gt;Take(@$inverted-&gt;CurrentSize)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/articles/translation-windbg-the-fun-way-part1/dx-inverted-_INVERTED_FUNCTION_TABLE.png" alt="dx-inverted-_INVERTED_FUNCTION_TABLE"></p>
+<p><img src="http://resources.bianchengnan.tech/translation-windbg-the-fun-way-part1/dx-inverted-_INVERTED_FUNCTION_TABLE.png" alt="dx-inverted-_INVERTED_FUNCTION_TABLE"></p>
 <p>当然，我们可以使用 <code>Select()</code>、<code>Where()</code> 或者其他函数来过滤、排序或者选择特定的字段进行输出，以得到完全满足我们需求的结果。</p>
 <p>接下来要处理的是列表 —— <code>Windows</code> 中到处都是链表，你可以在任何地方找到它们。进程、线程、模块、<code>DPCs</code>、<code>IRPs</code>、<a href="https://windows-internals.com/lookaside-list-forensics/" target="_blank" rel="noopener">还有更多</a>。</p>
 <p>幸运的是，新数据模型提供了一个非常有用的方法—— <code>Debugger.Utiilty.Collections.FromListEntry</code>，它接收一个链表头，链表中的对象类型和类型中包含 <code>LIST_ENTRY</code> 的字段名称，并返回一个包含所有列表内容的容器。</p>
@@ -985,6 +985,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1073,7 +1083,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1084,7 +1094,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1095,7 +1105,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

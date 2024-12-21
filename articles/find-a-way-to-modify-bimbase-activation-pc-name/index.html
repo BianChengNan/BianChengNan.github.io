@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起相信大家应该都接触过授权码。我们开发时用的程序也需要授权码才能使用，而且一个授权码每次只能在一台机器上激活。当授权码被占用时，会提示授权被某某机器占用了，只有占用授权码的同事迁出后，其它同事才能用。由于某些同事的机器名是随机的字符，不能很快知道是哪位同事在占用授权码。每次遇到授权码被占用的情况，只能在公司群里问，效率特别低。于是，我提意大家把机器名改成自己名字缩写，这样就可以直接知道是哪位同事">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-a-way-to-modify-bimbase-activation-pc-name/activation-code-invalid.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-a-way-to-modify-bimbase-activation-pc-name/capture-net-communication-process-monitor.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.789Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-a-way-to-modify-bimbase-activation-pc-name/activation-code-invalid.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-a-way-to-modify-bimbase-activation-pc-name/capture-net-communication-process-monitor.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.062Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 授权码不知道被谁占用了？不可能的，这辈子都是不可能的">
 <meta name="twitter:description" content="缘起相信大家应该都接触过授权码。我们开发时用的程序也需要授权码才能使用，而且一个授权码每次只能在一台机器上激活。当授权码被占用时，会提示授权被某某机器占用了，只有占用授权码的同事迁出后，其它同事才能用。由于某些同事的机器名是随机的字符，不能很快知道是哪位同事在占用授权码。每次遇到授权码被占用的情况，只能在公司群里问，效率特别低。于是，我提意大家把机器名改成自己名字缩写，这样就可以直接知道是哪位同事">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/find-a-way-to-modify-bimbase-activation-pc-name/activation-code-invalid.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/find-a-way-to-modify-bimbase-activation-pc-name/activation-code-invalid.png">
 
 
 
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -453,10 +453,10 @@
 
 
 <h2 id="授权码被占用"><a href="#授权码被占用" class="headerlink" title="授权码被占用"></a>授权码被占用</h2><p>授权码被占用的错误提示如下图：</p>
-<p><img src="/articles/find-a-way-to-modify-bimbase-activation-pc-name/activation-code-invalid.png" alt></p>
+<p><img src="http://resources.bianchengnan.tech/find-a-way-to-modify-bimbase-activation-pc-name/activation-code-invalid.png" alt></p>
 <p>无法从提示中看出是哪位同事在占用，只能知道授权码是在名为 <code>PC-20180726BIMU</code> 的机器上激活的。</p>
 <h2 id="着手调查"><a href="#着手调查" class="headerlink" title="着手调查"></a>着手调查</h2><p>猜测可能会连接服务器进行激活（左侧的<strong>在线激活</strong>选项是选中状态）。首先想到使用 <code>wireshark</code> 抓包，但是目前并不知道激活服务器地址及通信端口号，需要先使用  <code>process monitor</code> 进行定位。轻车熟路的打开 <code>process monitor</code>，很快就拿到了关键的记录。</p>
-<p><img src="/articles/find-a-way-to-modify-bimbase-activation-pc-name/capture-net-communication-process-monitor.png" alt></p>
+<p><img src="http://resources.bianchengnan.tech/find-a-way-to-modify-bimbase-activation-pc-name/capture-net-communication-process-monitor.png" alt></p>
 <p>虽然从图中可以知道服务器地址、端口号等信息，但是在 <code>process monitor</code> 中并不能看到具体的通信内容。由于使用的是 <code>http</code> 协议，可以尝试使用 <code>Wireshark</code> 抓个包看看（要是 <code>https</code> 我就直接放弃了），万一能看出点什么呢。使用 <code>wireshark</code> 抓好包后，查看通信内容。虽然使用的是 <code>http</code> 协议，但是关键信息被加密了，没发现什么线索。只能另寻他路了。想了一会，没想到好办法，逆向是不可能逆向的（我只是想知道为什么提示的机器名不是修改后的机器名，而不是要破解）。看来只能……</p>
 <h2 id="猜猜猜"><a href="#猜猜猜" class="headerlink" title="猜猜猜"></a>猜猜猜</h2><p>其实，从开始排查之前就在猜。最开始的猜想是：授权信息记录在激活机器的注册表或者配置文件中。但是仔细想想又不太合理，如果占用授权码的机器关机了呢？岂不是没法获取相关信息了？</p>
 <p>如果没记录在激活机器上，那相关信息应该记录在授权服务器上了。会记录哪些信息呢？显然应该记录了机器名。如果机器名重名了呢？应该还会存储一个硬件信息用来区分不同机器。这个硬件信息可能是 <code>mac</code> 地址或者是 <code>cpuid</code>。当然，还有可能是其它硬件信息。</p>
@@ -921,6 +921,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1009,7 +1019,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1020,7 +1030,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1031,7 +1041,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

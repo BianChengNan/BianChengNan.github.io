@@ -96,19 +96,19 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言前一阵子，使用小乌龟（TortoiseGit）提交代码的时候，错误的 Revert 了部分代码，本文记录了找回这部分代码的过程。文章标题致敬张银奎老师《格蠹汇编》的第一章 —— 从堆里抢救丢失的博客。  说明： 本文的截图都是我用新建的示例工程截取的。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/source-difference.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/revert-source.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/reload-modified-file.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/dump-tortoisegit.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/search-keyword.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/du-1.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/du-2.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/writemem.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/source-difference.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/revert-source.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/reload-modified-file.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/dump-tortoisegit.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/search-keyword.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/du-1.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/du-2.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/writemem.png">
 <meta property="og:updated_time" content="2020-04-19T12:44:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 从堆里找回“丢失”的代码">
 <meta name="twitter:description" content="前言前一阵子，使用小乌龟（TortoiseGit）提交代码的时候，错误的 Revert 了部分代码，本文记录了找回这部分代码的过程。文章标题致敬张银奎老师《格蠹汇编》的第一章 —— 从堆里抢救丢失的博客。  说明： 本文的截图都是我用新建的示例工程截取的。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/find-my-lost-code-back-with-the-help-of-windbg/source-difference.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/source-difference.png">
 
 
 
@@ -474,29 +474,29 @@
 
 <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>最近，程序运行的时候，执行某个功能会崩溃，根据经验猜测，应该是序列化，反序列化的问题。由于手里没有关键的 <code>pdb</code>，调试起来比较费劲，而且项目比较急，暂时先不使用这个功能。准备先提交其它功能的代码。</p>
 <h2 id="大意失荆州"><a href="#大意失荆州" class="headerlink" title="大意失荆州"></a>大意失荆州</h2><p>按照惯例，提交之前先检查一下提交内容。（p.s. 这是个好习惯）</p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/source-difference.png" alt="后截的图"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/source-difference.png" alt="后截的图"></p>
 <p>发现有一部分代码会导致序列化有问题。一激动（当时被那个崩溃问题搞得很烦躁），点击了<code>Revert...</code>。</p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/revert-source.png" alt="revert-source"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/revert-source.png" alt="revert-source"></p>
 <p>点完了就后悔了 —— 这段代码是为其它功能写的，应该保留。由于在提交代码前，关闭了<code>vs</code> ，没办法通过 <code>vs</code> 找回了。 </p>
 <blockquote>
 <p><strong>说明：</strong>如果文件在 <code>vs</code> 外部被修改，<code>vs</code> 会给出类似下图的提示，这时候我们选 <code>No</code> 不重新加载就可以了。</p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/reload-modified-file.png" alt="reload-modified-file"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/reload-modified-file.png" alt="reload-modified-file"></p>
 </blockquote>
 <p>这可是我辛辛苦苦，一行一行敲出来的啊。就这么 “丢了” 吗？丢是不可能丢的，这辈子都不可能丢的。</p>
 <h2 id="峰回路转"><a href="#峰回路转" class="headerlink" title="峰回路转"></a>峰回路转</h2><p>幸亏没有烦躁到直接干掉小乌龟。想起张老师的《格蠹汇编》第一章就是 “从堆里抢救丢失的博客”，讲的是使用 <code>windbg</code> 从浏览器中找回未能成功发表的博文的故事。赶紧使用 <code>windbg</code> 附加到小乌龟上。先用 <code>.dump /ma e:\dumps\tortoisegit.dmp</code> 保存一份完整转储。</p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/dump-tortoisegit.png" alt="保存完整转储"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/dump-tortoisegit.png" alt="保存完整转储"></p>
 <p>有了转储文件，即使关闭小乌龟也不怕了！稍微平复下我跌宕起伏的内心，应该用哪个命令搜索内存呢？很早之前从张老师的文章里了解到  <code>s</code> 命令可以搜索内存。加之，前一段日志刚好尝试解决过类似的问题，做了笔记。很快就把上次整理好的命令粘贴到 <code>windbg</code> 中进行查找。</p>
 <h2 id="搜寻关键字"><a href="#搜寻关键字" class="headerlink" title="搜寻关键字"></a>搜寻关键字</h2><p>有印象的关键字是 <code>args.Contains(&quot;--all&quot;)</code>。在 <code>windbg</code> 中输入 <code>!address -f:heap,PAGE_READWRITE -c:&quot;s -u %1 %2 args.Contains(\&quot;--all\&quot;)&quot;</code> </p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/search-keyword.png" alt="搜寻关键字"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/search-keyword.png" alt="搜寻关键字"></p>
 <p>搜到两处，分别使用 <code>du</code> 命令查看这两处的内容。</p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/du-1.png" alt="查看第一个地址"></p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/du-2.png" alt="查看第二个地址"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/du-1.png" alt="查看第一个地址"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/du-2.png" alt="查看第二个地址"></p>
 <p>明显第一处的内容比较全，选用第一处的地址进行进一步的搜索。如果能找到文件的开始和结束就最好了。经过简单的尝试，找到了开始和结束的地址。截图的话会比较长，这里就不截图了。开始地址是 <code>0000022f``dae8e5f8-0x3538</code>，结束地址是 <code>0000022f``dae8f030</code>。</p>
 <blockquote>
 <p><strong>说明：</strong> 也可以直接使用命令 s -u 0x0 L?0xffffffff`ffffffff “args.Contains(&quot;–all&quot;)”，更简单明了。</p>
 </blockquote>
 <h2 id="保存到文件"><a href="#保存到文件" class="headerlink" title="保存到文件"></a>保存到文件</h2><p>知道开始地址和结束地址了，剩下的就是如何把对应的内容保存到文件中了。<code>windbg</code> 已经为我们准备好了一条命令 —— <code>.writemem</code>。输入：<code>.writemem e:\dumps\tortoisegit.cs 0000022f``dae8e5f8-0x3538 0000022f``dae8f030</code> 即可把指定范围的数据保存到文件中。</p>
-<p><img src="/articles/find-my-lost-code-back-with-the-help-of-windbg/writemem.png" alt="保存到文件"></p>
+<p><img src="http://resources.bianchengnan.tech/find-my-lost-code-back-with-the-help-of-windbg/writemem.png" alt="保存到文件"></p>
 <p>查看保存的文件，果然是对应的文件内容！比较长，这里就不放截图了。</p>
 <h2 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h2><ul>
 <li><p>一定要养成一个良好的版本管理习惯。开发新功能的时候，最好建立一个新分支，并且随时把变更提交。等开发完了，再合并回主分支，并删掉功能分支。如果我遵循了这个原则的话，就不会出现这种问题了。当然，也不会有本篇总结了。</p>
@@ -897,6 +897,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -985,7 +995,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -996,7 +1006,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1007,7 +1017,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

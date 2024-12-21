@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，我们程序的某个功能在一台机器上不正常，但是在另外一台机器上却是正常的。代码是同一份，vs版本也一样（打的补丁也一样）。编译出来的程序在两台电脑上运行的结果就是不一样。惊不惊喜，意不意外？如果是你遇到了这种情况，你会怎么调查呢？:upside_down_face:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-malfunction-using-sysinternals/class-of-events.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-malfunction-using-sysinternals/filesystem-event-compare.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-malfunction-using-sysinternals/regsvr32-u.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-malfunction-using-sysinternals/procexp-good.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/troubleshoot-malfunction-using-sysinternals/procexp-bad.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/class-of-events.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/filesystem-event-compare.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/regsvr32-u.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/procexp-good.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/procexp-bad.gif">
 <meta property="og:updated_time" content="2019-11-16T14:42:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排错实战 | 通过对比分析 sysinternals 事件修复程序功能异常">
 <meta name="twitter:description" content="缘起最近，我们程序的某个功能在一台机器上不正常，但是在另外一台机器上却是正常的。代码是同一份，vs版本也一样（打的补丁也一样）。编译出来的程序在两台电脑上运行的结果就是不一样。惊不惊喜，意不意外？如果是你遇到了这种情况，你会怎么调查呢？:upside_down_face:">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/troubleshoot-malfunction-using-sysinternals/class-of-events.jpg">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/class-of-events.jpg">
 
 
 
@@ -479,26 +479,26 @@
 <li><code>Profiling Event</code>（我没用过，具体可参考书上的介绍）</li>
 </ul>
 <p>为了方便大家获得更详细的介绍，特意从《Troubleshooting with the Windows Sysinternals Tools》（英文版）中截了一张图：</p>
-<p><img src="/articles/troubleshoot-malfunction-using-sysinternals/class-of-events.jpg" alt="class of events 截自《Troubleshooting with the Windows Sysinternals Tools》（英文版）"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/class-of-events.jpg" alt="class of events 截自《Troubleshooting with the Windows Sysinternals Tools》（英文版）"></p>
 <h2 id="捕获Event-data"><a href="#捕获Event-data" class="headerlink" title="捕获Event data"></a>捕获<code>Event data</code></h2><p>首先，使用<code>process monitor</code>分别在<code>A</code>和<code>B</code>上捕获<code>Event Data</code>。这里不贴出使用<code>process monitor</code>捕获的过程了。操作很简单，在之前的文章（<a href="../config-symbols-for-ida/">[原]为IDA加载调试符号</a>）里有录屏。</p>
 <p>好了，拿到了<code>Event Data</code>（ <a href="/downloads/troubleshoot-malfunction-using-sysinternals-event-data.zip">点击下载我保存的Event Data</a> ），接下来我们应该怎么对比呢？</p>
 <h2 id="对比分析Event-Data"><a href="#对比分析Event-Data" class="headerlink" title="对比分析Event Data"></a>对比分析<code>Event Data</code></h2><p>在对比前，我们应该过滤掉无关的事件（因为<code>process monitor</code>捕获到的事件实在是太多了），这里我只根据进程名进行了基本的过滤。</p>
 <p>过滤完成后，我们从五类事件中的<code>File System</code>事件看起（没想到直接解决了问题，剩下几个不用看了:smirk:）。</p>
 <p>对比图如下（左侧是<code>A</code>，右侧是<code>B</code>）：</p>
-<p><img src="/articles/troubleshoot-malfunction-using-sysinternals/filesystem-event-compare.jpg" alt="filesystem-event-compare"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/filesystem-event-compare.jpg" alt="filesystem-event-compare"></p>
 <p><strong>Wow</strong>, 从图中我们明显可以看出来，<code>A</code>成功加载了<code>pgcell.ocx</code>，<code>B</code>没有加载。有<code>windows COM组件</code>开发经验的读者一定想到了，<code>B</code>上没注册<code>pgcell.ocx</code>。</p>
 <h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>知道问题的原因，剩下的事情就很好办了。在<code>B</code>上注册<code>pgcell.ocx</code>。注册成功后，在程序里重新执行对应的功能，一切正常。搞定收工。</p>
 <p>为了方便对<code>windows COM组件</code>开发不熟悉的读者，这里给出注册脚本（<code>#</code>后面的是注释） 。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> path/to/pgcell.ocx</span><br><span class="line">regsvr32 pgcell.ocx</span><br><span class="line"><span class="comment"># regsvr32 -u pgcell.ocx  # unregister pgcell.ocx</span></span><br></pre></td></tr></table></figure>
 
 <p>关于<code>regsvr32</code>的更多用法，可以直接运行<code>regsvr32</code>进行学习。在我机器上运行后的截图如下：</p>
-<p><img src="/articles/troubleshoot-malfunction-using-sysinternals/regsvr32-u.jpg" alt="regsvr32-u"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/regsvr32-u.jpg" alt="regsvr32-u"></p>
 <p>通过<code>regsvr32</code>给出的提示，相信聪明的你也可以自己写一个<code>COM组件</code>的注册和卸载工具。如果对这方面有兴趣，欢迎留言交流。</p>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>最开始帮同事解决这个问题的时候，没有用<code>process monitor</code>，而是使用了<code>process explorer</code>。在继续阅读下面的文章前，请先停下来好好思考一下，如何使用<code>process explorer</code>排查此问题？</p>
 <p>和使用<code>process monitor</code>一样，我们需要对比程序在<code>A</code>和<code>B</code>上有什么不同。话不多说，请看动态对比图：</p>
 <p><code>A</code>上的运行过程：</p>
-<p><img src="/articles/troubleshoot-malfunction-using-sysinternals/procexp-good.gif" alt="good"></p>
-<p><code>B</code>上的运行过程：<br><img src="/articles/troubleshoot-malfunction-using-sysinternals/procexp-bad.gif" alt="bad"></p>
+<p><img src="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/procexp-good.gif" alt="good"></p>
+<p><code>B</code>上的运行过程：<br><img src="http://resources.bianchengnan.tech/troubleshoot-malfunction-using-sysinternals/procexp-bad.gif" alt="bad"></p>
 <p>我们可以发现，<code>A</code>上能成功加载<code>pgcell.ocx</code>，<code>B</code>却没有加载。</p>
 <p>能使用<code>process explorer</code>解决这个问题，多少有运气的成分！因为这个问题恰巧是由于加载不上某个<code>dll</code>导致的。如果是由于其它原因（e.g. 读取不到某个关键文件），使用<code>process explorer</code>就没那么容易发现问题所在了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
@@ -972,6 +972,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1060,7 +1070,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1071,7 +1081,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1082,7 +1092,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

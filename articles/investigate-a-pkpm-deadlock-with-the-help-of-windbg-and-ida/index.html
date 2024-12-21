@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,dump,windbg,IDA,转储,hang,事后分析,逆向,">
+  <meta name="keywords" content="原,总结,调试,windbg,dump,IDA,转储,hang,事后分析,逆向,">
 
 
 
@@ -89,37 +89,37 @@
 
 
 <meta name="description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
-<meta name="keywords" content="原,总结,调试,dump,windbg,IDA,转储,hang,事后分析,逆向">
+<meta name="keywords" content="原,总结,调试,windbg,dump,IDA,转储,hang,事后分析,逆向">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">
 <meta property="og:url" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sleepconditionvariablecs-on-ui-thread.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sendmessage-on-work-thread.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/deadlock-origin.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-frame-5-on-ui-thread.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handlepaint-function-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-sub_7FEDAC749A0-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendToWorkThread-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-MakeMobileDgnRPCMessage-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendAsyncToWorkThread-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handleRpcMessage-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-7.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-function.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/get-module-start-address-and-function-offset.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/rebase-program-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-work-thread-runthread-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/search-rpcmsg-object-in-windbg.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-queue-manger-in-windbg.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/matched-search-result.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.830Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sleepconditionvariablecs-on-ui-thread.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sendmessage-on-work-thread.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/deadlock-origin.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-frame-5-on-ui-thread.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handlepaint-function-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-sub_7FEDAC749A0-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendToWorkThread-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-MakeMobileDgnRPCMessage-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendAsyncToWorkThread-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handleRpcMessage-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-7.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-function.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/get-module-start-address-and-function-offset.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/rebase-program-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-work-thread-runthread-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/search-rpcmsg-object-in-windbg.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-queue-manger-in-windbg.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/matched-search-result.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 通过转储文件分析程序无响应之使用 windbg + IDA 逆向篇">
 <meta name="twitter:description" content="缘起最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 dump 进行事后分析了。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif">
 
 
 
@@ -372,8 +372,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -464,7 +464,7 @@
       
 
       
-        <p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif" alt="ida-f5-good"></p>
+        <p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/ida-f5-good.gif" alt="ida-f5-good"></p>
 <h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>最近，接连在项目中遇到了两个界面无响应的问题。都只发生在客户特定机器上，不方便直接调试，只能抓取 <code>dump</code> 进行事后分析了。</p>
 <a id="more"></a>
 
@@ -473,14 +473,14 @@
 <h2 id="抓取-dump"><a href="#抓取-dump" class="headerlink" title="抓取 dump"></a>抓取 dump</h2><p>远程连上可以重现问题的机器，使用 <code>process explorer</code> 初步观察卡死的进程，发现 <code>CPU</code> 占用率很低，经过一段时间的观察，基本确定是一个死锁问题。 在卡死的进程上右键，保存完整转储，压缩，发回本地进行分析。</p>
 <h2 id="使用-windbg-进行分析"><a href="#使用-windbg-进行分析" class="headerlink" title="使用 windbg 进行分析"></a>使用 windbg 进行分析</h2><p>双击抓取的 <code>dump</code> 文件，因为之前已经执行过 <code>windbg.exe -IA</code>，所以默认会通过 <code>windbg</code> 打开 <code>dump</code> 文件。先使用 <code>~*kvn</code> 粗略浏览一下每个线程的调用栈（因为比较长，这里就不截图了）。经过观察，很快锁定了两个值得进一步查看的线程：一个是主线程（界面线程），因为是界面无响应，肯定要关注界面线程。另外一个是 <code>7</code> 号工作线程。分别看一下这两个线程的调用栈。</p>
 <p>主线程的调用栈如下图所示：</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sleepconditionvariablecs-on-ui-thread.png" alt="sleepconditionvariablecs-on-ui-thread"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sleepconditionvariablecs-on-ui-thread.png" alt="sleepconditionvariablecs-on-ui-thread"></p>
 <p>注意上图红色高亮部分，主线程通过 <code>SleepConditionVariableCS()</code> 进入等待。</p>
 <p>看完主线程，再看 <code>7</code> 号工作线程的调用栈，如下图所示：</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sendmessage-on-work-thread.png" alt="sendmessage-on-work-thread"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/sendmessage-on-work-thread.png" alt="sendmessage-on-work-thread"></p>
 <p> <code>7</code> 号线程对 <code>SendMessage()</code> 的调用非常值得怀疑。</p>
 <p>猜测整个流程是这样的：主线程不知由于什么原因进入等待状态，而工作线程由于各种各样的原因也进入了等待状态。其中 <code>7</code> 号线程最明显，因为它正在发消息，而主线程此时是无论如何也不会响应这个消息的。</p>
 <p>于是，典型的死锁再一次发生了。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/deadlock-origin.png" alt="deadlock-origin">加载 </p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/deadlock-origin.png" alt="deadlock-origin">加载 </p>
 <p>加载 <code>AssemblyDesign_Tools.dll</code> 的符号后，查看对应的源码，消除对 <code>SendMessage()</code> 的调用，问题解决！<code>so easy!</code></p>
 <blockquote>
 <p><em>说明：工作线程中并没有直接调用 <code>SendMessage()</code>，而是调用了操作界面的相关 <code>API</code>，间接调用了 <code>SendMessage()</code>  给界面线程发消息。</em></p>
@@ -490,44 +490,44 @@
 <p>这个死锁问题不像关键段死锁解决起来那么直接。不能直接通过命令（<code>!cs -l</code>），或者查看调用栈就能直接理出头绪。看来只能硬着头皮逆向分析相关代码了。</p>
 <p> <code>0</code> 号线程和 <code>7</code> 号线程最值得怀疑，其它线程基本可以排除。先看看主线程为什么会等待吧。</p>
 <h2 id="主线程逻辑"><a href="#主线程逻辑" class="headerlink" title="主线程逻辑"></a>主线程逻辑</h2><p>找到调用 <code>BentleyG!Bentley::BeConditionVariable::WaitOnCondition()</code>  的地方，也就是 <code>5</code> 号栈帧。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-frame-5-on-ui-thread.png" alt="view-frame-5-on-ui-thread"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-frame-5-on-ui-thread.png" alt="view-frame-5-on-ui-thread"></p>
 <p>在 <code>IDA</code> 中打开 <code>MobileDgn.dll</code>，并找到这个函数，然后按下神奇的 <code>F5</code>：</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handlepaint-function-in-ida.png" alt="view-handlepaint-function-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handlepaint-function-in-ida.png" alt="view-handlepaint-function-in-ida"></p>
 <p>可以看到，主线程在陷入等待之前，向工作线程发送了一个任务，也就是 <code>sub_7FEDAC749A0</code>，传递的参数是 <code>v5</code>。<code>v5</code> 偏移 <code>88</code> 的位置保存了 <code>BeConditonVariable</code> 类型的变量，也就是 <code>WaitOnCondition()</code> 所等待的变量。猜测：<code>sub_7FEDAC749A0</code> 内部会唤醒这个<code>BeConditionVariable</code>， 如果 <code>sub_7FEDAC749A0</code> 被顺利执行，那么主线程的等待自然就结束了。</p>
 <p>先看看 <code>sub_7FEDAC749A0</code> 的反汇编代码，当然是直接看 <code>F5</code> 后的伪代码了。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-sub_7FEDAC749A0-in-ida.png" alt="view-sub_7FEDAC749A0-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-sub_7FEDAC749A0-in-ida.png" alt="view-sub_7FEDAC749A0-in-ida"></p>
 <p>可以很明显的看到 <code>sub_7FEDAC749A0</code> 内部调用了 <code>Bentley::BeConditionVariable::Wake((CMFCRibbonInfo::XElementButtonUndo *)((char *)v1 + 88), 1);</code> 。</p>
 <p>从函数名就可以猜到是用来唤醒 <code>BeConditionVariable</code> 的。</p>
 <p>如此看来，<code>sub_7FEDAC749A0</code> 很有可能还没有被执行，工作线程就挂起了。一起来看看 <code>SendToWorkThread</code> 是怎么把任务发送到工作线程的。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendToWorkThread-in-ida.png" alt="view-SendToWorkThread-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendToWorkThread-in-ida.png" alt="view-SendToWorkThread-in-ida"></p>
 <p><code>SendToWorkThread()</code>  会先判断是否在工作线程运行，如果是则直接执行对应的函数，否则就根据参数生成一个 <code>RpcMessage</code> ，然后发送这个新生成的 <code>RpcMessage</code> 到工作线程的任务队列中。</p>
 <p>再来看一下生成 <code>RpcMessage</code> 的函数，我把这个函数命名为 <code>MakeMobileDgnRPCMessage()</code>。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-MakeMobileDgnRPCMessage-in-ida.png" alt="view-MakeMobileDgnRPCMessage-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-MakeMobileDgnRPCMessage-in-ida.png" alt="view-MakeMobileDgnRPCMessage-in-ida"></p>
 <p>一定要记住这里的关键信息，后面会根据这里的关键信息验证。 <code>HandlePaint()</code> 传过来的函数地址是 <code>0x7FEDAC749A0</code>，保存在了 <code>rpcMsg</code> 偏移 <code>128</code> 的位置。<code>MobileDgnRPCGenericMessage</code> 类的虚表地址是 <code>000007FEDAD19658</code>。</p>
 <p>继续追踪 <code>SendAsynToWorkThread()</code>，如下图：</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendAsyncToWorkThread-in-ida.png" alt="view-SendAsyncToWorkThread-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-SendAsyncToWorkThread-in-ida.png" alt="view-SendAsyncToWorkThread-in-ida"></p>
 <p>继续追踪 <code>HandleRpcMessage()</code>（这个名字是我命名的，不是 <code>IDA</code> 识别的），传给它的第一个参数是一个全局变量（姑且命名为 <code>g_taskQueueManager</code>），第二个参数是要发送的 <code>rpcMsg</code>，第三个参数 <code>v3</code> 的值是 <code>2</code>，第四个参数是 <code>1</code>。</p>
 <p>这个函数比较长，我只逆了个大概，大体思路是先检查是否存在，不存在则插入。如果队列已经满了，需要等待工作线程从队列中取走一些任务才返回。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handleRpcMessage-in-ida.png" alt="view-handleRpcMessage-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-handleRpcMessage-in-ida.png" alt="view-handleRpcMessage-in-ida"></p>
 <p>至此，基本理清了主线程相关的逻辑。大体是这样的：主线程在处理 <code>HandlePaint()</code> 的时候，先发送一个任务给工作线程，（通过 <code>SendToWorkThread()</code> 发送到工作线程的任务队列中），然后通过 <code>BeConditionVariable::WaitOnCondition()</code> 等待这个任务结束。</p>
 <p>看完界面线程，再来再看 <code>7</code> 号工作线程的相关逻辑。</p>
 <h2 id="工作线程逻辑"><a href="#工作线程逻辑" class="headerlink" title="工作线程逻辑"></a>工作线程逻辑</h2><p><code>7</code> 号工作线程，只需要关心 <code>9</code> 号栈帧对应的函数。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-7.png" alt="work-thread-7"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-7.png" alt="work-thread-7"></p>
 <p>注意，<code>_RunThread+0x1a3c</code>，这个偏移有点大。由于缺少符号，这里很有可能只是以 <code>_RunThread</code> 作为参照得到的一个偏移，实际对应的是另外一个函数的代码。使用 <code>ub</code> 向前查看反汇编，很快定位到正确的函数首地址。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-function.png" alt="work-thread-function"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/work-thread-function.png" alt="work-thread-function"></p>
 <p>从上图可知，<code>9</code> 号栈帧对应的函数起始地址是 <code>000007fe dac5fee0</code>。怎么在 <code>IDA</code> 中找到这个函数呢？如果知道这个函数相对于其所在模块的偏移，就可以算出在 <code>IDA</code> 中的地址了。该怎么获取这个地址对应的模块基址呢？在 <code>windbg</code> 中执行 <code>lma address</code> 就可以知道一个地址对应的模块信息了。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/get-module-start-address-and-function-offset.png" alt="get-module-start-address-and-function-offset"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/get-module-start-address-and-function-offset.png" alt="get-module-start-address-and-function-offset"></p>
 <p>得到模块基址（<code>0x000007fe dac10000</code>）后，可以很简单的计算出偏移量为 <code>0x4fee0</code>。有了这些信息就可以在 <code>IDA</code> 中找到这个函数了。</p>
 <blockquote>
 <p>小贴士：也可以在 <code>IDA</code> 中调整模块基址，使其与 <code>windbg</code> 保持一致。这样就不用根据偏移在 <code>IDA</code> 中手动计算地址了。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/rebase-program-in-ida.png" alt="rebase-program-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/rebase-program-in-ida.png" alt="rebase-program-in-ida"></p>
 </blockquote>
 <p>得到要查看的函数地址后（我在 <code>IDA</code> 中执行了 <code>Rebase program</code>，所以是 <code>000007fe dac10000</code>），在 <code>IDA</code> 中直接按快捷键 <code>g</code>，输入地址后即可跳转到输入的地址处。</p>
 <blockquote>
 <p><em>注意：如果在 <code>IDA</code> 中以 <code>16</code> 进制输入地址，请加上 <code>0x</code> 前缀，而且不要带重音连接符。</em></p>
 </blockquote>
 <p>再次按下神奇的 <code>F5</code> ：</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-work-thread-runthread-in-ida.png" alt="view-work-thread-runthread-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-work-thread-runthread-in-ida.png" alt="view-work-thread-runthread-in-ida"></p>
 <p>至此，工作线程的逻辑也理清了。简单总结如下：工作线程是一个循环，不断从任务队列取任务执行，如果设置了唤醒标记位，那么需要在执行完任务函数后，唤醒等待的线程。</p>
 <h2 id="验证猜想"><a href="#验证猜想" class="headerlink" title="验证猜想"></a>验证猜想</h2><p>好了，花费了这么多精力终于理清了主线程和工作线程的交互逻辑。目的只有一个，就是为了更好的验证之前的猜想：工作线程还没有来得及执行主线程过来的任务就挂起了。</p>
 <p>如果猜测是正确的，那么工作线程的任务队列中应该还保留着这个未执行的任务。接下来的任务就是来找到这个未执行的任务。</p>
@@ -535,12 +535,12 @@
 <p>在 <code>windbg</code> 中输入命令 <code>s -q 0 L?fffffffffffffff 000007FEDAD19658</code>，根据虚表地址搜寻 <code>MobileDgnRPCGenericMessage</code> 类型的对象。找到了两条符合条件的记录。</p>
 <p>再输入 <code>s -q 0 L?fffffffffffffff 7FEDAC749A0</code> 根据 <code>sub_7FEDAC749A0</code> 的地址搜寻包含这个地址的对象。找到四条符合条件的记录。</p>
 <p>我们关心的是这两次搜寻结果相差 <code>128</code> 的记录（因为根据之前的分析，<code>workProc</code> 存储在偏移为 <code>128</code> 的位置）。经过肉眼观察及在 <code>windbg</code> 中计算（<code>? 00000000300b4ea0 - 00000000300b4f20</code>），得到了一个符合条件的对象的地址 <code>00000000 300b4ea0</code>。整个过程如下图：</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/search-rpcmsg-object-in-windbg.png" alt="search-rpcmsg-object-in-windbg"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/search-rpcmsg-object-in-windbg.png" alt="search-rpcmsg-object-in-windbg"></p>
 <p>找到了满足上面条件的对象地址，还需要确认这个对象是否在工作线程的任务队列中。工作线程的任务队列由全局变量 <code>g_taskQueueManager</code> 管理，该变量是一个指针，指针所在的地址是 <code>000007FEDADAA380</code>，指针的值是 <code>00000000024d9fa0</code>。</p>
 <p>根据之前的分析猜测，偏移为 <code>8</code> 的位置记录了任务队列的开始位置，偏移 <code>16</code> 的位置记录了任务队列的结束位置，偏移 <code>24</code> 的位置记录了任务队列缓冲区结尾的位置，这个任务队列很有可能是通过 <code>vector</code> 管理的。在 <code>windbg</code> 中查看 <code>g_taskQueueManager</code> 的内容。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-queue-manger-in-windbg.png" alt="view-queue-manger-in-windbg"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/view-queue-manger-in-windbg.png" alt="view-queue-manger-in-windbg"></p>
 <p>查看任务队列起始位置保存的记录信息，输入 <code>dq 0000000037e33ce0</code>，然后与 <code>s -q 0 L?fffffffffffffff 00000000300b4ea0</code> 得到的搜索记录对比，发现有一条是吻合的。</p>
-<p><img src="/articles/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/matched-search-result.png" alt="matched-search-result"></p>
+<p><img src="http://resources.bianchengnan.tech/investigate-a-pkpm-deadlock-with-the-help-of-windbg-and-ida/matched-search-result.png" alt="matched-search-result"></p>
 <p>看来，主线程发送给工作线程的任务确实还没有被执行，工作线程就挂起了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个偶发的挂起 <code>bug</code> 终于算是解决了。整个过程多亏了强大的 <code>IDA</code> 的强力支持。使整个分析过程简单了 <code>N</code> 倍。最后，对整个分析过程中用到的技术点做一个简单的总结：</p>
 <ul>
@@ -609,9 +609,9 @@
           
             <a href="/tags/调试/" rel="tag"><i class="fa fa-tag"></i> 调试</a>
           
-            <a href="/tags/dump/" rel="tag"><i class="fa fa-tag"></i> dump</a>
-          
             <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
+          
+            <a href="/tags/dump/" rel="tag"><i class="fa fa-tag"></i> dump</a>
           
             <a href="/tags/IDA/" rel="tag"><i class="fa fa-tag"></i> IDA</a>
           
@@ -1099,6 +1099,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1194,7 +1216,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1205,7 +1227,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1216,7 +1238,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

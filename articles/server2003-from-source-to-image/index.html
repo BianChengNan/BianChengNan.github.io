@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言最近跟着国外大佬的视频，从头到尾编译了一遍 server2003。特地把整个过程录制了下来，记录了把 server2003 源码打包成镜像的完整过程，主要分为：环境搭建，编译，验证三个部分。 本文及视频仅用于技术交流，请勿用于非法用途。如有侵权，请联系我删除。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/server2003-from-source-to-image/razzle-shortcut.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/server2003-from-source-to-image/build-result.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/server2003-from-source-to-image/check-postbuild-error.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/server2003-from-source-to-image/check-postbuild-error-again.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.854Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/server2003-from-source-to-image/razzle-shortcut.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/server2003-from-source-to-image/build-result.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/server2003-from-source-to-image/check-postbuild-error.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/server2003-from-source-to-image/check-postbuild-error-again.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.552Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="server03 从源码到镜像">
 <meta name="twitter:description" content="前言最近跟着国外大佬的视频，从头到尾编译了一遍 server2003。特地把整个过程录制了下来，记录了把 server2003 源码打包成镜像的完整过程，主要分为：环境搭建，编译，验证三个部分。 本文及视频仅用于技术交流，请勿用于非法用途。如有侵权，请联系我删除。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/server2003-from-source-to-image/razzle-shortcut.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/server2003-from-source-to-image/razzle-shortcut.png">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -481,7 +481,7 @@
 <li><p>新建 <code>razzle.cmd</code> 快捷方式。</p>
 <p>设置 <code>Target</code> 的值为 <code>%windir%\system32\cmd.exe /k d:\srv03rtm\tools\razzle.cmd free offline</code>。</p>
 <p>设置 <code>Start in</code> 的值为<code>d:\srv03rtm\</code>。</p>
-<p><img src="/articles/server2003-from-source-to-image/razzle-shortcut.png" alt="razzle-shortcut"></p>
+<p><img src="http://resources.bianchengnan.tech/server2003-from-source-to-image/razzle-shortcut.png" alt="razzle-shortcut"></p>
 </li>
 <li><p>双击新建的 <code>razzle</code> 快捷方式，执行一段时间后会弹出记事本界面，直接关闭即可。</p>
 </li>
@@ -494,7 +494,7 @@
 <li><p>确认编译结果！编译完成后，不应该有任何错误，只会有一些警告，如果有错误，说明前面某个步骤出错了。</p>
 </li>
 </ul>
-<p><img src="/articles/server2003-from-source-to-image/build-result.png" alt="build-result"></p>
+<p><img src="http://resources.bianchengnan.tech/server2003-from-source-to-image/build-result.png" alt="build-result"></p>
 <p>编译成功后就可以开始准备打包了。</p>
 <ul>
 <li><p>解压 <code>missing.7z</code> 中的文件到 <code>d:\binaries.x86fre</code> 下。</p>
@@ -502,14 +502,14 @@
 <li><p>执行 <code>tools\postbuild.cmd -sku:{srv}</code>。执行需要一段时间，请耐心等待。</p>
 </li>
 <li><p>执行完成后，检查 <code>d:\binaries.x86fre\build_logs</code> 下的 <code>postbuild.err</code> 中的错误数。不应该有很多，但也不会太少，很可能像下图这样。</p>
-<p><img src="/articles/server2003-from-source-to-image/check-postbuild-error.png" alt="check-postbuild-error"></p>
+<p><img src="http://resources.bianchengnan.tech/server2003-from-source-to-image/check-postbuild-error.png" alt="check-postbuild-error"></p>
 </li>
 <li><p>解压 <code>2k3missingx86fre NOTFINAL v3.7.7z</code> 中的文件到 <code>d:\binaries.x86fre</code> 下。一定要注意：<strong>不要覆盖任何现有文件</strong>。</p>
 </li>
 <li><p>解压完成后，再次执行 <code>tools\postbuild.cmd -sku:{srv}</code>。</p>
 </li>
 <li><p>执行完成后，再次检查 <code>d:\binaries.x86fre\build_logs</code> 下的 <code>postbuild.err</code> 文件中的错误数，这次应该只有很少的几个错误，类似下图：</p>
-<p><img src="/articles/server2003-from-source-to-image/check-postbuild-error-again.png" alt="check-postbuild-error-again"></p>
+<p><img src="http://resources.bianchengnan.tech/server2003-from-source-to-image/check-postbuild-error-again.png" alt="check-postbuild-error-again"></p>
 </li>
 <li><p>执行 <code>tools\postbuild.cmd -sku:srv</code> 。执行成功后，会在 <code>d:\binaries.x86fre</code> 下生成一个名为 <code>srv</code> 的文件夹。</p>
 <blockquote>
@@ -907,6 +907,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -995,7 +1005,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1006,7 +1016,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1017,7 +1027,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

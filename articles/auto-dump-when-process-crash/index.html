@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,总结,调试,debug,dump,转储文件,procdump,windbg,JIT Debugger,">
+  <meta name="keywords" content="原,总结,调试,debug,windbg,dump,转储文件,procdump,JIT Debugger,">
 
 
 
@@ -89,24 +89,24 @@
 
 
 <meta name="description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言我在 你需要知道的 N 种抓取 dump 的工具 这篇文章里，向大家介绍了几款可以抓取转储文件的工具及其简单用法。不知道大家是否还记得，以管理员权限运行 procdump -i 可以注册 procdump 为事后调试器。大家是否了解其实现原理？今天让我们一起揭开其神秘面纱。">
-<meta name="keywords" content="原,总结,调试,debug,dump,转储文件,procdump,windbg,JIT Debugger">
+<meta name="keywords" content="原,总结,调试,debug,windbg,dump,转储文件,procdump,JIT Debugger">
 <meta property="og:type" content="article">
 <meta property="og:title" content="你需要了解的JIT Debugging">
 <meta property="og:url" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言我在 你需要知道的 N 种抓取 dump 的工具 这篇文章里，向大家介绍了几款可以抓取转储文件的工具及其简单用法。不知道大家是否还记得，以管理员权限运行 procdump -i 可以注册 procdump 为事后调试器。大家是否了解其实现原理？今天让我们一起揭开其神秘面纱。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/procdump-i.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/procdump-install-filter-event.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/procdump-i.jpg">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/jdinfo-comment.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/jdinfo-result.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/Raymond-Chen-explain-AE.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/auto-dump-when-process-crash/procdump-i.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/auto-dump-when-process-crash/procdump-install-filter-event.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/auto-dump-when-process-crash/procdump-i.jpg">
+<meta property="og:image" content="http://resources.bianchengnan.tech/auto-dump-when-process-crash/jdinfo-comment.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/auto-dump-when-process-crash/jdinfo-result.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/auto-dump-when-process-crash/Raymond-Chen-explain-AE.png">
 <meta property="og:updated_time" content="2020-01-04T13:43:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="你需要了解的JIT Debugging">
 <meta name="twitter:description" content="如果你还不清楚什么是转储文件，不知道什么时候需要转储文件，请参考转储文件系列文章的第一篇 —— 转储文件知多少。 前言我在 你需要知道的 N 种抓取 dump 的工具 这篇文章里，向大家介绍了几款可以抓取转储文件的工具及其简单用法。不知道大家是否还记得，以管理员权限运行 procdump -i 可以注册 procdump 为事后调试器。大家是否了解其实现原理？今天让我们一起揭开其神秘面纱。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/auto-dump-when-process-crash/procdump-i.gif">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/auto-dump-when-process-crash/procdump-i.gif">
 
 
 
@@ -458,8 +458,8 @@
 
 <h2 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h2><p> <code>JIT Debugger</code>， <code>Just In Time Debugger</code>，<code>JIT 调试器</code>， <code>Postmortem Debugger</code>，<code>事后调试器</code>，指的是同一个概念 —— <strong>事后调试器</strong>。如果把 <code>Debugger</code> 换成 <code>Debugging</code>，表示<strong>事后调试</strong>。我有时候会说 <code>JIT 调试器</code>，有时候会说<code>事后调试器</code>，希望大家不要被我混乱的用词搞晕。</p>
 <h2 id="原理探究"><a href="#原理探究" class="headerlink" title="原理探究"></a>原理探究</h2><p>运行 <code>process monitor</code>，开启监视。然后以管理员权限执行 <code>procdump.exe -i</code>，成功后，停止监视。为了方便大家，我特意录制了整个过程，感兴趣的小伙伴可以点开看看，不过我建议你亲自动手实战一番，毕竟 <code>纸上来的终觉浅， 绝知此事要躬行</code>。</p>
-<p><img src="/articles/auto-dump-when-process-crash/procdump-i.gif" alt="探究 procdump 安装为 JIT 调试器的过程"></p>
-<p>如果你没看视频，可以直接参考我过滤后的结果截图（保留<code>Result</code>是 <code>Success</code> 的 <code>注册表</code> <code>写</code> 事件，排除非注册表相关事件）：<br><img src="/articles/auto-dump-when-process-crash/procdump-install-filter-event.jpg" alt="procdump-install-filter-event"></p>
+<p><img src="http://resources.bianchengnan.tech/auto-dump-when-process-crash/procdump-i.gif" alt="探究 procdump 安装为 JIT 调试器的过程"></p>
+<p>如果你没看视频，可以直接参考我过滤后的结果截图（保留<code>Result</code>是 <code>Success</code> 的 <code>注册表</code> <code>写</code> 事件，排除非注册表相关事件）：<br><img src="http://resources.bianchengnan.tech/auto-dump-when-process-crash/procdump-install-filter-event.jpg" alt="procdump-install-filter-event"></p>
 <p>我用黄色和红色高亮了 <code>procdump</code> 操作的注册表项。你能从图中得出什么结论呢？</p>
 <ul>
 <li><p><code>procdump</code> 会同时写 <code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug</code> 和 <code>HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\AeDebug</code> 注册表项。</p>
@@ -473,7 +473,7 @@
 </li>
 </ul>
 <p>其实，以上结论在 <code>procdump -i</code> 的输出结果中已经给出提示了（除了备份操作）。注意看下图中的黄色和红色高亮的部分。</p>
-<p><img src="/articles/auto-dump-when-process-crash/procdump-i.jpg" alt="procdump-i"></p>
+<p><img src="http://resources.bianchengnan.tech/auto-dump-when-process-crash/procdump-i.jpg" alt="procdump-i"></p>
 <div class="note warn"><p><strong>温馨提示：</strong></p>
 <p>某些杀毒软件可能会对此注册表项有保护，如果设置失败，请检查是否是杀毒软件导致的。</p></div>
 
@@ -496,9 +496,9 @@
 </li>
 </ul>
 <p>如果转储文件中保存了 <code>JIT_DEBUG_INFO</code>，使用 <code>windbg</code> 调试时，可以通过 <code>.jdinfo address</code> 来查看异常发生时的信息。例如，使用 <code>windbg</code> 打开 <code>procdump</code> 保存的转储文件的时候，应该可以看到如下提示。</p>
-<p><img src="/articles/auto-dump-when-process-crash/jdinfo-comment.png" alt="procdump 在转储文件中添加的注释"></p>
+<p><img src="http://resources.bianchengnan.tech/auto-dump-when-process-crash/jdinfo-comment.png" alt="procdump 在转储文件中添加的注释"></p>
 <p>我们可以根据提示，输入<code>.jdinfo 0x1afd59e0000</code> 来查看异常来源及上下文信息。</p>
-<p><img src="/articles/auto-dump-when-process-crash/jdinfo-result.png" alt="jdinfo 结果"></p>
+<p><img src="http://resources.bianchengnan.tech/auto-dump-when-process-crash/jdinfo-result.png" alt="jdinfo 结果"></p>
 <div class="note info"><p><strong>说明：</strong></p>
 <p>在运行 <code>procdump -i</code> 的时候，如果没有指定转储选项，会默认使用 <code>-mm</code> 选项。该选项只包含 <code>Process, Thread, Module, Handle and Address Space info.</code> 信息，不会包含 <code>%p</code> 对应的内存数据。如果我们在调试 使用 <code>-mm</code> 选项保存的转储文件的时候执行 <code>.jdinfo address</code>，会得到如下错误：<br><code>Unable to process JIT_DEBUG_INFO, Win32 error 0n30</code></p>
 <p>我们可以简单的通过指定 <code>-ma</code> 或 <code>-mp</code>来生成包含内存数据的转储文件，这样我们在调试器里执行 <code>.jdinfo address</code>的时候就不会报错了。</p>
@@ -528,7 +528,7 @@
 
 <h2 id="JIT调试的运作机制"><a href="#JIT调试的运作机制" class="headerlink" title="JIT调试的运作机制"></a>JIT调试的运作机制</h2><p>整个运作机制，在张银奎张老师的《软件调试》（第一版）第 12 章：未处理异常和 JIT 调试 中做了<strong>非常非常详细</strong>的介绍。我就不摘录了，感兴趣的小伙伴一定要好好多读几遍。</p>
 <h2 id="AeDebug-中的-Ae-是什么意思？"><a href="#AeDebug-中的-Ae-是什么意思？" class="headerlink" title="AeDebug 中的 Ae 是什么意思？"></a>AeDebug 中的 Ae 是什么意思？</h2><p><code>AeDebug</code>中的 <code>Debug</code> 很好理解，就是调试的意思。那  <code>Ae</code> 代表什么意义呢？有人说 <code>AeDebug</code> 是 <code>Auto Exception Debug</code> 的缩写，听上去挺有道理的。偶然的机会，<code>google</code> 到了 <code>Ramond Chen</code>写的一篇文章 —— <a href="https://devblogs.microsoft.com/oldnewthing/20181017-00/?p=99995" target="_blank" rel="noopener">What does the “Ae” stand for in AeDebug?</a>。根据他的说法，<code>Ae</code> 表示 <code>Application Error</code> 的意思。我把原文截取如下，方便大家阅读。</p>
-<p><img src="/articles/auto-dump-when-process-crash/Raymond-Chen-explain-AE.png" alt="Raymond-Chen-explain-AE"></p>
+<p><img src="http://resources.bianchengnan.tech/auto-dump-when-process-crash/Raymond-Chen-explain-AE.png" alt="Raymond-Chen-explain-AE"></p>
 <p>不论 <code>AeDebug</code> 是什么的缩写，大家知道这个注册表项的意义就足够了，没必要过于纠结。否则，就真成了孔乙己了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p>一般情况下，修改 <code>HKLM</code> 下的子键需要管理员权限。</p>
@@ -608,13 +608,13 @@
           
             <a href="/tags/debug/" rel="tag"><i class="fa fa-tag"></i> debug</a>
           
+            <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
+          
             <a href="/tags/dump/" rel="tag"><i class="fa fa-tag"></i> dump</a>
           
             <a href="/tags/转储文件/" rel="tag"><i class="fa fa-tag"></i> 转储文件</a>
           
             <a href="/tags/procdump/" rel="tag"><i class="fa fa-tag"></i> procdump</a>
-          
-            <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
           
             <a href="/tags/JIT-Debugger/" rel="tag"><i class="fa fa-tag"></i> JIT Debugger</a>
           
@@ -977,6 +977,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1065,7 +1075,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1076,7 +1086,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1087,7 +1097,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

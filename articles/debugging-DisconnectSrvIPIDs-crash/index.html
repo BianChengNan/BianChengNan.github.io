@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="原,调试,debug,windbg,崩溃,crash,">
+  <meta name="keywords" content="原,调试,debug,windbg,crash,崩溃,">
 
 
 
@@ -89,26 +89,26 @@
 
 
 <meta name="description" content="前言最近程序会不定期崩溃，很是头疼！今晚终于忍无可忍，下决心要干掉它！从之前的几个相关的dump可以猜到是有接口未释放导致的问题，但没有确认到底是哪个接口。本篇总结记录了找到这个接口的过程。">
-<meta name="keywords" content="原,调试,debug,windbg,崩溃,crash">
+<meta name="keywords" content="原,调试,debug,windbg,crash,崩溃">
 <meta property="og:type" content="article">
 <meta property="og:title" content="调试实战 | 使用 windbg 调试崩溃在 ole32!CStdMarshal::DisconnectSrvIPIDs">
 <meta property="og:url" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/index.html">
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言最近程序会不定期崩溃，很是头疼！今晚终于忍无可忍，下决心要干掉它！从之前的几个相关的dump可以猜到是有接口未释放导致的问题，但没有确认到底是哪个接口。本篇总结记录了找到这个接口的过程。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/startup.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/address-info.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/ecxr-kpn.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/ub-76f8bbe7.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/lma-5bbc97f8.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/reload-and-lmvm.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/reload-failed.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/ln-5bbc97f8.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/startup.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/address-info.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/ecxr-kpn.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/ub-76f8bbe7.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/lma-5bbc97f8.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/reload-and-lmvm.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/reload-failed.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/ln-5bbc97f8.png">
 <meta property="og:updated_time" content="2019-11-28T15:06:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 使用 windbg 调试崩溃在 ole32!CStdMarshal::DisconnectSrvIPIDs">
 <meta name="twitter:description" content="前言最近程序会不定期崩溃，很是头疼！今晚终于忍无可忍，下决心要干掉它！从之前的几个相关的dump可以猜到是有接口未释放导致的问题，但没有确认到底是哪个接口。本篇总结记录了找到这个接口的过程。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/debugging-DisconnectSrvIPIDs-crash/startup.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/startup.png">
 
 
 
@@ -474,28 +474,28 @@
 
 
 <h2 id="初识问题"><a href="#初识问题" class="headerlink" title="初识问题"></a>初识问题</h2><p>用<code>windbg</code>打开<code>dump</code>文件，显示如下：</p>
-<p><img src="/articles/debugging-DisconnectSrvIPIDs-crash/startup.png" alt="startup"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/startup.png" alt="startup"></p>
 <p>从图中可以很明显的看出来是访问违例（因为红框标识的地址<code>5bbc97f8</code>的内容是<code>？？？？？？？？</code>），而且这是一条<code>call</code>指令，<code>call</code>调用的地址存储在<code>ecx+8</code> (<code>0x5bbc97f8</code>) 处。我们可以用<code>!address address</code>来查看某个地址的信息，输入<code>!address 5bbc97f8</code></p>
-<p> <img src="/articles/debugging-DisconnectSrvIPIDs-crash/address-info.png" alt="address info"></p>
+<p> <img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/address-info.png" alt="address info"></p>
 <p>从图中得知，地址<code>5bbc97f8</code>对应的内存已经被释放了（<code>State</code> 是 <code>MEM_FREE</code>）。<code>windbg</code>还贴心的给出了和此地址相关的一些模块信息。其中有几个是我们自己的模块，从<code>Unloaded</code>可以看出这几个模块曾经被卸载过。很有可能跟我们的崩溃相关。</p>
 <p>至此，我们可以大胆猜测崩溃的原因是<strong>模块被卸载后，还要执行其中的代码</strong>！:bomb: </p>
 <p>下面让我们继续分析，为什么模块卸载后还会执行其中的代码！</p>
 <h2 id="寻根溯源"><a href="#寻根溯源" class="headerlink" title="寻根溯源"></a>寻根溯源</h2><p>先用<code>.ecxr</code>切换到发生异常时的上下文，然后用<code>kpn</code>（<code>k</code>显示调用栈，<code>p</code>显示函数的参数，<code>n</code>显示栈帧编号）查看调用栈，如下图：</p>
-<p><img src="/articles/debugging-DisconnectSrvIPIDs-crash/ecxr-kpn.png" alt="ecxr &amp; kpn"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/ecxr-kpn.png" alt="ecxr &amp; kpn"></p>
 <p>从上图可知，<code>11</code>号线程在调用<code>CoUninitialize()</code>执行<code>COM</code>的线程清理工作，<code>frame 0</code>在调用<code>ole32!CStdMarshal::DisconnectSrvIPIDs()</code>时崩溃了！从<code>Disconnect</code>猜测是要断开连接！使用<code>ub 76f8bbe7</code> （<code>76f8bbe7</code>是由<code>76f8bbe4</code> + <code>3</code>得到的，<a href="./articles/debugging-ComFriendlyWaitMtaThreadProc-crash">在上一篇文章里</a>介绍过了）查看崩溃前的几条指令:</p>
-<p><img src="/articles/debugging-DisconnectSrvIPIDs-crash/ub-76f8bbe7.png" alt="ub 76f8bbe7"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/ub-76f8bbe7.png" alt="ub 76f8bbe7"></p>
 <p>红框内的指令非常像是虚函数的调用（调用约定是<code>stdcall</code>，不是<code>thiscall</code>） <code>eax</code>是调用类对象的指针（通过入栈方式传递）， <code>ecx</code>指向虚函数表(<code>vtable</code>)，<code>dword ptr[ecx+8]</code>是虚函数表中的第三项（<code>32</code>位下指针占<code>4</code>字节，第一项的偏移是<code>+0</code>，第二项的偏移是<code>+4</code>，第三项的偏移是<code>+8</code>）。回想<code>IUnkown</code>的前三个函数分别是<code>QueryInterface()</code>,  <code>AddRef()</code> 和 <code>Release()</code>，可以大胆猜测这里是在调用<code>Release()</code>，跟上下文也很搭（从<code>CoUninitialize()</code>推断当前线程正在做<code>COM</code>清理工作）！我们的猜测很有可能是正确的！</p>
 <p>我们先小小总结一下：整个过程应该是这样的，我们使用了一个<code>COM</code>接口，但是由于某些原因并没有释放，线程在退出的时候，调用<code>CoUninitialize()</code>做<code>COM</code>清理工作。当清理到我们的接口的时候，由于接口代码所在的<code>dll</code>已经被卸载了，从而导致了访问违例！下面我们的任务是找出到底是哪个接口没释放，然后对照代码验证我们的猜测是否正确！</p>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>先用<code>lm a 5bbc97f8</code>确认下该地址属于哪个模块。</p>
-<p> <img src="/articles/debugging-DisconnectSrvIPIDs-crash/lma-5bbc97f8.png" alt="lm a 5bbc97f8"></p>
+<p> <img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/lma-5bbc97f8.png" alt="lm a 5bbc97f8"></p>
 <p>看来，地址<code>5bbc97f8</code>落在<code>AccIME.dll</code>中，由于<code>AccIME.dll</code>已经被卸载了，我们需要使用命令<code>.reload /f AccIME.dll=5bbb0000,5bbd8000-5bbb0000</code>来重新加载已经被卸载的模块，我们可以使用<code>lm vm AccIME</code>来确认加载成功与否。</p>
-<p><img src="/articles/debugging-DisconnectSrvIPIDs-crash/reload-and-lmvm.png" alt="reload-and-lmvm"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/reload-and-lmvm.png" alt="reload-and-lmvm"></p>
 <p>从上图可知，我们成功的加载了<code>AccIME</code>模块，符号也加载成功了。</p>
 <p><strong>友情提示：</strong>如果遇到如下错误，说明我们成功加载了被卸载的<code>dll</code>，但是加载符号的时候遇到了问题。</p>
-<p><img src="/articles/debugging-DisconnectSrvIPIDs-crash/reload-failed.png" alt="reload-failed"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/reload-failed.png" alt="reload-failed"></p>
 <p>可以使用<code>!sym noisy</code>开启嘈杂模式，然后再次执行<code>.reload</code>命令，通过输出日志来排查具体原因。排查完毕后可以使用<code>!sym quiet</code>来关闭嘈杂模式。具体使用方法可通过<code>.hh !sym</code>查看<code>windbg</code>帮助文档。</p>
 <p> 接下来我们用<code>ln 5bbc97f8</code>查一下该地址附近函数。</p>
-<p> <img src="/articles/debugging-DisconnectSrvIPIDs-crash/ln-5bbc97f8.png" alt="ln-5bbc97f8"></p>
+<p> <img src="http://resources.bianchengnan.tech/debugging-DisconnectSrvIPIDs-crash/ln-5bbc97f8.png" alt="ln-5bbc97f8"></p>
 <p>至此，我们可以看到是与<code>AccIME!CCfgDpyScheme</code>类相关的问题，接下来我们可以把重点放到对此类的引用计数的使用上了！</p>
 <p>本篇总结暂时写到这，还需要弄明白几个问题：</p>
 <ol>
@@ -587,9 +587,9 @@
           
             <a href="/tags/windbg/" rel="tag"><i class="fa fa-tag"></i> windbg</a>
           
-            <a href="/tags/崩溃/" rel="tag"><i class="fa fa-tag"></i> 崩溃</a>
-          
             <a href="/tags/crash/" rel="tag"><i class="fa fa-tag"></i> crash</a>
+          
+            <a href="/tags/崩溃/" rel="tag"><i class="fa fa-tag"></i> 崩溃</a>
           
         </div>
       
@@ -1067,6 +1067,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1162,7 +1184,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1173,7 +1195,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1184,7 +1206,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

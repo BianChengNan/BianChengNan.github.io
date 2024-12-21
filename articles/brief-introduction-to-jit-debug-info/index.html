@@ -96,12 +96,12 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在上一篇介绍 JIT Debugging 的文章 —— 你需要了解的JIT Debugging 中，我们了解到 procdump 设置为 JIT调试器的时候，在设置的参数中，有一个叫 %p 的参数（需要和 -j 一起使用），指向了 JIT_DEBUG_INFO。今天简单介绍一下 JIT_DEBUG_INFO。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-jit-debug-info/jdinfo-introduction.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-jit-debug-info/jdinfo-introduction.png">
 <meta property="og:updated_time" content="2020-01-30T12:20:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JIT Debug Info 简介">
 <meta name="twitter:description" content="前言在上一篇介绍 JIT Debugging 的文章 —— 你需要了解的JIT Debugging 中，我们了解到 procdump 设置为 JIT调试器的时候，在设置的参数中，有一个叫 %p 的参数（需要和 -j 一起使用），指向了 JIT_DEBUG_INFO。今天简单介绍一下 JIT_DEBUG_INFO。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-jit-debug-info/jdinfo-introduction.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/brief-introduction-to-jit-debug-info/jdinfo-introduction.png">
 
 
 
@@ -459,7 +459,7 @@
 
 <h2 id="如何使用？"><a href="#如何使用？" class="headerlink" title="如何使用？"></a>如何使用？</h2><p>如果转储文件保存的时候，已经保存了 <code>JIT_DEBUG_INFO</code> 信息，我们可以直接在 <code>windbg</code> 中执行 <code>.jdinfo address</code> 。</p>
 <h2 id="有什么用？"><a href="#有什么用？" class="headerlink" title="有什么用？"></a>有什么用？</h2><p>为什么 <code>procdump</code> 要保存 <code>JIT_DEBUG_INFO</code> 呢？我们可以从 <code>.jdinfo</code> 的帮助文档里得到答案！截取如下：</p>
-<p><img src="/articles/brief-introduction-to-jit-debug-info/jdinfo-introduction.png" alt="jdinfo 介绍 —— 截自 msdn"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-jit-debug-info/jdinfo-introduction.png" alt="jdinfo 介绍 —— 截自 msdn"></p>
 <p>简略翻译一下（感谢 <code>google 翻译</code> 的大力支持）：</p>
 <p><code>.jdinfo</code> 命令使用从 <code>Windows Vista</code> 开始引入的 <code>AeDebug</code> 注册表信息。 相关注册表项的更多信息，请参考 <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/enabling-postmortem-debugging" target="_blank" rel="noopener">Enabling Postmortem Debugging</a> 。 <code>.jdinfo</code> 命令使用系统为 <code>AeDebug</code> 设置的 <code>JIT_DEBUG_INFO</code> 的地址，并设置上下文为崩溃时的上下文。</p>
 <p>您可以在 <code>AeDebug</code> 中使用 <code>.jdinfo</code> 命令而不是 <code>-g</code> 将调试器设置为 <code>AeDebug</code> 状态，而无需执行。</p>
@@ -912,6 +912,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1000,7 +1010,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1011,7 +1021,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1022,7 +1032,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -96,24 +96,24 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言在 蓝屏（BSOD）转储设置，看本文就够了！ 这篇文章里比较详细的介绍了蓝屏转储设置。做好设置后，我们就可以在需要的时候使系统蓝屏了。这样我们就可以拿到一份系统转储，供我们分析问题了。本文介绍几种可以使系统蓝屏的办法。当然肯定还有其它办法，如果哪位小伙伴儿知道比较实用的方法，欢迎留言分享。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/NotMyFault.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/NotMyFaultC-Usage.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/kill-csrss-bsod-screen-record.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/can-not-terminate-csrss-on-win10.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/critical-process-died-bsod-screen-record.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/device-manager-keyboard.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/control-panel-device-manager.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/101-102-keyboard-PS2-scan-code.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/part-of-scancode-translation-table.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/scancode-translation-table-note.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/manually-bsod-screen-record.gif">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/windbg-analyze-user-manually-bsod-dump.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/windbg-open-memory-dump-failed.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.816Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/NotMyFault.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/NotMyFaultC-Usage.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/kill-csrss-bsod-screen-record.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/can-not-terminate-csrss-on-win10.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/critical-process-died-bsod-screen-record.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/device-manager-keyboard.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/control-panel-device-manager.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/101-102-keyboard-PS2-scan-code.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/part-of-scancode-translation-table.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/scancode-translation-table-note.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/manually-bsod-screen-record.gif">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/windbg-analyze-user-manually-bsod-dump.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/windbg-open-memory-dump-failed.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:50.308Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="系统蓝屏的几种姿势，确定不了解下么？">
 <meta name="twitter:description" content="前言在 蓝屏（BSOD）转储设置，看本文就够了！ 这篇文章里比较详细的介绍了蓝屏转储设置。做好设置后，我们就可以在需要的时候使系统蓝屏了。这样我们就可以拿到一份系统转储，供我们分析问题了。本文介绍几种可以使系统蓝屏的办法。当然肯定还有其它办法，如果哪位小伙伴儿知道比较实用的方法，欢迎留言分享。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/how-to-force-system-to-crash/NotMyFault.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/how-to-force-system-to-crash/NotMyFault.png">
 
 
 
@@ -366,8 +366,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:50+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -465,20 +465,20 @@
 
 <h2 id="几种蓝屏方法"><a href="#几种蓝屏方法" class="headerlink" title="几种蓝屏方法"></a>几种蓝屏方法</h2><p><strong>1、通过驱动</strong></p>
 <p>思路是：在内核执行有问题的代码（比如，在驱动的入口处加上简单的 <code>int* p = 0; *p = 0;</code> ，然后加载有问题的驱动即可）。<code>sysinternals</code> 系列工具中的 <code>NotMyFault</code> 就是加载驱动，然后在驱动中模拟各种非法操作来使系统蓝屏的。</p>
-<p>  <img src="/articles/how-to-force-system-to-crash/NotMyFault.png" alt="NotMyFault"></p>
+<p>  <img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/NotMyFault.png" alt="NotMyFault"></p>
 <p>​    </p>
 <p>我们可以点击 <code>Colors...</code> 按钮，来看看其它颜色的 “蓝屏” 效果。可以通过 <code>Hang</code> 让系统挂起，还可以通过 <code>Leak</code> 模拟内核级内存泄漏。</p>
 <p>我们还可以在命令行执行 <code>notMyfault.exe /crash</code> 来直接使系统蓝屏。如果我们想指定崩溃类型，可以使用 <code>NotMyFault</code> 的命令行版本 —— <code>notmyfaultc.exe</code>。具体选项大家可以直接运行 <code>notmyfaultc.exe</code> 查看或者参考下图：</p>
-<p>  <img src="/articles/how-to-force-system-to-crash/NotMyFaultC-Usage.png" alt="NotMyFaultC-Usage"></p>
+<p>  <img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/NotMyFaultC-Usage.png" alt="NotMyFaultC-Usage"></p>
 <p><strong>2、杀死系统关键进程</strong></p>
 <p>如果系统关键进程挂掉了（比如，<code>csrss.exe</code>），那么系统也会蓝屏。</p>
-<p><img src="/articles/how-to-force-system-to-crash/kill-csrss-bsod-screen-record.gif" alt="kill-csrss-bsod-screen-record"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/kill-csrss-bsod-screen-record.gif" alt="kill-csrss-bsod-screen-record"></p>
 <p>在 <code>win7</code> 系统中，具有管理员权限的进程可以杀死 <code>csrss</code> 进程，但是在 <code>win10</code> 中不能简单粗暴的杀死 <code>csrss</code> 进程了。</p>
-<p><img src="/articles/how-to-force-system-to-crash/can-not-terminate-csrss-on-win10.gif" alt="can-not-terminate-csrss-on-win10"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/can-not-terminate-csrss-on-win10.gif" alt="can-not-terminate-csrss-on-win10"></p>
 <p><strong>win10 变通方法：</strong>我们可以把其它进程设置为系统关键进程，然后杀掉。或者伪装成系统关键进程，然后自动退出。感谢 <a href="https://bytecode77.com/hacking/payloads/bsod" target="_blank" rel="noopener">https://bytecode77.com/hacking/payloads/bsod</a></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">NTSTATUS</span> <span class="params">(*pfnRtlSetProcessIsCritical)</span> <span class="params">(BOOLEAN, PBOOLEAN, BOOLEAN)</span></span>; <span class="comment">// __cdecl</span></span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">BOOL</span><span class="params">(WINAPI * pfnRtlAdjustPrivilege)</span> <span class="params">(ULONG, BOOL, BOOL, PBOOLEAN)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> ntdll = ::LoadLibrary(TEXT(<span class="string">"ntdll.dll"</span>));</span><br><span class="line">    <span class="keyword">auto</span> RtlAdjustPrivilege = (pfnRtlAdjustPrivilege)GetProcAddress((HINSTANCE)ntdll, <span class="string">"RtlAdjustPrivilege"</span>);</span><br><span class="line">    <span class="keyword">auto</span> RtlSetProcessIsCritical = (pfnRtlSetProcessIsCritical)GetProcAddress((HINSTANCE)ntdll, <span class="string">"RtlSetProcessIsCritical"</span>);</span><br><span class="line"></span><br><span class="line">    BOOLEAN e = <span class="number">0</span>;</span><br><span class="line">    RtlAdjustPrivilege(<span class="number">20</span>, <span class="number">1</span>, <span class="number">0</span>, &amp;e);</span><br><span class="line">    RtlSetProcessIsCritical(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/articles/how-to-force-system-to-crash/critical-process-died-bsod-screen-record.gif" alt="关键进程结束导致蓝屏"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/critical-process-died-bsod-screen-record.gif" alt="关键进程结束导致蓝屏"></p>
 <p><strong>3、使用快捷键</strong></p>
 <p>如果系统由于某些原因挂起了，我们没办法杀死系统关键进程，也不能运行 <code>NotMyFault</code> 了。这时候我们还可以通过快捷键来使系统蓝屏！不过我们需要预先做一些设置才行。把下面的代码保存到 <code>.reg</code> 文件，然后双击导入注册表，<strong>重启生效</strong>。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line"></span><br><span class="line">;------------------------------------------------------------------------------</span><br><span class="line">; enable BSOD by right CTRL + SCROLL + SCROLL </span><br><span class="line">;------------------------------------------------------------------------------</span><br><span class="line">; For PS/2 keyboards</span><br><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\i8042prt\Parameters]</span><br><span class="line">"CrashOnCtrlScroll"=dword:00000001</span><br><span class="line"></span><br><span class="line">; For USB keyboards</span><br><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\kbdhid\Parameters]</span><br><span class="line">"CrashOnCtrlScroll"=dword:00000001</span><br><span class="line"></span><br><span class="line">; For Hyper-V keyboards (BCN:I never use this, copy it from document)</span><br><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\hyperkbd\Parameters]</span><br><span class="line">"CrashOnCtrlScroll"=dword:00000001</span><br></pre></td></tr></table></figure>
@@ -495,7 +495,7 @@
 <li><p>使用自定义快捷键需要先关闭 <code>CrashOnCtrlScroll</code> 设置，上面的代码已经做好了。</p>
 </li>
 <li><p>因为不同类型的键盘对应的注册表位置不一样，怎么知道自己的机器上的键盘是哪种类型的？</p>
-<p>我们可以打开设备管理器，查看当前机器上的键盘信息。<img src="/articles/how-to-force-system-to-crash/device-manager-keyboard.png" alt="设备管理器——键盘设备"></p>
+<p>我们可以打开设备管理器，查看当前机器上的键盘信息。<img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/device-manager-keyboard.png" alt="设备管理器——键盘设备"></p>
 <p>我们可以用如下方法打开 <code>设备管理器</code>：</p>
 <ul>
 <li><p><code>win10</code> 系统中，可以直接在搜索框（或者按一下 <code>windows</code> 键）输入 <code>设备管理器</code> 搜索打开。</p>
@@ -504,7 +504,7 @@
 </li>
 <li><p>输入 <code>devmgmt.msc</code> 打开。</p>
 </li>
-<li><p>通过控制面版打开（不同系统中可能不一样）。<br><img src="/articles/how-to-force-system-to-crash/control-panel-device-manager.png" alt="control-panel-device-manager"></p>
+<li><p>通过控制面版打开（不同系统中可能不一样）。<br><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/control-panel-device-manager.png" alt="control-panel-device-manager"></p>
 </li>
 <li><p>还有很多其它方法，不一一列举了。</p>
 </li>
@@ -553,15 +553,15 @@
 <p>上面的例子中，<code>`</code> 键的扫描码是 <code>0x29</code>，在<code>keyToScanTbl[134]</code>的索引是 <code>1</code> 。</p>
 <ol start="5">
 <li><p>关于扫描码，按下和抬起按键时会产生不同的扫描码，我们需要关注的是按下时对应的扫描码。同时，不同的键盘可能有不同的扫描码。下面给出 <code>101/102键 键盘（PC/AT 和 PS/2）</code> 的扫描码。</p>
-<p><img src="/articles/how-to-force-system-to-crash/101-102-keyboard-PS2-scan-code.png" alt="101/102键 键盘（PC/AT 和 PS/2）图，摘自Defrag-Tools-179"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/101-102-keyboard-PS2-scan-code.png" alt="101/102键 键盘（PC/AT 和 PS/2）图，摘自Defrag-Tools-179"></p>
 </li>
-<li><p>我们参考相关文档的时候需要注意 按下按键对应的术语是（<code>Make</code>），抬起按键对应的术语是（<code>Break</code>）。下面贴一张扫描码表的部分截图：<img src="/articles/how-to-force-system-to-crash/part-of-scancode-translation-table.png" alt="扫描码对照表"></p>
+<li><p>我们参考相关文档的时候需要注意 按下按键对应的术语是（<code>Make</code>），抬起按键对应的术语是（<code>Break</code>）。下面贴一张扫描码表的部分截图：<img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/part-of-scancode-translation-table.png" alt="扫描码对照表"></p>
 <p>表格最后的说明非常重要：</p>
-<p><img src="/articles/how-to-force-system-to-crash/scancode-translation-table-note.png" alt="scancode-translation-table-note"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/scancode-translation-table-note.png" alt="scancode-translation-table-note"></p>
 <p>高亮部分的意思是：操作系统的其它部分和所有的应用程序按 <code>Scan Code Set 1</code> 里的值处理扫描码。所以我猜测微软官方文档里的 <code>keyToScanTbl[134]</code> 的值是按照 <code>Scan Code Set 1</code> 给出的。实在没精力调查的更清楚了，如果哪位小伙伴儿熟悉相关内容，请务必指点！我特意录制了使用自定义快捷键 <code>CTRL + ` + `</code> 触发蓝屏的过程。按一次 <code>`</code> 是不行的，<strong>一定要按两次</strong>。</p>
 </li>
 </ol>
-<p><img src="/articles/how-to-force-system-to-crash/manually-bsod-screen-record.gif" alt="使用 CTRL + ` + ` 手动蓝屏"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/manually-bsod-screen-record.gif" alt="使用 CTRL + ` + ` 手动蓝屏"></p>
 <p><strong>5、借助硬件</strong></p>
 <p>如果以上方法都行不通，还可以使用 <code>PCI Express Dump Switch Card</code> 使系统蓝屏，<code>Windows 7, Windows Server 2008 R2</code> 及更早的系统需要设置如下注册表项：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\CrashControl]</span><br><span class="line">"NMICrashDump"=dword:00000001</span><br></pre></td></tr></table></figure>
@@ -582,11 +582,11 @@
 </ul>
 <h2 id="蓝屏转储一瞥"><a href="#蓝屏转储一瞥" class="headerlink" title="蓝屏转储一瞥"></a>蓝屏转储一瞥</h2><p>杀死系统关键进程导致的蓝屏，对应的 <code>Bug Check Code</code> 是 <code>0xF4（CRITICAL_OBJECT_TERMINATION）</code>。 通过 <code>NMI</code>  导致的蓝屏，对应的 <code>Bug Check Code</code> 是 <code>0x80（NMI_HARDWARE_FAILURE）</code>，表示这个蓝屏是由于硬件错误触发的。通过系统快捷键导致的蓝屏，对应的 <code>Bug Check Code</code> 是 <code>0xe2（MANUALLY_INITIATED_CRASH）</code>，表示这个蓝屏是用户手动触发的。</p>
 <p>我们可以用 <code>!analyze -show</code> 来查看转储文件中的 <code>bug check code</code> 信息。</p>
-<p><img src="/articles/how-to-force-system-to-crash/windbg-analyze-user-manually-bsod-dump.png" alt="windbg !analyze -show &amp; k"></p>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/windbg-analyze-user-manually-bsod-dump.png" alt="windbg !analyze -show &amp; k"></p>
 <p>从输出结果可知，这个蓝屏是用户手动触发蓝屏产生的。从调用栈可知，是 <code>i8042prt.sys</code> 处理了我们的按键，从而导致的蓝屏。</p>
 <div class="note info"><p><strong>友情提示：</strong></p>
 <p>如果直接用 <code>windbg</code> 打开 <code>%SystemRoot%\MEMORY.DMP</code> 会提示权限不够。可以以管理员权限运行 <code>windbg</code> 后再打开。或者<strong>拷贝</strong>转储文件到其它目录后再打开即可。注意一定是<strong>拷贝</strong>，而不是<strong>剪切</strong>。</p>
-<p><img src="/articles/how-to-force-system-to-crash/windbg-open-memory-dump-failed.png" alt="windbg 打开 MEMORY.dmp 失败"></p></div>
+<p><img src="http://resources.bianchengnan.tech/how-to-force-system-to-crash/windbg-open-memory-dump-failed.png" alt="windbg 打开 MEMORY.dmp 失败"></p></div>
 
 
 
@@ -1050,6 +1050,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -1138,7 +1148,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1149,7 +1159,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1160,7 +1170,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

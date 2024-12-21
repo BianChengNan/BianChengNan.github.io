@@ -96,22 +96,22 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="缘起在上一篇文章中，测试代码2 中的 pBaseA-&amp;gt;AA(); 输出的内容很“奇怪”。其实，完全在情理之中。本文将简单探究一下 c++ 中的虚函数实现机制。本文主要基于 vs2013 生成的 32 位代码进行研究，相信其它编译器（比如，gcc）的实现大同小异。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/sizeof-CBase.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout-updated.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CBase-constructor-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CDerived-constructor-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/view-vftable-content-in-ida.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/virtual-function-output.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/virutal-function-call.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout-updated.png">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/windbg-dps-view-vtable.png">
-<meta property="og:updated_time" content="2024-06-15T04:15:42.756Z">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/sizeof-CBase.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout-updated.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CBase-constructor-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CDerived-constructor-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/view-vftable-content-in-ida.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/virtual-function-output.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/virutal-function-call.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout-updated.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/windbg-dps-view-vtable.png">
+<meta property="og:updated_time" content="2024-12-21T04:02:49.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基础知识 | C++ 虚函数简介">
 <meta name="twitter:description" content="缘起在上一篇文章中，测试代码2 中的 pBaseA-&amp;gt;AA(); 输出的内容很“奇怪”。其实，完全在情理之中。本文将简单探究一下 c++ 中的虚函数实现机制。本文主要基于 vs2013 生成的 32 位代码进行研究，相信其它编译器（比如，gcc）的实现大同小异。">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/sizeof-CBase.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/sizeof-CBase.png">
 
 
 
@@ -364,8 +364,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-06-15T12:15:42+08:00">
-                2024-06-15
+              <time title="更新于" itemprop="dateModified" datetime="2024-12-21T12:02:49+08:00">
+                2024-12-21
               </time>
             
           </span>
@@ -465,50 +465,50 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdlib.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stddef.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CBase</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">VFun1</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">VFun2</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~CBase() &#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CDerived</span> :</span> <span class="keyword">public</span> CBase</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">VFunNew</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">VFun1</span><span class="params">()</span> override </span>&#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~CDerived() override &#123; <span class="built_in">printf</span>(__FUNCTION__ <span class="string">"\n"</span>); &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sizeof CBase is: %d, offset of data is %d\n"</span>,</span><br><span class="line">           <span class="keyword">sizeof</span>(CBase), offsetof(CBase, data));</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line"></span><br><span class="line">    CBase* pBase = <span class="keyword">new</span> CDerived();</span><br><span class="line">    pBase-&gt;VFun1();</span><br><span class="line">    pBase-&gt;VFun2();</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>输出结果如下图：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/sizeof-CBase.png" alt="sizeof-ctest"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/sizeof-CBase.png" alt="sizeof-ctest"></p>
 <p>有没有觉得意外？从类定义可知，<code>data</code> 占 <code>4</code> 字节，那另外的 <code>4</code> 字节是哪里来的呢？<code>data</code> 的偏移值不应该是 <code>0</code> 吗？为什么是 <code>4</code> 呢？</p>
 <h2 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h2><p>如果一个类有虚函数，编译器会自动为这个类型的对象在头部增加一个虚表指针（<code>vftable</code>），指向虚函数表。虚函数表中存放着一个个的虚函数。</p>
 <p><code>CBase</code> 和 <code>CDerived</code> 类对象的内存布局如下：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout.png" alt="CBase-CDerived-memory-layout"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout.png" alt="CBase-CDerived-memory-layout"></p>
 <blockquote>
 <p>注意：虚函数表中索引为 <code>-1</code> 的地方指向了跟动态类型转换相关的信息。</p>
 </blockquote>
 <blockquote>
 <p>Updated 2020-09-19：</p>
 <p>上述虚表内容中析构函数不准确，请参考下图：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout-updated.png" alt="CBase-CDerived-memory-layout-updated"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CBase-CDerived-memory-layout-updated.png" alt="CBase-CDerived-memory-layout-updated"></p>
 </blockquote>
 <h2 id="虚表指针的初始化"><a href="#虚表指针的初始化" class="headerlink" title="虚表指针的初始化"></a>虚表指针的初始化</h2><p><code>vftable</code> 是在类的构造函数中初始化的。可以在 <code>IDA</code> 中分别查看 <code>CBase</code> 类 和 <code>CDerived</code> 类的构造函数的反汇编代码。</p>
 <p><code>CBase</code> 构造函数的反汇编代码如下（关键部分已注释）：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CBase-constructor-in-ida.png" alt="view-CBase-constructor-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CBase-constructor-in-ida.png" alt="view-CBase-constructor-in-ida"></p>
 <p>由反汇编代码可知， <code>CBase</code> 的构造函数会把 <code>CBase</code> 对象开始的位置（存放虚表指针）设置为 <code>CBase::vftable</code>。</p>
 <p><code>CDerived</code> 构造函数的反汇编代码如下（关键部分已注释）：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CDerived-constructor-in-ida.png" alt="view-CDerived-constructor-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/view-CDerived-constructor-in-ida.png" alt="view-CDerived-constructor-in-ida"></p>
 <p>由反汇编代码可知， <code>CDerived</code> 的构造函数会先调用 <code>CBase</code> 的构造函数进行基类部分的初始化，在 <code>CBase</code> 构造函数的内部把 <code>CDerived</code> 对象开始的位置设置为 <code>CBase::vftable</code>，然后调用自身的初始化部分，会把 <code>CDerived::vftable</code> 的地址放到对象开始的位置，从而替换掉了 <code>CBase</code> 类的虚表指针。</p>
 <h2 id="虚函数表的内容"><a href="#虚函数表的内容" class="headerlink" title="虚函数表的内容"></a>虚函数表的内容</h2><p>了解完了虚表指针的初始化过程，再来看看 <code>vftable</code> 里面都有哪些内容。</p>
 <p>可以双击 <code>??_7CBase@@6B@</code> （或者直接按回车）跳转到虚表所在的地方。如下图：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/view-vftable-content-in-ida.png" alt="view-vftable-content-in-ida"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/view-vftable-content-in-ida.png" alt="view-vftable-content-in-ida"></p>
 <p>说明：上侧是 <code>CBase</code> 类的虚表内容，下侧是 <code>CDerived</code> 类的虚表内容。</p>
 <blockquote>
 <p>请注意图片上侧黄色高亮部分，也就是 <code>vftable[-1]</code> 的地方，是跟动态类型转换相关的信息，后面有机会介绍。</p>
 </blockquote>
 <h2 id="虚函数调用"><a href="#虚函数调用" class="headerlink" title="虚函数调用"></a>虚函数调用</h2><p>理解了类对象的内存布局及虚函数表之后，再理解虚函数的调用过程就比较简单了。</p>
 <p>有些 <code>C++</code> 基础的小伙伴儿都知道本例中的输出结果应该如下图所示：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/virtual-function-output.png" alt="virtual-function-output"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/virtual-function-output.png" alt="virtual-function-output"></p>
 <p>直接看一下 <code>pBase-&gt;VFun1()</code> 和 <code>pBase-&gt;VFun2()</code> 对应的反汇编代码就应该明白一切了。如下图：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/virutal-function-call.png" alt="virutal-function-call"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/virutal-function-call.png" alt="virutal-function-call"></p>
 <p>因为 <code>pBase</code> 指向的实际是 <code>CDerived</code> 类型的对象，所以虚表是 <code>CDerived</code> 类的。如下图所示：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout.png" alt="CDerived-memory-layout"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout.png" alt="CDerived-memory-layout"></p>
 <blockquote>
 <p>Updated 2020-09-19：</p>
 <p>上述虚表内容中析构函数不准确，请参考下图：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout-updated.png" alt="CBase-CDerived-memory-layout-updated"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/CDerived-memory-layout-updated.png" alt="CBase-CDerived-memory-layout-updated"></p>
 </blockquote>
 <p>经过以上的分析，输出结果合情合理。</p>
 <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>本文只是拿了一个最最简单的例子做演示。像多重继承，虚继承等比较复杂的情况，感兴趣的小伙伴可以自行研究。</p>
 <p>虽然这个例子很简单，但是背后的机理值得了解清楚，非常有用。比如，当库中的接口与库头文件不匹配的时候，很可能莫名其妙的就崩溃了。这时可以通过查看指针对应的虚表的内容来查看库中的虚函数都有哪些，跟头文件对比后就可以比较准确的判断是否是库不匹配的问题。还可以根据虚表的内容，猜测出基类指针指向的具体的子类对象的类型。</p>
 <p>可以在 <code>windbg</code> 中使用 <code>dps</code> 命令快速打印，如下图：</p>
-<p><img src="/articles/brief-introduction-to-cpp-virtual-function-and-vtbl/windbg-dps-view-vtable.png" alt="windbg-dps-view-vtable"></p>
+<p><img src="http://resources.bianchengnan.tech/brief-introduction-to-cpp-virtual-function-and-vtbl/windbg-dps-view-vtable.png" alt="windbg-dps-view-vtable"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p>虚表指针是在类的构造函数中初始化的，相应的代码由编译器自动生成。</p>
 </li>
@@ -908,6 +908,16 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </div>
 
         </div>
@@ -996,7 +1006,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1007,7 +1017,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1018,7 +1028,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -96,12 +96,12 @@
 <meta property="og:site_name" content="BianChengNan&#39;s Blog">
 <meta property="og:description" content="前言项目里的一个升级程序偶尔会死锁，查看dump后发现是死在了ShellExecuteExW里。经验少，不知道为什么，于是在高端调试论坛里发帖求助，链接如下http://advdbg.org/forums/6520/ShowPost.aspx 根据张银奎老师的描述可知，应该是拥有关键段的线程意外结束了。仔细检查项目中的代码，发现程序中有使用TerminateThread()来强制杀线程的代码。很可">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://bianchengnan.github.io/articles/debugging-deadlock-caused-by-TerminateThread/DebugView.png">
+<meta property="og:image" content="http://resources.bianchengnan.tech/debugging-deadlock-caused-by-TerminateThread/DebugView.png">
 <meta property="og:updated_time" content="2019-10-25T23:25:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="调试实战 | 使用 windbg 调试 TerminateThread 导致的死锁">
 <meta name="twitter:description" content="前言项目里的一个升级程序偶尔会死锁，查看dump后发现是死在了ShellExecuteExW里。经验少，不知道为什么，于是在高端调试论坛里发帖求助，链接如下http://advdbg.org/forums/6520/ShowPost.aspx 根据张银奎老师的描述可知，应该是拥有关键段的线程意外结束了。仔细检查项目中的代码，发现程序中有使用TerminateThread()来强制杀线程的代码。很可">
-<meta name="twitter:image" content="https://bianchengnan.github.io/articles/debugging-deadlock-caused-by-TerminateThread/DebugView.png">
+<meta name="twitter:image" content="http://resources.bianchengnan.tech/debugging-deadlock-caused-by-TerminateThread/DebugView.png">
 
 
 
@@ -478,7 +478,7 @@
 
 <p><a href="/downloads/debug-deadlock-caused-by-TerminateThread-Demo.zip">点我下载测试工程</a> </p>
 <h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>运行测试程序前先打开<code>DbgView</code>监视调试信息，然后运行测试程序。</p>
-<p><img src="/articles/debugging-deadlock-caused-by-TerminateThread/DebugView.png" alt="DebugView"></p>
+<p><img src="http://resources.bianchengnan.tech/debugging-deadlock-caused-by-TerminateThread/DebugView.png" alt="DebugView"></p>
 <p>从日志可知，我们启动的测试线程的<code>线程id</code>为<code>0x1400</code>。</p>
 <p>当程序<code>hang</code>住后，使用<code>windbg</code>附加。附加成功后，先运行<code>~*kvn</code>查看线程及每个线程的的调用栈信息。发现只有一个<code>0</code>号线程（<code>1</code>号线程是<code>windbg</code>附加到进程时产生的）。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">0:001&gt; ~*kvn</span><br><span class="line"></span><br><span class="line">   0  Id: 18c0.1008 Suspend: 1 Teb: 7ffdf000 Unfrozen</span><br><span class="line"> # ChildEBP RetAddr  Args to Child              </span><br><span class="line">00 002bf614 775a6a64 77592278 00000064 00000000 ntdll!KiFastSystemCallRet (FPO: [0,0,0])</span><br><span class="line">01 002bf618 77592278 00000064 00000000 00000000 ntdll!NtWaitForSingleObject+0xc (FPO: [3,0,0])</span><br><span class="line">02 002bf67c 7759215c 00000000 00000000 00000001 ntdll!RtlpWaitOnCriticalSection+0x13e (FPO: [Non-Fpo])</span><br><span class="line">03 002bf6a4 775c00e1 77637340 77bf1b77 00000000 ntdll!RtlEnterCriticalSection+0x150 (FPO: [Non-Fpo])</span><br><span class="line">04 002bf6dc 75587bc3 00000001 00000000 002bf704 ntdll!LdrLockLoaderLock+0xe4 (FPO: [Non-Fpo])</span><br><span class="line">05 002bf728 7679215d 00000000 002bf73c 00000104 KERNELBASE!GetModuleFileNameW+0x75 (FPO: [Non-Fpo])</span><br><span class="line">06 002bf948 76792112 002bfbb0 002bf968 7ffdb000 SHELL32!InRunDllProcess+0x39 (FPO: [Non-Fpo])</span><br><span class="line">*** WARNING: Unable to verify checksum for C:\Users\BianChengNan\Documents\Visual Studio 2012\Projects\testTerminateThread\Debug\testTerminateThread.exe</span><br><span class="line">07 002bf95c 013714db 002bfa44 002bfcbc 002bfbc0 SHELL32!ShellExecuteExW+0x51 (FPO: [Non-Fpo])</span><br><span class="line">08 002bfbb0 01371685 000ac518 00000000 00000000 testTerminateThread!RunProcess+0xdb (FPO: [Non-Fpo]) (CONV: cdecl) [c:\users\bianchengnan\documents\visual studio 2012\projects\testterminatethread\testterminatethread\testterminatethread.cpp @ 28]</span><br><span class="line">09 002bfcbc 01371c69 00000001 000ac510 000ae660 testTerminateThread!wmain+0xc5 (FPO: [Non-Fpo]) (CONV: cdecl) [c:\users\bianchengnan\documents\visual studio 2012\projects\testterminatethread\testterminatethread\testterminatethread.cpp @ 59]</span><br><span class="line">0a 002bfd0c 01371e5d 002bfd20 758ced6c 7ffdb000 testTerminateThread!__tmainCRTStartup+0x199 (FPO: [Non-Fpo]) (CONV: cdecl) [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 533]</span><br><span class="line">0b 002bfd14 758ced6c 7ffdb000 002bfd60 775c37eb testTerminateThread!wmainCRTStartup+0xd (FPO: [Non-Fpo]) (CONV: cdecl) [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 377]</span><br><span class="line">0c 002bfd20 775c37eb 7ffdb000 77bf10cb 00000000 kernel32!BaseThreadInitThunk+0xe (FPO: [Non-Fpo])</span><br><span class="line">0d 002bfd60 775c37be 01371082 7ffdb000 00000000 ntdll!__RtlUserThreadStart+0x70 (FPO: [Non-Fpo])</span><br><span class="line">0e 002bfd78 00000000 01371082 7ffdb000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])</span><br><span class="line"></span><br><span class="line">#  1  Id: 18c0.193c Suspend: 1 Teb: 7ffde000 Unfrozen</span><br><span class="line"> # ChildEBP RetAddr  Args to Child              </span><br><span class="line">00 0133fbac 775ff20f 76a71677 00000000 00000000 ntdll!DbgBreakPoint (FPO: [0,0,0])</span><br><span class="line">01 0133fbdc 758ced6c 00000000 0133fc28 775c37eb ntdll!DbgUiRemoteBreakin+0x3c (FPO: [Non-Fpo])</span><br><span class="line">02 0133fbe8 775c37eb 00000000 76a71183 00000000 kernel32!BaseThreadInitThunk+0xe (FPO: [Non-Fpo])</span><br><span class="line">03 0133fc28 775c37be 775ff1d3 00000000 00000000 ntdll!__RtlUserThreadStart+0x70 (FPO: [Non-Fpo])</span><br><span class="line">04 0133fc40 00000000 775ff1d3 00000000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])</span><br></pre></td></tr></table></figure>
@@ -1035,6 +1035,28 @@
     
   
     
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part1/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（上）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part2/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（中）</a></li>
+    
+  
+    
+      
+
+      <li><a href="/articles/debug-another-dll-load-failure-caused-by-global-variable-initialize-dependency-part3/" title="调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）">调试实战 | 调试另外一个由于全局变量初始化顺序导致的 dll 加载失败问题（下）</a></li>
+    
+  
+    
+  
+    
+  
+    
   
     
   
@@ -1130,7 +1152,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1141,7 +1163,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1152,7 +1174,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">221</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
